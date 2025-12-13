@@ -1,0 +1,1134 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --animate-skeleton: skeleton 2s -1s infinite linear;
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning: var(--warning);
+  --color-success-foreground: var(--success-foreground);
+  --color-success: var(--success);
+  --color-info-foreground: var(--info-foreground);
+  --color-info: var(--info);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  @keyframes skeleton {
+    to {
+      background-position: -200% 0;
+    }
+  }
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: var(--color-white);
+  --foreground: var(--color-zinc-800);
+  --card: var(--color-white);
+  --card-foreground: var(--color-zinc-800);
+  --popover: var(--color-white);
+  --popover-foreground: var(--color-zinc-800);
+  --primary: var(--color-zinc-800);
+  --primary-foreground: var(--color-zinc-50);
+  --secondary: --alpha(var(--color-black) / 4%);
+  --secondary-foreground: var(--color-zinc-800);
+  --muted: --alpha(var(--color-black) / 4%);
+  --muted-foreground: color-mix(in srgb, var(--color-zinc-500) 90%, var(--color-black));
+  --accent: --alpha(var(--color-black) / 4%);
+  --accent-foreground: var(--color-zinc-800);
+  --destructive: var(--color-red-500);
+  --border: --alpha(var(--color-black) / 12%);
+  --input: --alpha(var(--color-black) / 12%);
+  --ring: var(--color-zinc-400);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-primary: oklch(0.21 0.006 285.885);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.967 0.001 286.375);
+  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+  --sidebar-border: oklch(0.92 0.004 286.32);
+  --sidebar-ring: oklch(0.705 0.015 286.067);
+  --destructive-foreground: var(--color-red-700);
+  --info: var(--color-blue-500);
+  --info-foreground: var(--color-blue-700);
+  --success: var(--color-emerald-500);
+  --success-foreground: var(--color-emerald-700);
+  --warning: var(--color-amber-500);
+  --warning-foreground: var(--color-amber-700);
+}
+
+.dark {
+  --background: color-mix(in srgb, var(--color-zinc-950) 98%, var(--color-white));
+  --foreground: var(--color-zinc-200);
+  --card: color-mix(in srgb, var(--background) 98%, var(--color-white));
+  --card-foreground: var(--color-zinc-200);
+  --popover: color-mix(in srgb, var(--background) 96%, var(--color-white));
+  --popover-foreground: var(--color-zinc-200);
+  --primary: var(--color-zinc-200);
+  --primary-foreground: var(--color-zinc-800);
+  --secondary: --alpha(var(--color-white) / 6%);
+  --secondary-foreground: var(--color-zinc-200);
+  --muted: --alpha(var(--color-white) / 6%);
+  --muted-foreground: color-mix(in srgb, var(--color-zinc-500) 90%, var(--color-white));
+  --accent: --alpha(var(--color-white) / 6%);
+  --accent-foreground: var(--color-zinc-200);
+  --destructive: var(--color-red-500);
+  --border: --alpha(var(--color-white) / 12%);
+  --input: --alpha(var(--color-white) / 12%);
+  --ring: var(--color-zinc-500);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.21 0.006 285.885);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.274 0.006 286.033);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.552 0.016 285.938);
+  --destructive-foreground: var(--color-red-400);
+  --info: var(--color-blue-500);
+  --info-foreground: var(--color-blue-400);
+  --success: var(--color-emerald-500);
+  --success-foreground: var(--color-emerald-400);
+  --warning: var(--color-amber-500);
+  --warning-foreground: var(--color-amber-400);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ========== Prose/Typography 样式 ========== */
+.prose {
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-lead: var(--muted-foreground);
+  --tw-prose-links: var(--primary);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-counters: var(--muted-foreground);
+  --tw-prose-bullets: var(--muted-foreground);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--foreground);
+  --tw-prose-quote-borders: var(--primary);
+  --tw-prose-captions: var(--muted-foreground);
+  --tw-prose-code: var(--foreground);
+  --tw-prose-pre-code: var(--foreground);
+  --tw-prose-pre-bg: var(--muted);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
+}
+
+.dark .prose {
+  --tw-prose-invert-body: var(--foreground);
+  --tw-prose-invert-headings: var(--foreground);
+  --tw-prose-invert-lead: var(--muted-foreground);
+  --tw-prose-invert-links: var(--primary);
+  --tw-prose-invert-bold: var(--foreground);
+  --tw-prose-invert-counters: var(--muted-foreground);
+  --tw-prose-invert-bullets: var(--muted-foreground);
+  --tw-prose-invert-hr: var(--border);
+  --tw-prose-invert-quotes: var(--foreground);
+  --tw-prose-invert-quote-borders: var(--primary);
+  --tw-prose-invert-captions: var(--muted-foreground);
+  --tw-prose-invert-code: var(--foreground);
+  --tw-prose-invert-pre-code: var(--foreground);
+  --tw-prose-invert-pre-bg: var(--muted);
+  --tw-prose-invert-th-borders: var(--border);
+  --tw-prose-invert-td-borders: var(--border);
+}
+
+/* 文章内容排版 */
+.prose p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.7;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  position: relative;
+}
+
+/* 标题锚点链接通过 JavaScript 动态添加，不再使用 CSS ::before 伪元素 */
+
+.prose h1 {
+  font-size: 2em;
+  margin-top: 0;
+  margin-bottom: 0.75em;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.prose h2 {
+  font-size: 1.5em;
+  margin-top: 1.5em;
+  margin-bottom: 0.75em;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.prose h3 {
+  font-size: 1.25em;
+  margin-top: 1.25em;
+  margin-bottom: 0.5em;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.prose h4 {
+  font-size: 1em;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.prose ul,
+.prose ol {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding-left: 1.625em;
+}
+
+.prose li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose ul>li {
+  list-style-type: disc;
+}
+
+.prose ol>li {
+  list-style-type: decimal;
+}
+
+.prose blockquote {
+  margin-top: 1.6em;
+  margin-bottom: 1.6em;
+  padding-left: 1em;
+  border-left-width: 4px;
+  border-left-color: var(--primary);
+  font-style: italic;
+  background-color: var(--muted);
+  padding: 1em;
+  border-radius: 0.375rem;
+}
+
+.prose hr {
+  margin-top: 3em;
+  margin-bottom: 3em;
+  border-color: var(--border);
+}
+
+.prose a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.prose a:hover {
+  text-decoration: underline;
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+/* 代码样式 */
+.prose code {
+  font-size: 0.875em;
+  font-weight: 500;
+  background-color: var(--muted);
+  padding: 0.25em 0.4em;
+  border-radius: 0.25rem;
+}
+
+.prose code::before,
+.prose code::after {
+  content: none;
+}
+
+.prose pre {
+  margin-top: 1.7142857em;
+  margin-bottom: 1.7142857em;
+  padding: 1em 1.25em;
+  background-color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+
+.prose pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 0.875em;
+  font-weight: 400;
+  line-height: 1.7142857;
+}
+
+/* 代码高亮行号 */
+.prose pre .line-numbers {
+  padding-right: 1em;
+  border-right: 1px solid var(--border);
+  margin-right: 1em;
+  color: var(--muted-foreground);
+  user-select: none;
+}
+
+/* Hexo 代码块样式 */
+.prose figure.highlight {
+  margin: 1.5em 0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.prose figure.highlight figcaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em 1em;
+  background-color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.875em;
+  color: var(--muted-foreground);
+}
+
+.prose figure.highlight table {
+  width: 100%;
+  margin: 0;
+  border: none;
+}
+
+.prose figure.highlight table td {
+  padding: 0;
+  border: none;
+}
+
+.prose figure.highlight .gutter {
+  width: 3em;
+  padding: 1em 0.5em;
+  background-color: var(--muted);
+  text-align: right;
+  color: var(--muted-foreground);
+  user-select: none;
+  vertical-align: top;
+}
+
+.prose figure.highlight .gutter pre {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+.prose figure.highlight .code {
+  padding: 1em;
+  background-color: var(--muted);
+}
+
+.prose figure.highlight .code pre {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+/* 表格样式 */
+.prose table {
+  width: 100%;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+}
+
+.prose thead {
+  background-color: var(--muted);
+}
+
+.prose th {
+  padding: 0.75em 1em;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+
+.prose td {
+  padding: 0.75em 1em;
+  border-bottom: 1px solid var(--border);
+}
+
+.prose tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* 图片样式 */
+.prose img {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  border-radius: 0.5rem;
+  box-shadow: none !important;
+  background-image: url('/loading.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 48px 48px;
+  min-height: 100px;
+}
+
+.prose img[src]:not([src=""]) {
+  min-height: auto;
+}
+
+/* 强制移除图片阴影 */
+.prose-img\:shadow-md :where(img):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  --tw-shadow: none !important;
+  box-shadow: none !important;
+}
+
+/* ========== TOC 目录样式 ========== */
+.toc {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc-item {
+  margin: 0;
+  padding: 0;
+}
+
+.toc-level-1 {
+  margin-left: 0;
+}
+
+.toc-level-2 {
+  margin-left: 1rem;
+}
+
+.toc-level-3 {
+  margin-left: 2rem;
+}
+
+.toc-level-4 {
+  margin-left: 3rem;
+}
+
+.toc-link {
+  display: block;
+  padding: 0.375rem 0;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+.toc-link:hover {
+  color: var(--foreground);
+}
+
+.toc-link.active {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+
+/* ========== 友情链接页面样式 ========== */
+.friend-links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.friend-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background-color: var(--card);
+  text-decoration: none;
+  color: inherit;
+}
+
+.friend-card:hover {
+  border-color: var(--primary);
+}
+
+.friend-card-avatar {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background-color: var(--muted);
+}
+
+.friend-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.friend-card-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.friend-card-desc {
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ========== Gradient Highlight 渐变高亮样式 ========== */
+.gradient-highlight {
+  position: relative;
+  z-index: 1;
+  padding-inline: 0.25rem;
+}
+
+.gradient-highlight::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: -0.25rem;
+  right: -0.25rem;
+  height: 100%;
+  transform: translateY(-50%) rotate(-1deg);
+  z-index: -1;
+  background: linear-gradient(to right, #3b82f6, #a855f7, #f97316);
+  opacity: 0.16;
+  mix-blend-mode: hard-light;
+}
+
+/* ========== Coss UI Button 样式 (用于 Hexo 自定义标签) ========== */
+.coss-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  transition: all 0.15s ease;
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+}
+
+.coss-btn svg {
+  width: 1rem;
+  height: 1rem;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+/* Button Sizes */
+.coss-btn-xs {
+  height: 1.5rem;
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
+  border-radius: 0.375rem;
+  gap: 0.25rem;
+}
+
+.coss-btn-sm {
+  height: 1.75rem;
+  padding: 0 0.75rem;
+  border-radius: 0.375rem;
+  gap: 0.375rem;
+}
+
+.coss-btn-md {
+  height: 2rem;
+  padding: 0.5rem 1rem;
+}
+
+.coss-btn-lg {
+  height: 2.25rem;
+  padding: 0 1.25rem;
+  border-radius: 0.375rem;
+}
+
+.coss-btn-xl {
+  height: 2.5rem;
+  padding: 0 1.5rem;
+  border-radius: 0.375rem;
+}
+
+/* Button Variants */
+.coss-btn-primary {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.coss-btn-primary:hover {
+  background-color: color-mix(in srgb, var(--primary) 90%, transparent);
+}
+
+.coss-btn-secondary {
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+.coss-btn-secondary:hover {
+  background-color: color-mix(in srgb, var(--secondary) 80%, transparent);
+}
+
+.coss-btn-outline {
+  background-color: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+.coss-btn-outline:hover {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.coss-btn-ghost {
+  background-color: transparent;
+  color: var(--foreground);
+}
+
+.coss-btn-ghost:hover {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.coss-btn-link {
+  background-color: transparent;
+  color: var(--primary);
+  text-underline-offset: 4px;
+}
+
+.coss-btn-link:hover {
+  text-decoration: underline;
+}
+
+/* Dark mode adjustments */
+.dark .coss-btn-outline {
+  background-color: color-mix(in srgb, var(--input) 30%, transparent);
+  border-color: var(--input);
+}
+
+.dark .coss-btn-outline:hover {
+  background-color: color-mix(in srgb, var(--input) 50%, transparent);
+}
+
+.dark .coss-btn-ghost:hover {
+  background-color: color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+/* Focus visible state */
+.coss-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 50%, transparent);
+}
+
+/* ========== 动画效果 ========== */
+
+/* 平滑滚动 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 页面加载动画 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 滚动触发动画 - 初始状态 */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate-on-scroll.animated {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 不同的动画变体 */
+.animate-fade-in {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.animate-fade-in.animated {
+  opacity: 1;
+}
+
+.animate-slide-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate-slide-up.animated {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.animate-slide-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate-slide-left.animated {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.animate-slide-right {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate-slide-right.animated {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.animate-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.animate-scale.animated {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 延迟动画类 */
+.delay-100 { transition-delay: 0.1s; }
+.delay-200 { transition-delay: 0.2s; }
+.delay-300 { transition-delay: 0.3s; }
+.delay-400 { transition-delay: 0.4s; }
+.delay-500 { transition-delay: 0.5s; }
+
+/* Hero 区域动画 */
+#hero h1 {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+#hero p {
+  animation: fadeInUp 0.8s ease-out 0.15s forwards;
+  opacity: 0;
+}
+
+#hero .flex.items-center.gap-4 {
+  animation: fadeInUp 0.8s ease-out 0.3s forwards;
+  opacity: 0;
+}
+
+#hero #scroll-to-posts {
+  animation: fadeIn 1s ease-out 0.6s forwards, bounce 2s infinite 1.5s;
+  opacity: 0;
+}
+
+/* 文章卡片动画 - 无悬浮上移效果 */
+article.rounded-xl {
+  transition: box-shadow 0.3s ease;
+}
+
+.dark article.rounded-xl {
+  /* 保持原样 */
+}
+
+/* 图片 - 无悬停效果 */
+
+/* 链接悬停效果 */
+a {
+  transition: color 0.2s ease;
+}
+
+/* 按钮悬停效果增强 */
+button, .coss-btn {
+  transition: all 0.2s ease;
+}
+
+button:active, .coss-btn:active {
+  transform: scale(0.97);
+}
+
+/* 可点击卡片效果 - 与按钮类似 */
+.clickable-card {
+  transition: all 0.2s ease;
+}
+
+.clickable-card:hover {
+  background-color: var(--accent);
+}
+
+.clickable-card:active {
+  transform: scale(0.98);
+}
+
+/* 可悬浮卡片效果 - 用于内部有多个链接的卡片 */
+.hoverable-card {
+  transition: background-color 0.2s ease;
+}
+
+.hoverable-card:hover {
+  background-color: var(--accent);
+}
+
+/* 侧边栏动画 */
+.lg\:w-80 {
+  animation: slideInRight 0.6s ease-out 0.3s forwards;
+  opacity: 0;
+}
+
+/* 搜索模态框动画 */
+.search-modal-overlay {
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color 0.3s ease;
+}
+
+.search-modal-overlay.is-open {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.search-modal-content {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.95);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.search-modal-overlay.is-open .search-modal-content {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 搜索结果项 - 无渐入动画 */
+.search-result-item {
+  opacity: 1;
+}
+
+/* 返回顶部按钮动画 */
+#back-to-top {
+  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
+}
+
+#back-to-top:hover {
+  transform: translateY(-2px);
+  background-color: var(--accent);
+}
+
+#back-to-top:active {
+  transform: translateY(0) scale(0.95);
+}
+
+/* 标签悬停效果 - 无上移 */
+a[href*="/tags/"],
+a[href*="/categories/"] {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* 导航链接 - 无特殊动画 */
+
+/* 代码块复制按钮动画 */
+.group button {
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+/* 目录链接样式 */
+.toc-link {
+  transition: color 0.2s ease;
+}
+
+/* 友链卡片动画 - 与按钮类似的点击效果 */
+.friend-card {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.friend-card:hover {
+  background-color: var(--accent);
+}
+
+.friend-card:active {
+  transform: scale(0.98);
+}
+
+.dark .friend-card {
+  /* 保持原样 */
+}
+
+/* 分页按钮动画 - 无悬浮上移 */
+.pagination a,
+.pagination button {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* 加载状态 - 骨架屏 */
+.skeleton {
+  background: linear-gradient(90deg, var(--muted) 25%, var(--accent) 50%, var(--muted) 75%);
+  background-size: 200% 100%;
+  animation: skeleton 1.5s ease-in-out infinite;
+}
+
+/* 头像悬停效果 */
+.friend-card-avatar {
+  transition: transform 0.3s ease;
+}
+
+.friend-card:hover .friend-card-avatar {
+  transform: scale(1.1);
+}
+
+/* 页面过渡效果 */
+main {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* 渐变高亮动画 */
+.gradient-highlight {
+  background-size: 200% 100%;
+  animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* 移动端菜单动画 */
+#mobile-menu {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform-origin: top;
+}
+
+#mobile-menu.hidden {
+  opacity: 0;
+  transform: scaleY(0.95);
+  pointer-events: none;
+}
+
+#mobile-menu:not(.hidden) {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+/* 禁用动画 (无障碍) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ========== 全局滚动条样式 ========== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(161, 161, 170, 0.4);
+  border-radius: 4px;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(161, 161, 170, 0.55);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: rgba(113, 113, 122, 0.6);
+}
+
+/* 深色模式滚动条 */
+.dark ::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+  background-clip: padding-box;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.dark ::-webkit-scrollbar-thumb:active {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* 侧边栏滚动条 - 更细 */
+aside ::-webkit-scrollbar,
+.toc ::-webkit-scrollbar {
+  width: 6px;
+}
+
+aside ::-webkit-scrollbar-thumb,
+.toc ::-webkit-scrollbar-thumb {
+  background-color: rgba(161, 161, 170, 0.35);
+}
+
+aside ::-webkit-scrollbar-thumb:hover,
+.toc ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(161, 161, 170, 0.5);
+}
+
+.dark aside ::-webkit-scrollbar-thumb,
+.dark .toc ::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.dark aside ::-webkit-scrollbar-thumb:hover,
+.dark .toc ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Firefox 滚动条支持 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(161, 161, 170, 0.4) transparent;
+}
+
+.dark * {
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
