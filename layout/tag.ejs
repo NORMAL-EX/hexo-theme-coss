@@ -1,0 +1,128 @@
+<div class="py-8">
+  <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col lg:flex-row gap-8">
+      <%# Main Content %>
+      <div class="flex-1">
+        <%# Page Title - 靠左对齐 %>
+        <h1 class="text-3xl font-bold mb-2 text-left">
+          <% if (page.tag) { %>
+          标签: <%= page.tag %>
+          <% } else { %>
+          标签
+          <% } %>
+        </h1>
+        <p class="text-muted-foreground mb-8 text-left">
+          <% if (page.tag) { %>
+          共 <%= page.posts.length %> 篇文章
+          <% } else { %>
+          共 <%= site.tags.length %> 个标签
+          <% } %>
+        </p>
+
+        <% if (page.tag) { %>
+        <%# Posts with Tag %>
+        <div class="grid grid-cols-1 gap-6">
+          <% page.posts.each(function(post) { %>
+          <article class="hoverable-card rounded-xl border bg-card text-card-foreground shadow overflow-hidden transition-shadow">
+            <% if (post.cover) { %>
+            <a href="<%= url_for(post.path) %>" class="block">
+              <div class="aspect-video overflow-hidden">
+                <img src="<%= post.cover %>" alt="<%= post.title %>" class="w-full h-full object-cover transition-transform hover:scale-105">
+              </div>
+            </a>
+            <% } %>
+
+            <div class="p-6">
+              <h2 class="text-xl font-semibold mb-3 text-left">
+                <a href="<%= url_for(post.path) %>" class="hover:text-primary transition-colors hover:underline underline-offset-4">
+                  <%= post.title %>
+                </a>
+              </h2>
+
+              <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-3">
+                <span class="flex items-center gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 2v4"></path>
+                    <path d="M16 2v4"></path>
+                    <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+                    <path d="M3 10h18"></path>
+                  </svg>
+                  <time datetime="<%= date_xml(post.date) %>"><%= date(post.date, 'YYYY-MM-DD') %></time>
+                </span>
+
+                <% if (post.categories && post.categories.length > 0) { %>
+                <span class="flex items-center gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path>
+                  </svg>
+                  <% post.categories.each(function(cat, idx) { %>
+                    <a href="<%= url_for(cat.path) %>" class="hover:text-foreground"><%= cat.name %></a><% if (idx < post.categories.length - 1) { %>, <% } %>
+                  <% }); %>
+                </span>
+                <% } %>
+              </div>
+
+              <% if (post.excerpt) { %>
+              <p class="text-muted-foreground text-sm line-clamp-3 text-left"><%- strip_html(post.excerpt) %></p>
+              <% } %>
+            </div>
+          </article>
+          <% }); %>
+        </div>
+
+        <%# Pagination %>
+        <%- partial('_partial/pagination') %>
+
+        <% } else { %>
+        <%# All Tags (Tag Cloud) %>
+        <div class="rounded-xl border bg-card text-card-foreground shadow p-6">
+          <div class="flex flex-wrap gap-3">
+            <%
+            var tags = site.tags.sort('name');
+            var maxCount = 1;
+            tags.each(function(tag) {
+              if (tag.posts.length > maxCount) {
+                maxCount = tag.posts.length;
+              }
+            });
+            %>
+            <% tags.each(function(tag) { %>
+            <%
+            var ratio = tag.posts.length / maxCount;
+            var size;
+            if (ratio > 0.8) size = 'text-2xl';
+            else if (ratio > 0.6) size = 'text-xl';
+            else if (ratio > 0.4) size = 'text-lg';
+            else if (ratio > 0.2) size = 'text-base';
+            else size = 'text-sm';
+            %>
+            <a href="<%= url_for(tag.path) %>" class="clickable-card inline-flex items-center gap-1 px-3 py-1.5 rounded-full border transition-colors <%= size %>">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path>
+                <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle>
+              </svg>
+              <span><%= tag.name %></span>
+              <span class="text-xs text-muted-foreground">(<%= tag.posts.length %>)</span>
+            </a>
+            <% }); %>
+          </div>
+        </div>
+        <% } %>
+      </div>
+
+      <%# Sidebar - only show if there's content %>
+      <%
+        var showAuthor = !theme.sidebar || theme.sidebar.showAuthor !== false;
+        var showCategories = (!theme.sidebar || theme.sidebar.showCategories !== false) && site.categories.length > 0;
+        var showTags = (!theme.sidebar || theme.sidebar.showTags !== false) && site.tags.length > 0;
+        var showRecent = !theme.sidebar || theme.sidebar.showRecent !== false;
+        var hasSidebarContent = showAuthor || showCategories || showTags || showRecent;
+      %>
+      <% if (hasSidebarContent) { %>
+      <div class="w-full lg:w-80 shrink-0">
+        <%- partial('_partial/sidebar') %>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</div>

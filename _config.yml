@@ -1,0 +1,179 @@
+# Hexo Theme Coss Configuration
+# 主题配置文件
+
+# ========== 基本信息 ==========
+# 网站 Logo（可选）
+logo:
+
+# Header 标题（显示在头像右边，可选）
+header_title:
+
+# 网站 Favicon
+favicon: /favicon.ico
+
+# ========== 首页设置 ==========
+index:
+  title: 这是{{highlight}}我的个人博客{{/highlight}}
+  subtitle: 分享技术、生活与思考
+
+# ========== 导航菜单 ==========
+# 友情链接页面可通过设置 links.enable 为 true 来启用
+menu:
+  首页: /
+  归档: /archives/
+  分类: /categories/
+  标签: /tags/
+  友链: /links/
+  关于: /about/
+
+# ========== 作者信息 ==========
+author:
+  avatar: /images/avatar.png
+  description: 这是一段简短的个人介绍
+
+# ========== 社交链接 ==========
+# 支持的图标: github, twitter, email, rss
+social:
+  - name: GitHub
+    url: https://github.com
+    icon: github
+  - name: Twitter
+    url: https://twitter.com
+    icon: twitter
+  - name: Email
+    url: mailto:example@example.com
+    icon: email
+  - name: RSS
+    url: /atom.xml
+    icon: rss
+
+# ========== 友情链接页面设置 ==========
+# 友情链接页面配置
+# 启用后会在导航菜单中显示友链入口
+# 友链页面地址: /links/
+#
+# 使用方法:
+# 1. 在 source 目录下创建 links/index.md 文件
+# 2. 文件内容格式:
+#    ---
+#    title: 友情链接
+#    layout: links
+#    ---
+#
+#    这里可以写一些自定义内容，支持 Markdown 格式。
+#    这些内容会显示在友链卡片下方。
+#
+links:
+  # 是否启用友情链接页面
+  enable: true
+  # 页面副标题
+  subtitle: 感谢以下站点的友情支持
+  # 友情链接列表
+  list:
+    - name: Hexo
+      url: https://hexo.io
+      avatar: https://hexo.io/icon/favicon-96x96.png
+      description: 快速、简洁且高效的博客框架
+
+# ========== 侧边栏设置 ==========
+sidebar:
+  showAuthor: false
+  showCategories: true
+  showTags: true
+  showRecent: false
+  recentPostsCount: 5
+
+# ========== 页脚设置 ==========
+footer:
+  # 版权信息，支持 HTML
+  copyright:
+  # 是否显示 Powered by Hexo
+  powered: true
+  # 备案号（可选）
+  beian:
+
+# ========== 版权声明 ==========
+copyright:
+  enable: true
+  text: 本博客所有文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！
+
+# ========== 评论系统 ==========
+# 支持: disqus, gitalk, valine, waline, twikoo
+comments:
+  # 评论服务提供商
+  provider:
+  # 配置项（根据不同提供商填写）
+  config:
+    # Disqus
+    # shortname: your-disqus-shortname
+
+    # Gitalk
+    # clientID: your-client-id
+    # clientSecret: your-client-secret
+    # repo: your-repo
+    # owner: your-github-username
+    # admin: your-github-username
+
+    # Valine
+    # appId: your-leancloud-app-id
+    # appKey: your-leancloud-app-key
+    # placeholder: 说点什么吧...
+    # avatar: mp
+
+    # Waline
+    # serverURL: https://your-waline-server.vercel.app
+
+    # Twikoo
+    # envId: your-twikoo-env-id
+
+# ========== 统计分析 ==========
+analytics:
+  # Google Analytics
+  google:
+  # 百度统计
+  baidu:
+
+# ========== 代码高亮 ==========
+# 使用 Hexo 内置的代码高亮
+highlight:
+  enable: true
+  line_number: true
+  auto_detect: false
+  tab_replace: ''
+  wrap: true
+  hljs: false
+
+# ========== 其他设置 ==========
+# 文章摘要字数限制
+excerpt_length: 200
+
+# 启用文章目录
+toc:
+  enable: true
+  max_depth: 4
+
+# ========== 自定义组件 ==========
+# 本主题支持在 Markdown 文件中使用自定义组件
+#
+# 1. 信息框 (Alert)
+#    支持 4 种类型: info(提示), success(成功), warning(警告), error(错误)
+#
+#    多行语法:
+#    {% alert info 提示标题 %}
+#    这里是信息框的内容，支持 **Markdown** 格式
+#    {% endalert %}
+#
+#    单行语法:
+#    {% note info 这是一条简短的提示信息 %}
+#
+# 2. 按钮 (Button)
+#    {% btn 链接地址 按钮文本 [样式] [尺寸] [图标] %}
+#
+#    样式: primary(默认), secondary, outline, ghost, link
+#    尺寸: sm(小), md(默认), lg(大)
+#    图标: download, link, github, arrow-right, external
+#
+#    示例:
+#    {% btn https://example.com 访问网站 %}
+#    {% btn https://github.com 查看源码 outline lg github %}
+#    {% btn /download 立即下载 primary lg download %}

@@ -1,0 +1,599 @@
+<%# Console Copyright Info with Shields.io Style Badges %>
+<script>
+(function() {
+console.log(`╔═══════════════════════════════════════════════════════════╗
+║                     Hexo-Theme-Coss                       ║
+╠═══════════════════════════════════════════════════════════╣
+║  Copyright                                                ║
+║    © 2025-present NORMAL-EX (dddffgg)                     ║
+║    © 2025-present Cloud-PE Dev                            ║
+║                                                           ║
+║  Repository                                               ║
+║    https://github.com/NORMAL-EX/hexo-theme-coss           ║
+║                                                           ║
+║  License: MIT                                             ║
+║  Blog: https://blog.cloud-pe.cn                           ║
+║  Stack: React + Vite + Tailwind CSS                       ║
+╚═══════════════════════════════════════════════════════════╝
+`);
+})();
+</script>
+
+<%# 滚动动画脚本 %>
+<script>
+(function() {
+  // 检查是否支持 IntersectionObserver
+  if (!('IntersectionObserver' in window)) return;
+  
+  // 为侧边栏卡片添加动画
+  var sidebarCards = document.querySelectorAll('.lg\\:w-80 > div > div');
+  sidebarCards.forEach(function(card, index) {
+    card.classList.add('animate-on-scroll');
+    card.style.transitionDelay = 0.2 + index * 0.1 + 's';
+  });
+  
+  // 为友链卡片添加动画
+  var friendCards = document.querySelectorAll('.friend-card');
+  friendCards.forEach(function(card, index) {
+    card.classList.add('animate-on-scroll');
+    card.style.transitionDelay = (index % 6) * 0.08 + 's';
+  });
+  
+  // 创建 Intersection Observer
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animated');
+        // 动画完成后停止观察
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    root: null,
+    rootMargin: '0px 0px -50px 0px',
+    threshold: 0.1
+  });
+  
+  // 观察所有需要动画的元素
+  var animatedElements = document.querySelectorAll('.animate-on-scroll, .animate-fade-in, .animate-slide-up, .animate-slide-left, .animate-slide-right, .animate-scale');
+  animatedElements.forEach(function(el) {
+    observer.observe(el);
+  });
+  
+  // 页面加载完成后触发首屏元素动画
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      var firstScreenElements = document.querySelectorAll('.animate-on-scroll');
+      firstScreenElements.forEach(function(el) {
+        var rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight) {
+          el.classList.add('animated');
+        }
+      });
+    }, 100);
+  });
+})();
+</script>
+
+<%# Theme Toggle Script %>
+<script>
+(function() {
+  var themeToggle = document.getElementById('theme-toggle');
+  var html = document.documentElement;
+  var STORAGE_KEY = 'hexo-theme-mode';
+
+  function getTheme() {
+    return localStorage.getItem(STORAGE_KEY) || 'system';
+  }
+
+  function setTheme(theme) {
+    localStorage.setItem(STORAGE_KEY, theme);
+    applyTheme(theme);
+  }
+
+  function applyTheme(theme) {
+    if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      html.classList.add('dark');
+    } else {
+      html.classList.remove('dark');
+    }
+  }
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      var current = getTheme();
+      var next;
+      if (current === 'light') {
+        next = 'dark';
+      } else if (current === 'dark') {
+        next = 'system';
+      } else {
+        next = 'light';
+      }
+      setTheme(next);
+    });
+  }
+
+  // Listen for system theme changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+    if (getTheme() === 'system') {
+      applyTheme('system');
+    }
+  });
+})();
+</script>
+
+<%# Mobile Menu Script %>
+<script>
+(function() {
+  var mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+  var mobileMenu = document.getElementById('mobile-menu');
+
+  if (mobileMenuToggle && mobileMenu) {
+    mobileMenuToggle.addEventListener('click', function() {
+      mobileMenu.classList.toggle('hidden');
+    });
+  }
+})();
+</script>
+
+<%# Search Script %>
+<script>
+(function() {
+  var searchToggle = document.getElementById('search-toggle');
+  var searchModal = document.getElementById('search-modal');
+  var searchClose = document.getElementById('search-close');
+  var searchInput = document.getElementById('search-input');
+  var searchResults = document.getElementById('search-results');
+  var searchData = [];
+
+  // Load search data
+  fetch('<%= url_for("/search.json") %>')
+    .then(function(response) { return response.json(); })
+    .then(function(data) { searchData = data; })
+    .catch(function(err) { console.log('Search data not available'); });
+
+  function openSearch() {
+    if (searchModal) {
+      searchModal.classList.remove('hidden');
+      // 触发重排以启用过渡动画
+      searchModal.offsetHeight;
+      searchModal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      if (searchInput) {
+        setTimeout(function() {
+          searchInput.focus();
+        }, 100);
+      }
+    }
+  }
+
+  function closeSearch() {
+    if (searchModal) {
+      searchModal.classList.remove('is-open');
+      document.body.style.overflow = '';
+      setTimeout(function() {
+        searchModal.classList.add('hidden');
+        if (searchInput) searchInput.value = '';
+        if (searchResults) searchResults.innerHTML = '<div class="px-4 py-8 text-center text-muted-foreground">输入关键词开始搜索</div>';
+      }, 300);
+    }
+  }
+
+  function performSearch(query) {
+    if (!query.trim() || !searchResults) return;
+
+    var lowerQuery = query.toLowerCase();
+    var results = searchData.filter(function(item) {
+      return item.title.toLowerCase().includes(lowerQuery) ||
+             (item.content && item.content.toLowerCase().includes(lowerQuery));
+    }).slice(0, 10);
+
+    if (results.length === 0) {
+      searchResults.innerHTML = '<div class="px-4 py-8 text-center text-muted-foreground">没有找到相关结果</div>';
+      return;
+    }
+
+    var html = '<ul class="px-2 pb-4">';
+    results.forEach(function(item, index) {
+      html += '<li class="search-result-item"><a href="' + item.url + '" class="block px-3 py-3 rounded-lg hover:bg-accent transition-colors">';
+      html += '<h4 class="font-medium text-foreground mb-1">' + item.title + '</h4>';
+      if (item.excerpt) {
+        html += '<p class="text-sm text-muted-foreground line-clamp-2">' + item.excerpt + '</p>';
+      }
+      html += '</a></li>';
+    });
+    html += '</ul>';
+    searchResults.innerHTML = html;
+  }
+
+  if (searchToggle) {
+    searchToggle.addEventListener('click', openSearch);
+  }
+
+  if (searchClose) {
+    searchClose.addEventListener('click', closeSearch);
+  }
+
+  if (searchModal) {
+    searchModal.addEventListener('click', function(e) {
+      if (e.target === searchModal) closeSearch();
+    });
+  }
+
+  if (searchInput) {
+    var debounceTimer;
+    searchInput.addEventListener('input', function(e) {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(function() {
+        performSearch(e.target.value);
+      }, 300);
+    });
+  }
+
+  // ESC to close
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeSearch();
+    if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      openSearch();
+    }
+  });
+})();
+</script>
+
+<%# Back to Top Script (with mutual exclusion for scroll-to-posts button) %>
+<script>
+(function() {
+  var backToTop = document.getElementById('back-to-top');
+  var scrollToPostsBtn = document.getElementById('scroll-to-posts');
+
+  function showBackToTop() {
+    if (backToTop) {
+      backToTop.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+      backToTop.classList.add('opacity-100', 'translate-y-0');
+    }
+  }
+
+  function hideBackToTop() {
+    if (backToTop) {
+      backToTop.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+      backToTop.classList.remove('opacity-100', 'translate-y-0');
+    }
+  }
+
+  function showScrollToPostsBtn() {
+    if (scrollToPostsBtn) {
+      scrollToPostsBtn.classList.remove('opacity-0', 'pointer-events-none');
+      scrollToPostsBtn.classList.add('opacity-100');
+    }
+  }
+
+  function hideScrollToPostsBtn() {
+    if (scrollToPostsBtn) {
+      scrollToPostsBtn.classList.add('opacity-0', 'pointer-events-none');
+      scrollToPostsBtn.classList.remove('opacity-100');
+    }
+  }
+
+  if (backToTop || scrollToPostsBtn) {
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 300) {
+        showBackToTop();
+        hideScrollToPostsBtn();
+      } else {
+        hideBackToTop();
+        showScrollToPostsBtn();
+      }
+    });
+  }
+
+  if (backToTop) {
+    backToTop.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+
+<%# TOC Script %>
+<script>
+(function() {
+  var tocLinks = document.querySelectorAll('.toc-link');
+  var headings = document.querySelectorAll('.prose h1[id], .prose h2[id], .prose h3[id], .prose h4[id], .prose h5[id], .prose h6[id]');
+
+  // 如果没有找到带 id 的标题，尝试给标题添加 id
+  if (headings.length === 0) {
+    headings = document.querySelectorAll('.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6');
+    headings.forEach(function(heading) {
+      if (!heading.id) {
+        // 生成 id：使用标题文本的 slug 形式
+        var text = heading.textContent || heading.innerText;
+        var id = text.trim()
+          .toLowerCase()
+          .replace(/[\s]+/g, '-')
+          .replace(/[^\u4e00-\u9fa5\w\-]/g, '');
+        if (id) {
+          heading.id = id;
+        }
+      }
+    });
+    // 重新获取带 id 的标题
+    headings = document.querySelectorAll('.prose h1[id], .prose h2[id], .prose h3[id], .prose h4[id], .prose h5[id], .prose h6[id]');
+  }
+
+  if (tocLinks.length === 0) return;
+
+  // 高亮对应标题的锚点
+  function highlightHeadingAnchor(targetId) {
+    // 先移除所有锚点的高亮
+    document.querySelectorAll('.heading-anchor').forEach(function(anchor) {
+      anchor.classList.remove('anchor-active');
+    });
+    // 高亮目标标题的锚点
+    var targetHeading = document.getElementById(targetId);
+    if (targetHeading) {
+      var anchor = targetHeading.querySelector('.heading-anchor');
+      if (anchor) {
+        anchor.classList.add('anchor-active');
+      }
+    }
+  }
+
+  // Smooth scroll for TOC links
+  tocLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var href = this.getAttribute('href');
+      if (!href) return;
+
+      var targetId = href.startsWith('#') ? href.slice(1) : href;
+      // URL 解码处理中文和特殊字符
+      try {
+        targetId = decodeURIComponent(targetId);
+      } catch(err) {}
+
+      var target = document.getElementById(targetId);
+
+      // 如果没找到，尝试查找匹配文本的标题
+      if (!target) {
+        var linkText = this.textContent.trim();
+        headings.forEach(function(heading) {
+          if (heading.textContent.trim() === linkText) {
+            target = heading;
+          }
+        });
+      }
+
+      if (target) {
+        var offset = 80;
+        var top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+
+        // 更新 URL hash（不触发滚动）
+        history.pushState(null, null, '#' + encodeURIComponent(target.id));
+
+        // 更新高亮状态
+        tocLinks.forEach(function(l) {
+          l.classList.remove('active', 'text-primary', 'font-medium');
+          l.classList.add('text-muted-foreground');
+        });
+        this.classList.add('active', 'text-primary', 'font-medium');
+        this.classList.remove('text-muted-foreground');
+
+        // 高亮对应标题的锚点
+        highlightHeadingAnchor(target.id);
+      }
+    });
+  });
+
+  // Highlight current section on scroll
+  if (headings.length > 0) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var targetId = entry.target.id;
+          tocLinks.forEach(function(link) {
+            link.classList.remove('active', 'text-primary', 'font-medium');
+            link.classList.add('text-muted-foreground');
+
+            var href = link.getAttribute('href');
+            if (href) {
+              var linkId = href.startsWith('#') ? href.slice(1) : href;
+              try {
+                linkId = decodeURIComponent(linkId);
+              } catch(err) {}
+
+              if (linkId === targetId || link.textContent.trim() === entry.target.textContent.trim()) {
+                link.classList.add('active', 'text-primary', 'font-medium');
+                link.classList.remove('text-muted-foreground');
+              }
+            }
+          });
+
+          // 高亮对应标题的锚点
+          highlightHeadingAnchor(targetId);
+        }
+      });
+    }, { rootMargin: '-80px 0px -80% 0px', threshold: 0 });
+
+    headings.forEach(function(heading) {
+      observer.observe(heading);
+    });
+  }
+
+  // 页面加载时根据 URL hash 定位
+  if (window.location.hash) {
+    setTimeout(function() {
+      var hash = window.location.hash.slice(1);
+      try {
+        hash = decodeURIComponent(hash);
+      } catch(err) {}
+      var target = document.getElementById(hash);
+      if (target) {
+        var offset = 80;
+        var top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+        // 高亮对应标题的锚点
+        highlightHeadingAnchor(hash);
+      }
+    }, 100);
+  }
+})();
+</script>
+
+<%# Scroll to Posts Script %>
+<script>
+(function() {
+  var scrollBtn = document.getElementById('scroll-to-posts');
+  var postsSection = document.getElementById('posts');
+
+  function scrollToPosts() {
+    if (postsSection) {
+      var offset = 16;
+      var top = postsSection.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    }
+  }
+
+  if (scrollBtn) {
+    scrollBtn.addEventListener('click', scrollToPosts);
+  }
+})();
+</script>
+
+<%# Code Copy Button %>
+<script>
+(function() {
+  var codeBlocks = document.querySelectorAll('pre code');
+
+  codeBlocks.forEach(function(code) {
+    var pre = code.parentElement;
+    var wrapper = document.createElement('div');
+    wrapper.className = 'relative group';
+
+    var button = document.createElement('button');
+    button.className = 'absolute top-2 right-2 p-2 rounded-md bg-muted/80 opacity-0 group-hover:opacity-100 transition-opacity';
+    button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>';
+    button.title = '复制代码';
+
+    button.addEventListener('click', function() {
+      navigator.clipboard.writeText(code.textContent).then(function() {
+        button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>';
+        setTimeout(function() {
+          button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>';
+        }, 2000);
+      });
+    });
+
+    pre.parentNode.insertBefore(wrapper, pre);
+    wrapper.appendChild(pre);
+    wrapper.appendChild(button);
+  });
+})();
+</script>
+
+<%# Heading Anchor Links - 为文章标题添加 # 锚点链接 %>
+<script>
+(function() {
+  // 获取文章内容区域的所有标题
+  var headings = document.querySelectorAll('.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6');
+  
+  headings.forEach(function(heading) {
+    // 确保标题有 id
+    if (!heading.id) {
+      var text = heading.textContent || heading.innerText;
+      var id = text.trim()
+        .toLowerCase()
+        .replace(/[\s]+/g, '-')
+        .replace(/[^\u4e00-\u9fa5\w\-]/g, '');
+      if (id) {
+        heading.id = id;
+      }
+    }
+    
+    if (!heading.id) return;
+    
+    // 检查是否已经有锚点链接
+    if (heading.querySelector('.heading-anchor')) return;
+    
+    // 创建锚点链接
+    var anchor = document.createElement('a');
+    anchor.className = 'heading-anchor';
+    anchor.href = '#' + heading.id;
+    anchor.textContent = '#';
+    anchor.setAttribute('aria-hidden', 'true');
+    anchor.title = '复制链接';
+    
+    // 点击事件 - 滚动到标题位置并复制链接
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      var targetId = heading.id;
+      var offset = 80;
+      var top = heading.getBoundingClientRect().top + window.scrollY - offset;
+      
+      window.scrollTo({ top: top, behavior: 'smooth' });
+      
+      // 更新 URL
+      history.pushState(null, null, '#' + encodeURIComponent(targetId));
+      
+      // 复制链接到剪贴板
+      var url = window.location.href.split('#')[0] + '#' + encodeURIComponent(targetId);
+      navigator.clipboard.writeText(url).then(function() {
+        // 可选：显示复制成功提示
+        anchor.classList.add('copied');
+        setTimeout(function() {
+          anchor.classList.remove('copied');
+        }, 1000);
+      }).catch(function() {
+        // 静默失败
+      });
+    });
+    
+    // 将标题设置为相对定位以便锚点定位
+    heading.style.position = 'relative';
+    heading.classList.add('group', 'heading-with-anchor');
+    
+    // 将锚点添加到标题的最前面
+    heading.insertBefore(anchor, heading.firstChild);
+  });
+})();
+</script>
+
+<style>
+/* 标题锚点链接样式 - 显示在标题前面 */
+.heading-anchor {
+  font-weight: 700;
+  color: var(--muted-foreground);
+  text-decoration: none;
+  opacity: 0.5;
+  transition: opacity 0.2s, color 0.2s;
+  margin-right: 0.5em;
+  cursor: pointer;
+}
+
+.heading-anchor:hover {
+  color: var(--primary);
+  opacity: 1;
+}
+
+.heading-anchor.copied {
+  color: var(--primary);
+  opacity: 1;
+}
+
+.heading-anchor.anchor-active {
+  color: var(--primary);
+  opacity: 1;
+}
+
+/* 鼠标悬停在标题上时显示锚点 */
+.prose h1:hover .heading-anchor,
+.prose h2:hover .heading-anchor,
+.prose h3:hover .heading-anchor,
+.prose h4:hover .heading-anchor,
+.prose h5:hover .heading-anchor,
+.prose h6:hover .heading-anchor {
+  opacity: 1;
+}
+</style>

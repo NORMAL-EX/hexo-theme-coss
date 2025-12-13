@@ -1,0 +1,85 @@
+<aside class="space-y-6">
+  <%# Author Card %>
+  <% if (!theme.sidebar || theme.sidebar.showAuthor !== false) { %>
+  <div class="rounded-xl border bg-card text-card-foreground shadow">
+    <div class="p-6">
+      <div class="flex flex-col items-center text-center">
+        <% if (theme.author && theme.author.avatar) { %>
+        <img src="<%= url_for(theme.author.avatar) %>" alt="<%= config.author %>" class="h-20 w-20 rounded-full mb-4 object-cover">
+        <% } else { %>
+        <div class="h-20 w-20 rounded-full bg-muted flex items-center justify-center mb-4">
+          <span class="text-2xl font-bold"><%= config.author.charAt(0) %></span>
+        </div>
+        <% } %>
+        <h3 class="text-lg font-semibold"><%= config.author %></h3>
+        <% if (theme.author && theme.author.description) { %>
+        <p class="text-sm text-muted-foreground mt-2"><%= theme.author.description %></p>
+        <% } else if (config.description) { %>
+        <p class="text-sm text-muted-foreground mt-2"><%= config.description %></p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <% } %>
+
+  <%# Categories %>
+  <% if ((!theme.sidebar || theme.sidebar.showCategories !== false) && site.categories.length > 0) { %>
+  <div class="rounded-xl border bg-card text-card-foreground shadow">
+    <div class="p-4 pb-3">
+      <h4 class="text-base font-semibold">分类</h4>
+    </div>
+    <div class="p-4 pt-0">
+      <ul class="space-y-2">
+        <% site.categories.sort('name').each(function(category) { %>
+        <li>
+          <a href="<%= url_for(category.path) %>" class="flex items-center justify-between text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <span><%= category.name %></span>
+            <span class="text-xs">(<%= category.posts.length %>)</span>
+          </a>
+        </li>
+        <% }); %>
+      </ul>
+    </div>
+  </div>
+  <% } %>
+
+  <%# Tags %>
+  <% if ((!theme.sidebar || theme.sidebar.showTags !== false) && site.tags.length > 0) { %>
+  <div class="rounded-xl border bg-card text-card-foreground shadow">
+    <div class="p-4 pb-3">
+      <h4 class="text-base font-semibold">标签</h4>
+    </div>
+    <div class="p-4 pt-0">
+      <div class="flex flex-wrap gap-2">
+        <% site.tags.sort('name').each(function(tag) { %>
+        <a href="<%= url_for(tag.path) %>" class="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors hover:bg-accent">
+          <%= tag.name %>
+        </a>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+  <% } %>
+
+  <%# Recent Posts %>
+  <% if (!theme.sidebar || theme.sidebar.showRecent !== false) { %>
+  <% var recentCount = (theme.sidebar && theme.sidebar.recentPostsCount) || 5; %>
+  <div class="rounded-xl border bg-card text-card-foreground shadow">
+    <div class="p-4 pb-3">
+      <h4 class="text-base font-semibold">最新文章</h4>
+    </div>
+    <div class="p-4 pt-0">
+      <ul class="space-y-3">
+        <% site.posts.sort('-date').limit(recentCount).each(function(post) { %>
+        <li>
+          <a href="<%= url_for(post.path) %>" class="text-sm text-muted-foreground hover:text-foreground transition-colors line-clamp-2">
+            <%= post.title %>
+          </a>
+        </li>
+        <% }); %>
+      </ul>
+    </div>
+  </div>
+  <% } %>
+
+</aside>

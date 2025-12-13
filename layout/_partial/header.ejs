@@ -1,0 +1,85 @@
+<header class="sticky top-0 z-50 w-full border-b bg-background">
+  <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div class="flex h-14 items-center justify-between">
+      <%# Logo %>
+      <a href="<%= url_for('/') %>" class="flex items-center space-x-2">
+        <% if (theme.logo) { %>
+        <img src="<%= url_for(theme.logo) %>" alt="<%= config.title %>" class="h-8 w-8 rounded-full object-cover">
+        <% } else { %>
+        <span class="text-xl font-bold"><%= config.title %></span>
+        <% } %>
+        <% if (theme.header_title) { %>
+        <span class="text-lg font-semibold"><%= theme.header_title %></span>
+        <% } %>
+      </a>
+
+      <%# Desktop Navigation %>
+      <nav class="hidden md:flex items-center space-x-6">
+        <% if (theme.menu) { %>
+          <% for (var key in theme.menu) { %>
+            <%# 检查是否是友链菜单项，如果 links.enable 为 false 则不显示 %>
+            <% var menuPath = theme.menu[key]; %>
+            <% var isLinksMenu = menuPath === '/links/' || menuPath === '/links'; %>
+            <% var linksEnabled = !theme.links || theme.links.enable !== false; %>
+            <% if (!isLinksMenu || linksEnabled) { %>
+            <a href="<%= url_for(menuPath) %>" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+              <%= key %>
+            </a>
+            <% } %>
+          <% } %>
+        <% } %>
+      </nav>
+
+      <%# Right Actions %>
+      <div class="flex items-center space-x-2">
+        <%# Search Button - Coss UI ghost button style %>
+        <button type="button" class="inline-flex items-center justify-center size-8 rounded-md text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] cursor-pointer" id="search-toggle" aria-label="搜索">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+        </button>
+
+        <%# Theme Toggle - Coss UI ghost button style %>
+        <button type="button" class="inline-flex items-center justify-center size-8 rounded-md text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] cursor-pointer" id="theme-toggle" aria-label="切换主题">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+            <path d="M12 3l0 18" />
+            <path d="M12 9l4.65 -4.65" />
+            <path d="M12 14.3l7.37 -7.37" />
+            <path d="M12 19.6l8.85 -8.85" />
+          </svg>
+        </button>
+
+        <%# Mobile Menu Toggle - Coss UI ghost button style %>
+        <button type="button" class="inline-flex md:hidden items-center justify-center size-8 rounded-md text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] cursor-pointer" id="mobile-menu-toggle" aria-label="打开菜单">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" x2="20" y1="12" y2="12"></line>
+            <line x1="4" x2="20" y1="6" y2="6"></line>
+            <line x1="4" x2="20" y1="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <%# Mobile Menu %>
+  <div class="hidden md:hidden border-t" id="mobile-menu">
+    <nav class="flex flex-col space-y-2 p-4">
+      <% if (theme.menu) { %>
+        <% for (var key in theme.menu) { %>
+          <%# 检查是否是友链菜单项，如果 links.enable 为 false 则不显示 %>
+          <% var menuPath = theme.menu[key]; %>
+          <% var isLinksMenu = menuPath === '/links/' || menuPath === '/links'; %>
+          <% var linksEnabled = !theme.links || theme.links.enable !== false; %>
+          <% if (!isLinksMenu || linksEnabled) { %>
+          <a href="<%= url_for(menuPath) %>" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground py-2">
+            <%= key %>
+          </a>
+          <% } %>
+        <% } %>
+      <% } %>
+    </nav>
+  </div>
+</header>

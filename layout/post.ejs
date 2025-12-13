@@ -1,0 +1,151 @@
+<div class="py-8">
+  <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col lg:flex-row gap-8">
+      <%# Main Content %>
+      <div class="flex-1 min-w-0">
+        <article class="rounded-xl border bg-card text-card-foreground shadow overflow-hidden">
+          <%# Cover Image %>
+          <% if (page.cover) { %>
+          <div class="aspect-video overflow-hidden">
+            <img src="<%= page.cover %>" alt="<%= page.title %>" class="w-full h-full object-cover">
+          </div>
+          <% } %>
+
+          <div class="p-6 lg:p-8">
+            <%# Title - 靠左对齐 %>
+            <h1 class="text-3xl font-bold mb-4 text-left"><%= page.title %></h1>
+
+            <%# Meta Info %>
+            <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-6">
+              <span class="flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 2v4"></path>
+                  <path d="M16 2v4"></path>
+                  <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+                  <path d="M3 10h18"></path>
+                </svg>
+                <time datetime="<%= date_xml(page.date) %>"><%= date(page.date, 'YYYY年MM月DD日') %></time>
+              </span>
+
+              <% if (page.updated && page.updated.toISOString() !== page.date.toISOString()) { %>
+              <span class="flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>更新于 <%= date(page.updated, 'YYYY年MM月DD日') %></span>
+              </span>
+              <% } %>
+
+              <% if (page.categories && page.categories.length > 0) { %>
+              <span class="flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path>
+                </svg>
+                <% page.categories.each(function(cat, idx) { %>
+                  <a href="<%= url_for(cat.path) %>" class="hover:text-foreground"><%= cat.name %></a><% if (idx < page.categories.length - 1) { %>, <% } %>
+                <% }); %>
+              </span>
+              <% } %>
+            </div>
+
+            <%# Tags %>
+            <% if (page.tags && page.tags.length > 0) { %>
+            <div class="flex flex-wrap gap-2 mb-6">
+              <% page.tags.each(function(tag) { %>
+              <a href="<%= url_for(tag.path) %>" class="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors hover:bg-accent">
+                <%= tag.name %>
+              </a>
+              <% }); %>
+            </div>
+            <% } %>
+
+            <%# Content %>
+            <div class="prose prose-zinc dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-headings:font-semibold prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-code:before:content-none prose-code:after:content-none prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-muted prose-pre:border prose-img:rounded-lg prose-img:shadow-md prose-blockquote:border-l-primary prose-blockquote:bg-muted/50 prose-blockquote:py-1">
+              <%- page.content %>
+            </div>
+
+            <%# Copyright %>
+            <% if (page.copyright !== false && theme.copyright) { %>
+            <% var rawPermalink = config.url + '/' + page.path; %>
+            <div class="mt-8 p-4 bg-zinc-50 dark:bg-zinc-950 rounded-lg text-sm text-muted-foreground">
+              <p class="mb-2"><strong>本文作者：</strong><%= config.author %></p>
+              <p class="mb-2"><strong>本文链接：</strong><a href="<%= rawPermalink %>" class="text-primary hover:underline break-all"><%= rawPermalink %></a></p>
+              <p><strong>版权声明：</strong><%= theme.copyright.text || '本博客所有文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！' %></p>
+            </div>
+            <% } %>
+
+            <%# Post Navigation %>
+            <div class="mt-8 pt-8 border-t flex flex-col sm:flex-row justify-between gap-4">
+              <% if (page.prev) { %>
+              <a href="<%= url_for(page.prev.path) %>" class="flex-1 p-4 rounded-lg border hover:bg-accent transition-colors group">
+                <span class="text-xs text-muted-foreground mb-1 block">上一篇</span>
+                <span class="font-medium group-hover:text-primary transition-colors line-clamp-1"><%= page.prev.title %></span>
+              </a>
+              <% } else { %>
+              <div class="flex-1"></div>
+              <% } %>
+
+              <% if (page.next) { %>
+              <a href="<%= url_for(page.next.path) %>" class="flex-1 p-4 rounded-lg border hover:bg-accent transition-colors group text-right">
+                <span class="text-xs text-muted-foreground mb-1 block">下一篇</span>
+                <span class="font-medium group-hover:text-primary transition-colors line-clamp-1"><%= page.next.title %></span>
+              </a>
+              <% } else { %>
+              <div class="flex-1"></div>
+              <% } %>
+            </div>
+
+            <%# Comments %>
+            <%- partial('_partial/comment') %>
+          </div>
+        </article>
+      </div>
+
+      <%# Sidebar with TOC - only show if there's content %>
+      <%
+        var showAuthor = !theme.sidebar || theme.sidebar.showAuthor !== false;
+        var showCategories = (!theme.sidebar || theme.sidebar.showCategories !== false) && site.categories.length > 0;
+        var showTags = (!theme.sidebar || theme.sidebar.showTags !== false) && site.tags.length > 0;
+        var showRecent = !theme.sidebar || theme.sidebar.showRecent !== false;
+        var hasSidebarContent = showAuthor || showCategories || showTags || showRecent;
+        var hasToc = page.toc !== false && toc(page.content).length > 0;
+      %>
+      <% if (hasSidebarContent || hasToc) { %>
+      <div class="w-full lg:w-80 shrink-0">
+        <div class="lg:sticky lg:top-20 space-y-6">
+          <%# TOC %>
+          <% if (hasToc) { %>
+          <div class="rounded-xl border bg-card text-card-foreground shadow p-4">
+            <h4 class="font-semibold mb-4">目录</h4>
+            <nav class="text-sm">
+              <%- toc(page.content, {class: 'toc', list_number: false}) %>
+            </nav>
+          </div>
+          <% } %>
+
+          <% if (hasSidebarContent) { %>
+          <%- partial('_partial/sidebar') %>
+          <% } %>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<style>
+.toc-level-1 { margin-left: 0; }
+.toc-level-2 { margin-left: 1rem; }
+.toc-level-3 { margin-left: 2rem; }
+.toc-level-4 { margin-left: 3rem; }
+.toc-link {
+  display: block;
+  padding: 0.25rem 0;
+  color: var(--muted-foreground);
+  transition: color 0.2s;
+}
+.toc-link:hover {
+  color: var(--foreground);
+}
+</style>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="<%= config.language || 'zh-CN' %>">
+<head>
+  <%- partial('_partial/head') %>
+</head>
+<body class="min-h-screen flex flex-col bg-background text-foreground">
+  <%- partial('_partial/header') %>
+
+  <main class="flex-1">
+    <%- body %>
+  </main>
+
+  <%- partial('_partial/footer') %>
+
+  <%# Search Modal %>
+  <div id="search-modal" class="fixed inset-0 z-50 hidden flex items-start justify-center pt-[10vh] search-modal-overlay">
+    <div class="search-modal-content w-full max-w-[550px] mx-4 bg-background rounded-lg shadow-lg border">
+      <div class="px-4 pt-4 pb-2">
+        <div class="relative">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <input type="text" id="search-input" placeholder="搜索文章..." class="w-full pl-10 pr-10 py-2 bg-background border rounded-md focus:outline-none focus:ring-2 focus:ring-ring transition-shadow">
+          <button id="search-close" class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div id="search-results" class="max-h-[400px] overflow-y-auto">
+        <div class="px-4 py-8 text-center text-muted-foreground">输入关键词开始搜索</div>
+      </div>
+      <div class="px-4 py-3 border-t text-xs text-muted-foreground flex items-center justify-between">
+        <span>按 ESC 关闭</span>
+        <span>Ctrl+K 快捷搜索</span>
+      </div>
+    </div>
+  </div>
+
+  <%# Back to Top Button %>
+  <button id="back-to-top" class="fixed bottom-6 right-6 z-50 h-10 w-10 rounded-full shadow-lg border bg-background flex items-center justify-center opacity-0 pointer-events-none translate-y-4 transition-[transform,opacity] duration-300" aria-label="返回顶部">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m18 15-6-6-6 6"></path>
+    </svg>
+  </button>
+
+  <%- partial('_partial/scripts') %>
+</body>
+</html>

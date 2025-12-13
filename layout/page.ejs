@@ -1,0 +1,37 @@
+<div class="py-8">
+  <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col lg:flex-row gap-8">
+      <%# Main Content %>
+      <div class="flex-1 min-w-0">
+        <article class="rounded-xl border bg-card text-card-foreground shadow overflow-hidden">
+          <div class="p-6 lg:p-8">
+            <%# Title - 靠左对齐 %>
+            <h1 class="text-3xl font-bold mb-6 text-left"><%= page.title %></h1>
+
+            <%# Content %>
+            <div class="prose prose-zinc dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-headings:font-semibold prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-code:before:content-none prose-code:after:content-none prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-muted prose-pre:border prose-img:rounded-lg prose-img:shadow-md">
+              <%- page.content %>
+            </div>
+
+            <%# Comments %>
+            <%- partial('_partial/comment') %>
+          </div>
+        </article>
+      </div>
+
+      <%# Sidebar - only show if there's content %>
+      <%
+        var showAuthor = !theme.sidebar || theme.sidebar.showAuthor !== false;
+        var showCategories = (!theme.sidebar || theme.sidebar.showCategories !== false) && site.categories.length > 0;
+        var showTags = (!theme.sidebar || theme.sidebar.showTags !== false) && site.tags.length > 0;
+        var showRecent = !theme.sidebar || theme.sidebar.showRecent !== false;
+        var hasSidebarContent = showAuthor || showCategories || showTags || showRecent;
+      %>
+      <% if (hasSidebarContent) { %>
+      <div class="w-full lg:w-80 shrink-0">
+        <%- partial('_partial/sidebar') %>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</div>
