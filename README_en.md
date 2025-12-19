@@ -259,12 +259,11 @@ Supported types:
 
 ```markdown
 {% btn https://example.com Visit Website %}
-{% btn https://github.com View Source outline lg github %}
 {% btn /download Download Now primary lg download %}
 ```
 
 Parameters:
-- **Style**: `primary` (default), `secondary`, `outline`, `ghost`, `link`
+- **Style**: `primary` (default), `secondary`
 - **Size**: `sm` (small), `md` (default), `lg` (large)
 - **Icon**: `download`, `link`, `github`, `arrow-right`, `external`
 

@@ -23,7 +23,7 @@
         <%# Posts with Tag %>
         <div class="grid grid-cols-1 gap-6">
           <% page.posts.each(function(post) { %>
-          <article class="hoverable-card rounded-xl border bg-card text-card-foreground shadow overflow-hidden transition-shadow">
+          <article class="relative flex flex-col gap-6 rounded-2xl border bg-card bg-clip-padding text-card-foreground shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)] overflow-hidden transition-shadow">
             <% if (post.cover) { %>
             <a href="<%= url_for(post.path) %>" class="block">
               <div class="aspect-video overflow-hidden">
@@ -75,7 +75,7 @@
 
         <% } else { %>
         <%# All Tags (Tag Cloud) %>
-        <div class="rounded-xl border bg-card text-card-foreground shadow p-6">
+        <div class="relative flex flex-col gap-6 rounded-2xl border bg-card bg-clip-padding text-card-foreground shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)] p-6">
           <div class="flex flex-wrap gap-3">
             <%
             var tags = site.tags.sort('name');

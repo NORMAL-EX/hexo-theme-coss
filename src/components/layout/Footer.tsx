@@ -22,7 +22,7 @@ export function Footer({ copyright, powered = true, beian, social }: FooterProps
   return (
     <footer className="border-t bg-background">
       <Container>
-        <div className="flex flex-col items-center justify-between gap-4 py-6 md:flex-row">
+        <div className="flex flex-col items-center justify-between gap-4 py-6 md:flex-row" style={{ background: 'var(--card)' }}>
           <div className="flex flex-col items-center gap-2 md:items-start">
             <p className="text-sm text-muted-foreground">
               {copyright || `© ${currentYear} All rights reserved.`}

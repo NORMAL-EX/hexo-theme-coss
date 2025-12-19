@@ -77,7 +77,7 @@
         <% if (page.posts.length > 0) { %>
         <div class="grid grid-cols-1 gap-6">
           <% page.posts.each(function(post) { %>
-          <article class="hoverable-card rounded-xl border bg-card text-card-foreground shadow overflow-hidden">
+          <article class="relative flex flex-col gap-6 rounded-2xl border bg-card bg-clip-padding text-card-foreground shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)] overflow-hidden">
             <%# Cover Image %>
             <% if (post.cover) { %>
             <a href="<%= url_for(post.path) %>" class="block">
@@ -140,7 +140,7 @@
               <% if (post.tags && post.tags.length > 0) { %>
               <div class="flex flex-wrap gap-2">
                 <% post.tags.each(function(tag) { %>
-                <a href="<%= url_for(tag.path) %>" class="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors hover:bg-accent">
+                <a href="<%= url_for(tag.path) %>" class="relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-sm border border-transparent font-medium outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 [&_svg:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-3.5 sm:[&_svg:not([class*='size-'])]:size-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [button,a&]:cursor-pointer [button,a&]:pointer-coarse:after:absolute [button,a&]:pointer-coarse:after:size-full [button,a&]:pointer-coarse:after:min-h-11 [button,a&]:pointer-coarse:after:min-w-11 h-5.5 min-w-5.5 px-1 sm:h-4.5 sm:min-w-4.5 sm:text-xs bg-secondary text-secondary-foreground [button,a&]:hover:bg-secondary/90 text-xs cursor-pointer hover:bg-accent">
                   <%= tag.name %>
                 </a>
                 <% }); %>

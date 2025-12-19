@@ -9,7 +9,7 @@ export function PostContent({ content, className }: PostContentProps) {
   return (
     <article
       className={cn(
-        'prose prose-zinc dark:prose-invert max-w-none',
+        'prose prose-neutral dark:prose-invert max-w-none',
         'prose-headings:scroll-mt-20 prose-headings:font-semibold',
         'prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl',
         'prose-a:text-primary prose-a:no-underline hover:prose-a:underline',

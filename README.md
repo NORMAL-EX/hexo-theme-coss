@@ -259,12 +259,11 @@ copyright: true              # 是否显示版权声明
 
 ```markdown
 {% btn https://example.com 访问网站 %}
-{% btn https://github.com 查看源码 outline lg github %}
 {% btn /download 立即下载 primary lg download %}
 ```
 
 参数说明：
-- **样式**：`primary`（默认）、`secondary`、`outline`、`ghost`、`link`
+- **样式**：`primary`（默认）、`secondary`
 - **尺寸**：`sm`（小）、`md`（默认）、`lg`（大）
 - **图标**：`download`、`link`、`github`、`arrow-right`、`external`
 

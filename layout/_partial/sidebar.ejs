@@ -1,7 +1,7 @@
 <aside class="space-y-6">
   <%# Author Card %>
   <% if (!theme.sidebar || theme.sidebar.showAuthor !== false) { %>
-  <div class="rounded-xl border bg-card text-card-foreground shadow">
+  <div class="relative flex flex-col rounded-2xl border bg-card bg-clip-padding text-card-foreground shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)]">
     <div class="p-6">
       <div class="flex flex-col items-center text-center">
         <% if (theme.author && theme.author.avatar) { %>
@@ -24,7 +24,7 @@
 
   <%# Categories %>
   <% if ((!theme.sidebar || theme.sidebar.showCategories !== false) && site.categories.length > 0) { %>
-  <div class="rounded-xl border bg-card text-card-foreground shadow">
+  <div class="relative flex flex-col rounded-2xl border bg-card bg-clip-padding text-card-foreground shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)]">
     <div class="p-4 pb-3">
       <h4 class="text-base font-semibold">分类</h4>
     </div>
@@ -45,14 +45,14 @@
 
   <%# Tags %>
   <% if ((!theme.sidebar || theme.sidebar.showTags !== false) && site.tags.length > 0) { %>
-  <div class="rounded-xl border bg-card text-card-foreground shadow">
+  <div class="relative flex flex-col rounded-2xl border bg-card bg-clip-padding text-card-foreground shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)]">
     <div class="p-4 pb-3">
       <h4 class="text-base font-semibold">标签</h4>
     </div>
     <div class="p-4 pt-0">
       <div class="flex flex-wrap gap-2">
         <% site.tags.sort('name').each(function(tag) { %>
-        <a href="<%= url_for(tag.path) %>" class="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors hover:bg-accent">
+        <a href="<%= url_for(tag.path) %>" class="relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-sm border border-transparent font-medium outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 [&_svg:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-3.5 sm:[&_svg:not([class*='size-'])]:size-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [button,a&]:cursor-pointer [button,a&]:pointer-coarse:after:absolute [button,a&]:pointer-coarse:after:size-full [button,a&]:pointer-coarse:after:min-h-11 [button,a&]:pointer-coarse:after:min-w-11 h-5.5 min-w-5.5 px-1 sm:h-4.5 sm:min-w-4.5 sm:text-xs bg-secondary text-secondary-foreground [button,a&]:hover:bg-secondary/90 text-xs cursor-pointer hover:bg-accent">
           <%= tag.name %>
         </a>
         <% }); %>
@@ -64,7 +64,7 @@
   <%# Recent Posts %>
   <% if (!theme.sidebar || theme.sidebar.showRecent !== false) { %>
   <% var recentCount = (theme.sidebar && theme.sidebar.recentPostsCount) || 5; %>
-  <div class="rounded-xl border bg-card text-card-foreground shadow">
+  <div class="relative flex flex-col rounded-2xl border bg-card bg-clip-padding text-card-foreground shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)]">
     <div class="p-4 pb-3">
       <h4 class="text-base font-semibold">最新文章</h4>
     </div>

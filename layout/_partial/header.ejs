@@ -74,7 +74,7 @@
           <% var isLinksMenu = menuPath === '/links/' || menuPath === '/links'; %>
           <% var linksEnabled = !theme.links || theme.links.enable !== false; %>
           <% if (!isLinksMenu || linksEnabled) { %>
-          <a href="<%= url_for(menuPath) %>" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground py-2">
+          <a href="<%= url_for(menuPath) %>" class="text-lg font-medium text-muted-foreground transition-colors hover:text-foreground flex items-center py-2">
             <%= key %>
           </a>
           <% } %>

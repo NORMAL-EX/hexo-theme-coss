@@ -28,7 +28,7 @@
  *
  *    url: 链接地址
  *    text: 按钮文本
- *    variant: primary | secondary | outline | ghost | link (默认: primary)
+ *    variant: primary | secondary (默认: primary)
  *    size: sm | md | lg (默认: md)
  *    icon: 可选的图标名称
  *
@@ -118,6 +118,20 @@ hexo.extend.tag.register('alert', function(args, content) {
 }, { ends: true });
 
 // 注册按钮标签 - 使用 Coss UI Button 样式 (添加 CSS 类以支持 hover 效果)
+// 可自定义的按钮类：修改 `buttonVariantClasses.primary` 或 `buttonVariantClasses.secondary` 来覆盖样式
+const buttonVariantClasses = {
+  'primary': 'relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border bg-clip-padding font-medium text-sm outline-none transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 [&_svg:not([class*=\'size-\'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 h-9 px-3 border-border bg-background shadow-xs not-disabled:not-active:not-data-pressed:before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-input/32 dark:not-in-data-[slot=group]:bg-clip-border dark:not-disabled:before:shadow-[0_-1px_--theme(--color-white/4%)] dark:not-disabled:not-active:not-data-pressed:before:shadow-[0_-1px_--theme(--color-white/8%)] [&:is(:disabled,:active,[data-pressed])]:shadow-none [&:is(:hover,[data-pressed])]:bg-accent/50 dark:[&:is(:hover,[data-pressed])]:bg-input/64',
+  'secondary': 'relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border bg-clip-padding font-medium text-sm outline-none transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 [&_svg:not([class*=\'size-\'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 h-9 px-3 not-disabled:inset-shadow-[0_1px_--theme(--color-white/16%)] border-primary bg-primary text-primary-foreground shadow-primary/24 shadow-xs hover:bg-primary/90 [&:is(:active,[data-pressed])]:inset-shadow-[0_1px_--theme(--color-black/8%)] [&:is(:disabled,:active,[data-pressed])]:shadow-none'
+};
+
+const buttonSizeClasses = {
+  'xs': 'coss-btn-xs',
+  'sm': 'coss-btn-sm',
+  'md': 'coss-btn-md',
+  'lg': 'coss-btn-lg',
+  'xl': 'coss-btn-xl'
+};
+
 hexo.extend.tag.register('btn', function(args) {
   if (args.length < 2) {
     return '<span style="color: var(--destructive);">[错误] btn 标签需要至少 url 和 text 两个参数</span>';
@@ -129,7 +143,7 @@ hexo.extend.tag.register('btn', function(args) {
   const size = args[3] || 'md';
   const icon = args[4] || '';
 
-  const validVariants = ['primary', 'secondary', 'outline', 'ghost', 'link'];
+  const validVariants = ['primary', 'secondary'];
   const buttonVariant = validVariants.includes(variant) ? variant : 'primary';
 
   const validSizes = ['xs', 'sm', 'md', 'lg', 'xl'];
@@ -138,12 +152,16 @@ hexo.extend.tag.register('btn', function(args) {
   const iconHtml = lucideIcons[icon] ? `<span style="display: inline-flex; width: 1rem; height: 1rem;">${lucideIcons[icon]}</span>` : '';
 
   const isExternal = url.startsWith('http://') || url.startsWith('https://');
-  const target = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
+  const target = isExternal ? 'target="_blank"' : 'target="_self"';
 
-  // 使用 CSS 类来控制样式，这样可以支持 hover 效果
-  const btnClass = `coss-btn coss-btn-${buttonVariant} coss-btn-${buttonSize}`;
+  // 使用可配置的类名来控制样式，这样可以支持 hover 效果并允许用户自定义
+  const variantClass = buttonVariantClasses[buttonVariant] || buttonVariantClasses['primary'];
+  const btnClass = variantClass;
 
-  return `<a href="${url}" class="${btnClass}"${target}>${iconHtml}${text}</a>`;
+  // 使用 button 标签并通过 onclick 处理导航
+  const onclickHandler = `window.open('${url}', '${isExternal ? '_blank' : '_self'}')`;
+
+  return `<button class="${btnClass}" onclick="${onclickHandler}">${iconHtml}${text}</button>`;
 });
 
 // 注册简化的信息框标签（单行语法）- 使用 Coss UI Alert 样式
