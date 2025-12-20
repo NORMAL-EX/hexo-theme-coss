@@ -335,7 +335,7 @@
   margin: 1.5em 0;
   border-radius: 0.5rem;
   overflow: hidden;
-  border: 1px solid var(--border);
+    @apply relative border border-border rounded-lg bg-background bg-clip-padding shadow-xs transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] not-disabled:not-active:not-data-pressed:before:shadow-[0_1px_--theme(--color-black/4%)] active:shadow-none dark:bg-input/32 dark:bg-clip-border dark:not-disabled:before:shadow-[0_-1px_--theme(--color-white/4%)] dark:not-disabled:not-active:not-data-pressed:before:shadow-[0_-1px_--theme(--color-white/8%)]
 }
 
 .prose figure.highlight figcaption {
@@ -367,7 +367,7 @@
 }
 
 .prose figure.highlight table td.gutter {
-  width: 40px;
+  width: 25px;
   padding: 0.5em;
   background-color: var(--muted);
   text-align: right;
@@ -1176,4 +1176,8 @@ aside ::-webkit-scrollbar-thumb:hover,
   background: linear-gradient(to right, #3b82f6, #a855f7, #f97316);
   opacity: 0.16;
   mix-blend-mode: hard-light;
+}
+
+.prose table pre {
+  border: none !important;
 }

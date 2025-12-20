@@ -32,13 +32,6 @@ console.log(`╔═════════════════════�
     card.style.transitionDelay = 0.2 + index * 0.1 + 's';
   });
   
-  // 为友链卡片添加动画
-  var friendCards = document.querySelectorAll('.friend-card');
-  friendCards.forEach(function(card, index) {
-    card.classList.add('animate-on-scroll');
-    card.style.transitionDelay = (index % 6) * 0.08 + 's';
-  });
-  
   // 创建 Intersection Observer
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
