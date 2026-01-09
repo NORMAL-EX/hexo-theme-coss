@@ -31,18 +31,11 @@ A modern Hexo theme built with React + Tailwind CSS + Coss UI.
 
 ## Installation
 
-### Option 1: Git Clone
+### Git Clone
 
 ```bash
 cd your-hexo-blog
 git clone https://github.com/NORMAL-EX/hexo-theme-coss.git themes/coss
-```
-
-### Option 2: NPM Install
-
-```bash
-cd your-hexo-blog
-npm install hexo-theme-coss
 ```
 
 ## Configuration
