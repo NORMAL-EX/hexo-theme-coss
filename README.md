@@ -31,18 +31,11 @@
 
 ## 安装
 
-### 方式一：Git Clone
+### Git Clone
 
 ```bash
 cd your-hexo-blog
 git clone https://github.com/NORMAL-EX/hexo-theme-coss.git themes/coss
-```
-
-### 方式二：NPM 安装
-
-```bash
-cd your-hexo-blog
-npm install hexo-theme-coss
 ```
 
 ## 配置
