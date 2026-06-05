@@ -1,0 +1,82 @@
+<% if (theme.comments && theme.comments.provider && page.comments !== false) { %>
+<div class="mt-12 pt-8 border-t" id="comments">
+  <h3 class="text-xl font-semibold mb-6">评论</h3>
+
+  <% if (theme.comments.provider === 'disqus') { %>
+  <%# Disqus %>
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = '<%= page.permalink %>';
+      this.page.identifier = '<%= page.path %>';
+    };
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://<%= theme.comments.config.shortname %>.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+  <% } else if (theme.comments.provider === 'gitalk') { %>
+  <%# Gitalk %>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+  <div id="gitalk-container"></div>
+  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+  <script>
+    var gitalk = new Gitalk({
+      clientID: '<%= theme.comments.config.clientID %>',
+      clientSecret: '<%= theme.comments.config.clientSecret %>',
+      repo: '<%= theme.comments.config.repo %>',
+      owner: '<%= theme.comments.config.owner %>',
+      admin: ['<%= theme.comments.config.admin %>'],
+      id: '<%= page.path %>'.slice(0, 50),
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  </script>
+
+  <% } else if (theme.comments.provider === 'valine') { %>
+  <%# Valine %>
+  <div id="valine-container"></div>
+  <script src="https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+  <script>
+    new Valine({
+      el: '#valine-container',
+      appId: '<%= theme.comments.config.appId %>',
+      appKey: '<%= theme.comments.config.appKey %>',
+      placeholder: '<%= theme.comments.config.placeholder || "说点什么吧..." %>',
+      path: '<%= page.path %>',
+      avatar: '<%= theme.comments.config.avatar || "mp" %>'
+    });
+  </script>
+
+  <% } else if (theme.comments.provider === 'waline') { %>
+  <%# Waline %>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@2/dist/waline.css">
+  <div id="waline-container"></div>
+  <script type="module">
+    import { init } from 'https://cdn.jsdelivr.net/npm/@waline/client@2/dist/waline.mjs';
+    init({
+      el: '#waline-container',
+      serverURL: '<%= theme.comments.config.serverURL %>',
+      path: '<%= page.path %>'
+    });
+  </script>
+
+  <% } else if (theme.comments.provider === 'twikoo') { %>
+  <%# Twikoo %>
+  <div id="twikoo-container"></div>
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1/dist/twikoo.all.min.js"></script>
+  <script>
+    twikoo.init({
+      envId: '<%= theme.comments.config.envId %>',
+      el: '#twikoo-container',
+      path: '<%= page.path %>'
+    });
+  </script>
+
+  <% } %>
+</div>
+<% } %>

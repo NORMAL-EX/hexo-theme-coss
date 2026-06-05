@@ -1,0 +1,151 @@
+# Hexo Theme Coss Configuration
+# 主题配置文件
+
+# ========== 基本信息 ==========
+# 网站 Logo（可选）
+logo: https://pic1.imgdb.cn/item/68c540e658cb8da5c8a6934b.jpg
+
+# Header 标题（显示在头像右边，可选）
+header_title: dddffgg的小窝
+
+# 网站 Favicon
+favicon: https://pic1.imgdb.cn/item/6878bccf58cb8da5c8be8696.png
+
+# ========== 首页设置 ==========
+index:
+  title: "{{highlight}}dddffgg{{/highlight}} 的小窝"
+  subtitle: 分享技术、生活与思考
+
+# ========== 导航菜单 ==========
+# 友情链接页面可通过设置 links.enable 为 true 来启用
+menu:
+  首页: /
+  归档: /archives/
+  友链: /links/
+  关于: /about/
+
+# ========== 作者信息 ==========
+author:
+  avatar: https://pic1.imgdb.cn/item/68c540e658cb8da5c8a6934b.jpg
+  description: dddffgg
+
+# ========== 社交链接 ==========
+# 支持的图标: github, twitter, email, rss
+social:
+  - name: GitHub
+    url: https://github.com/NORMAL-EX/
+    icon: github
+  - name: Email
+    url: mailto:service@cloud-pe.cn
+    icon: email
+
+# ========== 友情链接页面设置 ==========
+# 友情链接页面配置
+# 启用后会在导航菜单中显示友链入口
+# 友链页面地址: /links/
+#
+# 使用方法:
+# 1. 在 source 目录下创建 links/index.md 文件
+# 2. 文件内容格式:
+#    ---
+#    title: 友情链接
+#    layout: links
+#    ---
+#
+#    这里可以写一些自定义内容，支持 Markdown 格式。
+#    这些内容会显示在友链卡片下方。
+#
+links:
+  # 是否启用友情链接页面
+  enable: true
+  # 页面副标题
+  subtitle: 感谢以下站点的友情支持
+  # 友情链接列表
+  list:
+    - name: Cloud-PE
+      url: https://cloud-pe.cn
+      avatar: https://p1.cloud-pe.cn/cloud-pe.svg
+      description: 一款实用的维护PE
+
+# ========== 侧边栏设置 ==========
+sidebar:
+  showAuthor: false
+  showCategories: false
+  showTags: false
+  showRecent: false
+  recentPostsCount: 5
+
+# ========== 页脚设置 ==========
+footer:
+  # 版权信息，支持 HTML
+  copyright:
+  # 是否显示 Powered by Hexo
+  powered: true
+  # 备案号（可选）
+  beian: 鲁ICP备2023028944号
+
+# ========== 版权声明 ==========
+copyright:
+  enable: false
+  text: 本博客所有文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！
+
+# ========== 评论系统 ==========
+# 支持: disqus, gitalk, valine, waline, twikoo
+comments:
+  # 评论服务提供商
+  provider: twikoo
+  # 配置项（根据不同提供商填写）
+  config:
+    # Twikoo
+    envId: https://twikoo.cloud-pe.cn
+
+# ========== 统计分析 ==========
+analytics:
+  # Google Analytics
+  google:
+  # 百度统计
+  baidu:
+
+# ========== 代码高亮 ==========
+# 使用 Hexo 内置的代码高亮
+highlight:
+  enable: true
+  line_number: true
+  auto_detect: false
+  tab_replace: ''
+  wrap: true
+  hljs: false
+
+# ========== 其他设置 ==========
+# 文章摘要字数限制
+excerpt_length: 200
+
+# 启用文章目录
+toc:
+  enable: true
+  max_depth: 3
+
+# ========== 自定义组件 ==========
+# 本主题支持在 Markdown 文件中使用自定义组件
+#
+# 1. 信息框 (Alert)
+#    支持 4 种类型: info(提示), success(成功), warning(警告), error(错误)
+#
+#    多行语法:
+#    {% alert info 提示标题 %}
+#    这里是信息框的内容，支持 **Markdown** 格式
+#    {% endalert %}
+#
+#    单行语法:
+#    {% note info 这是一条简短的提示信息 %}
+#
+# 2. 按钮 (Button)
+#    {% btn 链接地址 按钮文本 [样式] [尺寸] [图标] %}
+#
+#    样式: primary(默认), secondary
+#    尺寸: sm(小), md(默认), lg(大)
+#    图标: download, link, github, arrow-right, external
+#
+#    示例:
+#    {% btn https://example.com 访问网站 %}
+#    {% btn /download 立即下载 primary lg download %}

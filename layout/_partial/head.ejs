@@ -1,0 +1,71 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= page.title ? page.title + ' | ' + config.title : config.title %></title>
+
+<%# SEO Meta %>
+<meta name="description" content="<%= page.description || page.excerpt || config.description %>">
+<meta name="keywords" content="<%= page.keywords || (page.tags && page.tags.map(t => t.name).join(',')) || config.keywords || '' %>">
+<meta name="author" content="<%= config.author %>">
+
+<%# Open Graph %>
+<meta property="og:type" content="<%= is_post() ? 'article' : 'website' %>">
+<meta property="og:title" content="<%= page.title || config.title %>">
+<meta property="og:description" content="<%= page.description || page.excerpt || config.description %>">
+<meta property="og:url" content="<%= url %>">
+<meta property="og:site_name" content="<%= config.title %>">
+<% if (page.cover) { %>
+<meta property="og:image" content="<%= page.cover %>">
+<% } %>
+
+<%# Twitter Card %>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="<%= page.title || config.title %>">
+<meta name="twitter:description" content="<%= page.description || page.excerpt || config.description %>">
+<% if (page.cover) { %>
+<meta name="twitter:image" content="<%= page.cover %>">
+<% } %>
+
+<%# Favicon %>
+<link rel="icon" href="<%= url_for(theme.favicon || '/favicon.ico') %>">
+
+<%# RSS %>
+<% if (config.feed) { %>
+<link rel="alternate" type="application/rss+xml" title="<%= config.title %>" href="<%= url_for(config.feed.path) %>">
+<% } %>
+
+<%# Theme CSS %>
+<link rel="stylesheet" href="<%= url_for('/css/style.css') %>">
+
+<%# Google Analytics %>
+<% if (theme.analytics && theme.analytics.google) { %>
+<script async src="https://www.googletagmanager.com/gtag/js?id=<%= theme.analytics.google %>"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '<%= theme.analytics.google %>');
+</script>
+<% } %>
+
+<%# Baidu Analytics %>
+<% if (theme.analytics && theme.analytics.baidu) { %>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?<%= theme.analytics.baidu %>";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<% } %>
+
+<%# Theme initialization script %>
+<script>
+(function() {
+  var theme = localStorage.getItem('hexo-theme-mode');
+  if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark');
+  }
+})();
+</script>
