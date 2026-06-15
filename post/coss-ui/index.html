@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo · Theme Coss">
+<title>全面拥抱 Coss UI 组件体系 | dddffgg 的小窝</title>
+
+
+<meta name="description" content="一个基于 Hexo + Coss UI 的现代化博客主题演示站">
+<meta name="keywords" content="Coss UI,Tailwind CSS,前端">
+<meta name="author" content="dddffgg">
+
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="全面拥抱 Coss UI 组件体系">
+<meta property="og:description" content="一个基于 Hexo + Coss UI 的现代化博客主题演示站">
+<meta property="og:url" content="https://normal-ex.github.io/hexo-theme-coss/post/coss-ui/index.html">
+<meta property="og:site_name" content="dddffgg 的小窝">
+
+<meta property="og:image" content="https://picsum.photos/seed/coss-ui/1200/630">
+
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="全面拥抱 Coss UI 组件体系">
+<meta name="twitter:description" content="一个基于 Hexo + Coss UI 的现代化博客主题演示站">
+
+<meta name="twitter:image" content="https://picsum.photos/seed/coss-ui/1200/630">
+
+
+
+<link rel="icon" href="https://pic1.imgdb.cn/item/6878bccf58cb8da5c8be8696.png">
+
+
+
+
+
+<link rel="stylesheet" href="/hexo-theme-coss/css/style.css">
+
+
+
+
+
+
+
+
+<script>
+(function() {
+  var theme = localStorage.getItem('hexo-theme-mode') || 'system';
+  if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark');
+  }
+})();
+</script>
+
+</head>
+<body class="min-h-screen flex flex-col bg-background text-foreground antialiased selection:bg-primary/20">
+  
+  <div id="reading-progress" aria-hidden="true"></div>
+
+  
+<header class="sticky top-0 z-50 w-full border-b bg-background">
+  <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div class="flex h-14 items-center justify-between gap-4">
+      
+      <a href="/hexo-theme-coss/" class="flex items-center gap-2.5 shrink-0 group">
+        
+        <span class="hidden sm:inline-flex size-8 shrink-0 select-none items-center justify-center overflow-hidden rounded-full bg-background align-middle ring-1 ring-border transition-transform group-hover:scale-105" data-slot="avatar">
+          <img src="https://pic1.imgdb.cn/item/68c540e658cb8da5c8a6934b.jpg" alt="dddffgg 的小窝" class="size-full object-cover" data-slot="avatar-image">
+        </span>
+        
+        <span class="text-base sm:text-lg font-semibold tracking-tight">dddffgg的小窝</span>
+      </a>
+
+      
+      <nav class="hidden lg:flex items-center gap-1 flex-1 justify-center">
+        
+          
+            
+            
+            
+            
+              
+              <a href="/hexo-theme-coss/" class="inline-flex items-center h-8 px-3 rounded-md text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/60">首页</a>
+              
+            
+          
+            
+            
+            
+            
+              
+              <a href="/hexo-theme-coss/archives/" class="inline-flex items-center h-8 px-3 rounded-md text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/60">归档</a>
+              
+            
+          
+            
+            
+            
+            
+              
+              <a href="/hexo-theme-coss/links/" class="inline-flex items-center h-8 px-3 rounded-md text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/60">友链</a>
+              
+            
+          
+            
+            
+            
+            
+              
+              <a href="/hexo-theme-coss/about/" class="inline-flex items-center h-8 px-3 rounded-md text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/60">关于</a>
+              
+            
+          
+        
+      </nav>
+
+      
+      <div class="flex items-center gap-2 shrink-0">
+        
+        <button type="button" id="search-toggle" class="hidden md:inline-flex items-center gap-2 h-8 pl-2.5 pr-1.5 rounded-md border border-input bg-background bg-clip-padding text-sm text-muted-foreground shadow-xs transition-colors hover:bg-accent/50 dark:bg-input/32 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] cursor-pointer" aria-label="搜索">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <span class="pr-6">搜索文章</span>
+          <kbd class="pointer-events-none inline-flex h-5 min-w-5 select-none items-center justify-center gap-0.5 rounded bg-muted px-1 font-medium font-sans text-muted-foreground text-[0.625rem]" data-slot="kbd">Ctrl K</kbd>
+        </button>
+
+        
+        <button type="button" id="search-toggle-mobile" class="md:hidden [&amp;_svg]:-mx-0.5 relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border font-medium text-base outline-none transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background sm:text-sm [&amp;_svg:not([class*=&#39;opacity-&#39;])]:opacity-80 [&amp;_svg:not([class*=&#39;size-&#39;])]:size-4.5 sm:[&amp;_svg:not([class*=&#39;size-&#39;])]:size-4 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 size-9 sm:size-8 border-border bg-background bg-clip-padding shadow-xs not-disabled:not-active:not-data-pressed:before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-input/32 dark:not-in-data-[slot=group]:bg-clip-border dark:not-disabled:before:shadow-[0_-1px_--theme(--color-white/4%)] dark:not-disabled:not-active:not-data-pressed:before:shadow-[0_-1px_--theme(--color-white/8%)] [:hover,[data-pressed]]:bg-accent/50 dark:[:hover,[data-pressed]]:bg-input/64" aria-label="搜索">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+        </button>
+
+        
+        <div class="relative" id="theme-menu">
+          <button type="button" id="theme-trigger" aria-label="切换主题" aria-haspopup="menu" aria-expanded="false" class="[&amp;_svg]:-mx-0.5 relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border font-medium text-base outline-none transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background sm:text-sm [&amp;_svg:not([class*=&#39;opacity-&#39;])]:opacity-80 [&amp;_svg:not([class*=&#39;size-&#39;])]:size-4.5 sm:[&amp;_svg:not([class*=&#39;size-&#39;])]:size-4 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 size-9 sm:size-8 border-border bg-background bg-clip-padding shadow-xs not-disabled:not-active:not-data-pressed:before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-input/32 dark:not-in-data-[slot=group]:bg-clip-border dark:not-disabled:before:shadow-[0_-1px_--theme(--color-white/4%)] dark:not-disabled:not-active:not-data-pressed:before:shadow-[0_-1px_--theme(--color-white/8%)] [:hover,[data-pressed]]:bg-accent/50 dark:[:hover,[data-pressed]]:bg-input/64">
+            <svg class="theme-icon-light hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path>
+            </svg>
+            <svg class="theme-icon-dark hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </svg>
+            <svg class="theme-icon-system hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+              <path d="M12 3l0 18"></path><path d="M12 9l4.65 -4.65"></path><path d="M12 14.3l7.37 -7.37"></path><path d="M12 19.6l8.85 -8.85"></path>
+            </svg>
+          </button>
+
+          <div id="theme-popup" class="theme-popup closed absolute right-0 top-full mt-2 z-50 min-w-[150px] rounded-lg border bg-popover bg-clip-padding shadow-lg outline-none before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)]" role="menu" aria-label="主题选择">
+            <div class="p-1">
+              <button type="button" data-theme="light" role="menuitemradio" class="theme-option [&_svg]:-mx-0.5 flex min-h-8 w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1 text-base outline-none hover:bg-accent hover:text-accent-foreground sm:min-h-7 sm:text-sm [&_svg:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                浅色模式
+                <svg class="theme-check ml-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+              </button>
+              <button type="button" data-theme="dark" role="menuitemradio" class="theme-option [&_svg]:-mx-0.5 flex min-h-8 w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1 text-base outline-none hover:bg-accent hover:text-accent-foreground sm:min-h-7 sm:text-sm [&_svg:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+                深色模式
+                <svg class="theme-check ml-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+              </button>
+              <button type="button" data-theme="system" role="menuitemradio" class="theme-option [&_svg]:-mx-0.5 flex min-h-8 w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1 text-base outline-none hover:bg-accent hover:text-accent-foreground sm:min-h-7 sm:text-sm [&_svg:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path><path d="M12 3l0 18"></path><path d="M12 9l4.65 -4.65"></path><path d="M12 14.3l7.37 -7.37"></path><path d="M12 19.6l8.85 -8.85"></path></svg>
+                跟随系统
+                <svg class="theme-check ml-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        
+        <button type="button" class="lg:hidden [&amp;_svg]:-mx-0.5 relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border font-medium text-base outline-none transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background sm:text-sm [&amp;_svg:not([class*=&#39;opacity-&#39;])]:opacity-80 [&amp;_svg:not([class*=&#39;size-&#39;])]:size-4.5 sm:[&amp;_svg:not([class*=&#39;size-&#39;])]:size-4 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 size-9 sm:size-8 border-border bg-background bg-clip-padding shadow-xs not-disabled:not-active:not-data-pressed:before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-input/32 dark:not-in-data-[slot=group]:bg-clip-border dark:not-disabled:before:shadow-[0_-1px_--theme(--color-white/4%)] dark:not-disabled:not-active:not-data-pressed:before:shadow-[0_-1px_--theme(--color-white/8%)] [:hover,[data-pressed]]:bg-accent/50 dark:[:hover,[data-pressed]]:bg-input/64" id="mobile-menu-toggle" aria-label="打开菜单">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" x2="20" y1="12" y2="12"></line>
+            <line x1="4" x2="20" y1="6" y2="6"></line>
+            <line x1="4" x2="20" y1="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="hidden lg:hidden border-t bg-background" id="mobile-menu">
+    <nav class="flex flex-col space-y-1 p-4">
+      
+        
+          
+          
+          
+          
+            
+            <a href="/hexo-theme-coss/" class="flex items-center py-2.5 px-3 rounded-md text-base font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/60">首页</a>
+            
+          
+        
+          
+          
+          
+          
+            
+            <a href="/hexo-theme-coss/archives/" class="flex items-center py-2.5 px-3 rounded-md text-base font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/60">归档</a>
+            
+          
+        
+          
+          
+          
+          
+            
+            <a href="/hexo-theme-coss/links/" class="flex items-center py-2.5 px-3 rounded-md text-base font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/60">友链</a>
+            
+          
+        
+          
+          
+          
+          
+            
+            <a href="/hexo-theme-coss/about/" class="flex items-center py-2.5 px-3 rounded-md text-base font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/60">关于</a>
+            
+          
+        
+      
+    </nav>
+  </div>
+</header>
+
+
+  <main class="flex-1">
+    
+<div class="py-8">
+  <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col lg:flex-row gap-8">
+      
+      <div class="flex-1 min-w-0">
+        
+        <nav aria-label="breadcrumb" data-slot="breadcrumb" class="mb-6 flex w-fit max-w-full rounded-lg border bg-card bg-clip-padding px-3 py-2 shadow-xs">
+          <ol class="wrap-break-word flex flex-wrap items-center gap-1.5 text-muted-foreground text-sm sm:gap-2.5" data-slot="breadcrumb-list">
+            <li class="inline-flex items-center gap-1.5" data-slot="breadcrumb-item">
+              <a href="/hexo-theme-coss/" class="transition-colors hover:text-foreground" data-slot="breadcrumb-link">首页</a>
+            </li>
+            
+            <li class="opacity-80 [&>svg]:size-4" data-slot="breadcrumb-separator" role="presentation" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+            </li>
+            <li class="inline-flex items-center gap-1.5" data-slot="breadcrumb-item">
+              <a href="/hexo-theme-coss/categories/%E6%8A%80%E6%9C%AF/" class="transition-colors hover:text-foreground" data-slot="breadcrumb-link">技术</a>
+            </li>
+            
+            <li class="opacity-80 [&>svg]:size-4" data-slot="breadcrumb-separator" role="presentation" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+            </li>
+            <li class="inline-flex items-center gap-1.5 min-w-0" data-slot="breadcrumb-item">
+              <span class="font-normal text-foreground line-clamp-1" data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page">全面拥抱 Coss UI 组件体系</span>
+            </li>
+          </ol>
+        </nav>
+
+        <article class="relative flex flex-col rounded-2xl border bg-card bg-clip-padding text-card-foreground shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)] overflow-hidden">
+          
+          
+          <div class="aspect-video overflow-hidden">
+            <img src="https://picsum.photos/seed/coss-ui/1200/630" alt="全面拥抱 Coss UI 组件体系" class="w-full h-full object-cover no-zoom">
+          </div>
+          
+
+          <div class="p-6 lg:p-8">
+            
+            <h1 class="text-3xl sm:text-4xl font-bold mb-4 text-left tracking-tight leading-tight">全面拥抱 Coss UI 组件体系</h1>
+
+            
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground mb-6">
+              <span class="post-stat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
+                <time datetime="2026-05-20T06:30:00.000Z">2026年05月20日</time>
+              </span>
+
+              
+              <span class="post-stat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
+                更新于 2026年06月15日
+              </span>
+              
+
+              
+              <span class="post-stat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+                <a href="/hexo-theme-coss/categories/%E6%8A%80%E6%9C%AF/" class="hover:text-foreground transition-colors">技术</a>
+              </span>
+              
+
+              
+              <span class="post-stat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"></path><path d="M9 20h6"></path><path d="M12 4v16"></path></svg>
+                592 字
+              </span>
+              <span class="post-stat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                约 2 分钟
+              </span>
+              
+            </div>
+
+            
+            
+            <div class="flex flex-wrap gap-2 mb-6">
+              
+              <a href="/hexo-theme-coss/tags/Coss-UI/" class="relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-sm border border-transparent font-medium outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background [&_svg:not([class*='size-'])]:size-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [button,a&]:cursor-pointer h-5.5 min-w-5.5 px-1.5 text-xs sm:h-4.5 sm:text-[0.625rem] bg-secondary text-secondary-foreground [button,a&]:hover:bg-secondary/90" data-slot="badge">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+                Coss UI
+              </a>
+              
+              <a href="/hexo-theme-coss/tags/Tailwind-CSS/" class="relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-sm border border-transparent font-medium outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background [&_svg:not([class*='size-'])]:size-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [button,a&]:cursor-pointer h-5.5 min-w-5.5 px-1.5 text-xs sm:h-4.5 sm:text-[0.625rem] bg-secondary text-secondary-foreground [button,a&]:hover:bg-secondary/90" data-slot="badge">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+                Tailwind CSS
+              </a>
+              
+              <a href="/hexo-theme-coss/tags/%E5%89%8D%E7%AB%AF/" class="relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-sm border border-transparent font-medium outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background [&_svg:not([class*='size-'])]:size-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [button,a&]:cursor-pointer h-5.5 min-w-5.5 px-1.5 text-xs sm:h-4.5 sm:text-[0.625rem] bg-secondary text-secondary-foreground [button,a&]:hover:bg-secondary/90" data-slot="badge">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+                前端
+              </a>
+              
+            </div>
+            
+
+            
+            <div class="shrink-0 bg-border h-px w-full mb-8" data-slot="separator" role="none"></div>
+
+            
+            <div class="prose prose-neutral dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-headings:font-semibold prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-code:before:content-none prose-code:after:content-none prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-muted prose-pre:border prose-img:rounded-lg prose-img:shadow-md prose-blockquote:border-l-primary prose-blockquote:bg-muted/50 prose-blockquote:py-1">
+              <p>Coss UI 是一套基于 Base UI 的现代组件库，配合 Tailwind CSS v4，能用「填全 class」的方式精确复刻到任意模板里。</p>
+<h2 id="设计令牌"><a href="#设计令牌" class="headerlink" title="设计令牌"></a>设计令牌</h2><p>主题内置了完整的语义色：<code>primary</code>、<code>info</code>、<code>success</code>、<code>warning</code>、<code>destructive</code>，以及 <code>card</code>、<code>sidebar</code> 等。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-pseudo">:root</span> &#123;</span><br><span class="line">  <span class="attr">--primary</span>: <span class="built_in">var</span>(--color-neutral-<span class="number">800</span>);</span><br><span class="line">  <span class="attr">--info</span>: <span class="built_in">var</span>(--color-blue-<span class="number">500</span>);</span><br><span class="line">  <span class="attr">--success</span>: <span class="built_in">var</span>(--color-emerald-<span class="number">500</span>);</span><br><span class="line">  <span class="attr">--warning</span>: <span class="built_in">var</span>(--color-amber-<span class="number">500</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="组件示例"><a href="#组件示例" class="headerlink" title="组件示例"></a>组件示例</h2><div class="relative grid w-full items-start gap-x-2 gap-y-0.5 rounded-xl border px-3.5 py-3 text-card-foreground text-sm has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] has-[>svg]:gap-x-2 [&>svg]:h-lh [&>svg]:w-4 my-4 border-info/32 bg-info/4 [&>svg]:text-info" data-slot="alert" role="alert"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg><div class="flex flex-col gap-1.5 text-muted-foreground [svg~&]:col-start-2 [&_p]:m-0 [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4" data-slot="alert-description">侧边栏的分类计数使用了 Coss UI 的 Badge 组件</div></div>
+
+<p>常用组件：Button、Card、Badge、Avatar、Separator、Alert、Breadcrumb、Kbd、Empty、Skeleton……</p>
+<h2 id="深色模式"><a href="#深色模式" class="headerlink" title="深色模式"></a>深色模式</h2><p>所有颜色都通过 CSS 变量在 <code>.dark</code> 下重新定义，切换无闪烁。</p>
+
+            </div>
+
+            
+            
+
+            
+            <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              
+              <a href="/hexo-theme-coss/post/welcome/" class="post-card group relative flex items-center gap-3 rounded-xl border bg-card bg-clip-padding p-4 text-card-foreground shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-muted-foreground transition-transform group-hover:-translate-x-0.5 group-hover:text-primary"><path d="m15 18-6-6 6-6"></path></svg>
+                <div class="min-w-0">
+                  <div class="text-xs text-muted-foreground mb-0.5">上一篇</div>
+                  <div class="text-sm font-medium truncate group-hover:text-primary transition-colors">欢迎来到 Coss 主题演示站</div>
+                </div>
+              </a>
+              
+
+              
+              <a href="/hexo-theme-coss/post/markdown-guide/" class="post-card group relative flex items-center gap-3 rounded-xl border bg-card bg-clip-padding p-4 text-card-foreground shadow-xs sm:text-right before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)]">
+                <div class="min-w-0 sm:ml-auto order-2 sm:order-1">
+                  <div class="text-xs text-muted-foreground mb-0.5">下一篇</div>
+                  <div class="text-sm font-medium truncate group-hover:text-primary transition-colors">Markdown 写作完全指南</div>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 order-1 sm:order-2 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary"><path d="m9 18 6-6-6-6"></path></svg>
+              </a>
+              
+            </div>
+
+            
+            
+            <div class="mt-10">
+              <div class="flex items-center gap-2 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+                <h3 class="text-lg font-semibold">相关文章</h3>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                
+                <a href="/hexo-theme-coss/post/welcome/" class="post-card group relative flex flex-col rounded-xl border bg-card bg-clip-padding text-card-foreground shadow-xs overflow-hidden before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)]">
+                  
+                  <div class="aspect-video overflow-hidden cover-zoom">
+                    <img src="https://picsum.photos/seed/coss-welcome/1200/630" alt="欢迎来到 Coss 主题演示站" loading="lazy" class="w-full h-full object-cover">
+                  </div>
+                  
+                  <div class="p-4">
+                    <div class="text-sm font-medium line-clamp-2 group-hover:text-primary transition-colors">欢迎来到 Coss 主题演示站</div>
+                    <div class="text-xs text-muted-foreground mt-1.5 tabular-nums">2026-06-12</div>
+                  </div>
+                </a>
+                
+                <a href="/hexo-theme-coss/post/performance/" class="post-card group relative flex flex-col rounded-xl border bg-card bg-clip-padding text-card-foreground shadow-xs overflow-hidden before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)]">
+                  
+                  <div class="aspect-video overflow-hidden cover-zoom">
+                    <img src="https://picsum.photos/seed/coss-perf/1200/630" alt="用 Vite 构建极速主题" loading="lazy" class="w-full h-full object-cover">
+                  </div>
+                  
+                  <div class="p-4">
+                    <div class="text-sm font-medium line-clamp-2 group-hover:text-primary transition-colors">用 Vite 构建极速主题</div>
+                    <div class="text-xs text-muted-foreground mt-1.5 tabular-nums">2025-08-08</div>
+                  </div>
+                </a>
+                
+              </div>
+            </div>
+            
+
+            
+            
+<div class="mt-12 pt-8 border-t" id="comments">
+  <h3 class="text-xl font-semibold mb-6">评论</h3>
+
+  
+  
+  <div id="twikoo-container"></div>
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1/dist/twikoo.all.min.js"></script>
+  <script>
+    twikoo.init({
+      envId: 'https://twikoo.cloud-pe.cn',
+      el: '#twikoo-container',
+      path: 'post/coss-ui/'
+    });
+  </script>
+
+  
+</div>
+
+
+          </div>
+        </article>
+      </div>
+
+      
+      
+      
+      <div class="w-full lg:w-80 shrink-0">
+        <div class="lg:sticky lg:top-20 space-y-6">
+          
+          
+          <div class="relative hidden lg:flex flex-col rounded-2xl border bg-card bg-clip-padding text-card-foreground shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)] p-4">
+            <div class="flex items-center gap-2 mb-3 px-1">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground"><line x1="21" x2="3" y1="6" y2="6"></line><line x1="15" x2="3" y1="12" y2="12"></line><line x1="17" x2="3" y1="18" y2="18"></line></svg>
+              <h4 class="font-semibold">目录</h4>
+            </div>
+            <nav class="text-sm max-h-[calc(100vh-12rem)] overflow-y-auto">
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E4%BB%A4%E7%89%8C"><span class="toc-text">设计令牌</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E7%A4%BA%E4%BE%8B"><span class="toc-text">组件示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E8%89%B2%E6%A8%A1%E5%BC%8F"><span class="toc-text">深色模式</span></a></li></ol>
+            </nav>
+          </div>
+          
+
+          
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<style>
+  .toc ol, .toc ul { list-style: none; margin: 0; padding-left: 0; }
+  .toc .toc-child { padding-left: 0.75rem; }
+  .toc-level-1 { margin-left: 0; }
+  .toc-level-2 { margin-left: 0.75rem; }
+  .toc-level-3 { margin-left: 1.5rem; }
+  .toc-level-4 { margin-left: 2.25rem; }
+</style>
+
+  </main>
+
+  <footer class="border-t bg-card/40 mt-auto">
+  <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
+    <div class="flex flex-col items-center gap-5 text-center">
+      
+      
+      <div class="flex items-center gap-1">
+        
+          
+          <a href="https://github.com/NORMAL-EX/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center size-9 rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px]" title="GitHub" aria-label="GitHub">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+            
+          </a>
+        
+          
+          <a href="mailto:service@cloud-pe.cn" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center size-9 rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px]" title="Email" aria-label="Email">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+            
+          </a>
+        
+      </div>
+      
+
+      
+      <div class="w-full max-w-xs shrink-0 bg-border data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full" data-slot="separator" data-orientation="horizontal" role="none"></div>
+
+      
+      <div class="space-y-1.5">
+        <p class="text-sm text-muted-foreground">
+          
+            © 2026 dddffgg. All rights reserved.
+          
+        </p>
+
+        
+        <p>
+          <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg>
+            鲁ICP备2023028944号
+          </a>
+        </p>
+        
+
+        
+        <p class="text-xs text-muted-foreground">
+          Powered by
+          <a href="https://hexo.io" target="_blank" rel="noopener noreferrer" class="font-medium underline-offset-4 hover:underline hover:text-foreground transition-colors">Hexo</a>
+          &amp;
+          <a href="https://github.com/NORMAL-EX/hexo-theme-coss" target="_blank" rel="noopener noreferrer" class="font-medium underline-offset-4 hover:underline hover:text-foreground transition-colors">Theme Coss</a>
+        </p>
+        
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  
+  <div id="search-modal" class="fixed inset-0 z-50 hidden flex items-start justify-center pt-[10vh] search-modal-overlay">
+    <div class="search-modal-content w-full max-w-[560px] mx-4 bg-popover text-popover-foreground rounded-xl shadow-2xl border bg-clip-padding">
+      <div class="px-4 pt-4 pb-2">
+        <div class="relative">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <input type="text" id="search-input" placeholder="搜索文章..." autocomplete="off" class="w-full pl-10 pr-10 h-10 bg-background border border-input rounded-md text-sm transition-shadow focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/24 focus-visible:border-ring dark:bg-input/32">
+          <button id="search-close" class="absolute right-2.5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center size-6 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer" aria-label="关闭搜索">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div id="search-results" class="max-h-[420px] overflow-y-auto">
+        <div class="px-4 py-10 text-center text-sm text-muted-foreground">输入关键词开始搜索</div>
+      </div>
+      <div class="px-4 py-3 border-t text-xs text-muted-foreground flex items-center justify-between gap-2">
+        <span class="inline-flex items-center gap-1.5">
+          <kbd class="pointer-events-none inline-flex h-5 min-w-5 select-none items-center justify-center gap-1 rounded bg-muted px-1 font-medium font-sans text-muted-foreground text-xs [&_svg:not([class*='size-'])]:size-3" data-slot="kbd"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 10 4 15 9 20"></polyline><path d="M20 4v7a4 4 0 0 1-4 4H4"></path></svg></kbd>
+          打开
+        </span>
+        <span class="inline-flex items-center gap-1.5">
+          <kbd class="pointer-events-none inline-flex h-5 min-w-5 select-none items-center justify-center gap-1 rounded bg-muted px-1 font-medium font-sans text-muted-foreground text-xs [&_svg:not([class*='size-'])]:size-3" data-slot="kbd">Esc</kbd>
+          关闭
+        </span>
+        <span class="inline-flex items-center gap-1.5">
+          <kbd class="pointer-events-none inline-flex h-5 min-w-5 select-none items-center justify-center gap-1 rounded bg-muted px-1 font-medium font-sans text-muted-foreground text-xs [&_svg:not([class*='size-'])]:size-3" data-slot="kbd">Ctrl</kbd>
+          <kbd class="pointer-events-none inline-flex h-5 min-w-5 select-none items-center justify-center gap-1 rounded bg-muted px-1 font-medium font-sans text-muted-foreground text-xs [&_svg:not([class*='size-'])]:size-3" data-slot="kbd">K</kbd>
+          搜索
+        </span>
+      </div>
+    </div>
+  </div>
+
+  
+  <button id="back-to-top" class="fixed bottom-6 right-6 z-50 inline-flex items-center justify-center size-10 rounded-full border border-border bg-card text-muted-foreground shadow-lg opacity-0 pointer-events-none translate-y-4 transition-[transform,opacity,background-color,color] duration-300 hover:bg-accent hover:text-foreground outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] cursor-pointer" aria-label="返回顶部">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m18 15-6-6-6 6"></path>
+    </svg>
+  </button>
+
+  
+  <div id="lightbox" aria-hidden="true">
+    <button id="lightbox-close" class="cursor-pointer" aria-label="关闭图片">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6 6 18"></path>
+        <path d="m6 6 12 12"></path>
+      </svg>
+    </button>
+    <img id="lightbox-img" src="" alt="">
+  </div>
+
+  
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  
+<script>
+(function() {
+console.log(`╔═══════════════════════════════════════════════════════════╗
+║                     Hexo-Theme-Coss                       ║
+╠═══════════════════════════════════════════════════════════╣
+║  Copyright                                                ║
+║    © 2025-present NORMAL-EX (dddffgg)                     ║
+║    © 2025-present Cloud-PE Dev                            ║
+║                                                           ║
+║  Repository                                               ║
+║    https://github.com/NORMAL-EX/hexo-theme-coss           ║
+║                                                           ║
+║  License: MIT                                             ║
+║  Stack: Hexo + Tailwind CSS + Coss UI                     ║
+╚═══════════════════════════════════════════════════════════╝
+`);
+})();
+</script>
+
+
+<script>
+(function() {
+  var icons = {
+    success: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>',
+    info: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>',
+    error: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m15 9-6 6"></path><path d="m9 9 6 6"></path></svg>'
+  };
+  window.cossToast = function(message, variant) {
+    variant = variant || 'success';
+    var container = document.getElementById('toast-container');
+    if (!container) return;
+    var toast = document.createElement('div');
+    toast.className = 'coss-toast';
+    toast.setAttribute('data-variant', variant);
+    toast.innerHTML = (icons[variant] || icons.info) + '<span>' + message + '</span>';
+    container.appendChild(toast);
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() { toast.classList.add('show'); });
+    });
+    setTimeout(function() {
+      toast.classList.remove('show');
+      setTimeout(function() { toast.remove(); }, 300);
+    }, 2200);
+  };
+})();
+</script>
+
+
+<script>
+(function() {
+  var html = document.documentElement;
+  var STORAGE_KEY = 'hexo-theme-mode';
+  var menu = document.getElementById('theme-menu');
+  var trigger = document.getElementById('theme-trigger');
+  var popup = document.getElementById('theme-popup');
+  var options = popup ? popup.querySelectorAll('.theme-option') : [];
+
+  function getTheme() { return localStorage.getItem(STORAGE_KEY) || 'system'; }
+  function systemDark() { return window.matchMedia('(prefers-color-scheme: dark)').matches; }
+
+  function applyTheme(theme) {
+    if (theme === 'dark' || (theme === 'system' && systemDark())) html.classList.add('dark');
+    else html.classList.remove('dark');
+  }
+
+  function updateTrigger(theme) {
+    if (!trigger) return;
+    var l = trigger.querySelector('.theme-icon-light');
+    var d = trigger.querySelector('.theme-icon-dark');
+    var s = trigger.querySelector('.theme-icon-system');
+    [l, d, s].forEach(function(el) { if (el) el.classList.add('hidden'); });
+    var active = theme === 'light' ? l : theme === 'dark' ? d : s;
+    if (active) active.classList.remove('hidden');
+    var labels = { light: '浅色模式', dark: '深色模式', system: '跟随系统' };
+    trigger.setAttribute('title', '主题：' + (labels[theme] || '跟随系统'));
+  }
+
+  function updateChecks(theme) {
+    options.forEach(function(opt) {
+      var chk = opt.querySelector('.theme-check');
+      var on = opt.getAttribute('data-theme') === theme;
+      if (chk) chk.classList.toggle('hidden', !on);
+      opt.setAttribute('aria-checked', on ? 'true' : 'false');
+    });
+  }
+
+  function setTheme(theme) {
+    localStorage.setItem(STORAGE_KEY, theme);
+    applyTheme(theme);
+    updateTrigger(theme);
+    updateChecks(theme);
+  }
+
+  function openMenu() { if (popup) { popup.classList.remove('closed'); if (trigger) trigger.setAttribute('aria-expanded', 'true'); } }
+  function closeMenu() { if (popup) { popup.classList.add('closed'); if (trigger) trigger.setAttribute('aria-expanded', 'false'); } }
+
+  applyTheme(getTheme());
+  updateTrigger(getTheme());
+  updateChecks(getTheme());
+
+  if (trigger) trigger.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (popup && popup.classList.contains('closed')) openMenu(); else closeMenu();
+  });
+  options.forEach(function(opt) {
+    opt.addEventListener('click', function() { setTheme(opt.getAttribute('data-theme')); closeMenu(); });
+  });
+  document.addEventListener('click', function(e) { if (menu && !menu.contains(e.target)) closeMenu(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMenu(); });
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+    if (getTheme() === 'system') applyTheme('system');
+  });
+})();
+</script>
+
+
+<script>
+(function() {
+  var mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+  var mobileMenu = document.getElementById('mobile-menu');
+  if (mobileMenuToggle && mobileMenu) {
+    mobileMenuToggle.addEventListener('click', function() {
+      mobileMenu.classList.toggle('hidden');
+    });
+  }
+})();
+</script>
+
+
+<script>
+(function() {
+  var searchToggles = [document.getElementById('search-toggle'), document.getElementById('search-toggle-mobile')].filter(Boolean);
+  var searchModal = document.getElementById('search-modal');
+  var searchClose = document.getElementById('search-close');
+  var searchInput = document.getElementById('search-input');
+  var searchResults = document.getElementById('search-results');
+  var searchData = [];
+
+  fetch('/hexo-theme-coss/search.json')
+    .then(function(r) { return r.json(); })
+    .then(function(data) { searchData = data; })
+    .catch(function() {});
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function(c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function openSearch() {
+    if (!searchModal) return;
+    searchModal.classList.remove('hidden');
+    searchModal.offsetHeight;
+    searchModal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    if (searchInput) setTimeout(function() { searchInput.focus(); }, 100);
+  }
+
+  function closeSearch() {
+    if (!searchModal) return;
+    searchModal.classList.remove('is-open');
+    document.body.style.overflow = '';
+    setTimeout(function() {
+      searchModal.classList.add('hidden');
+      if (searchInput) searchInput.value = '';
+      if (searchResults) searchResults.innerHTML = '<div class="px-4 py-10 text-center text-sm text-muted-foreground">输入关键词开始搜索</div>';
+    }, 300);
+  }
+
+  function performSearch(query) {
+    if (!searchResults) return;
+    if (!query.trim()) {
+      searchResults.innerHTML = '<div class="px-4 py-10 text-center text-sm text-muted-foreground">输入关键词开始搜索</div>';
+      return;
+    }
+    var lowerQuery = query.toLowerCase();
+    var results = searchData.filter(function(item) {
+      return item.title.toLowerCase().includes(lowerQuery) ||
+        (item.content && item.content.toLowerCase().includes(lowerQuery));
+    }).slice(0, 10);
+
+    if (results.length === 0) {
+      searchResults.innerHTML = '<div class="px-4 py-10 text-center text-sm text-muted-foreground">没有找到相关结果</div>';
+      return;
+    }
+
+    var html = '<ul class="px-2 py-2">';
+    results.forEach(function(item) {
+      html += '<li class="search-result-item"><a href="' + item.url + '" class="block px-3 py-2.5 rounded-lg hover:bg-accent transition-colors group">';
+      html += '<div class="flex items-center justify-between gap-2 mb-0.5">';
+      html += '<h4 class="font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1">' + escapeHtml(item.title) + '</h4>';
+      if (item.date) html += '<span class="text-xs text-muted-foreground shrink-0 tabular-nums">' + escapeHtml(item.date) + '</span>';
+      html += '</div>';
+      if (item.excerpt) html += '<p class="text-sm text-muted-foreground line-clamp-2">' + escapeHtml(item.excerpt) + '</p>';
+      html += '</a></li>';
+    });
+    html += '</ul>';
+    searchResults.innerHTML = html;
+  }
+
+  searchToggles.forEach(function(btn) { btn.addEventListener('click', openSearch); });
+  if (searchClose) searchClose.addEventListener('click', closeSearch);
+  if (searchModal) searchModal.addEventListener('click', function(e) { if (e.target === searchModal) closeSearch(); });
+  if (searchInput) {
+    var debounceTimer;
+    searchInput.addEventListener('input', function(e) {
+      clearTimeout(debounceTimer);
+      var val = e.target.value;
+      debounceTimer = setTimeout(function() { performSearch(val); }, 250);
+    });
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeSearch();
+    if (e.key === 'k' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); openSearch(); }
+  });
+})();
+</script>
+
+
+<script>
+(function() {
+  var bar = document.getElementById('reading-progress');
+  if (!bar) return;
+  var ticking = false;
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - doc.clientHeight;
+    var pct = max > 0 ? (doc.scrollTop || document.body.scrollTop) / max * 100 : 0;
+    bar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+    ticking = false;
+  }
+  function onScroll() {
+    if (!ticking) { window.requestAnimationFrame(update); ticking = true; }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  update();
+})();
+</script>
+
+
+<script>
+(function() {
+  var backToTop = document.getElementById('back-to-top');
+  if (!backToTop) return;
+  var scrollDown = document.getElementById('scroll-to-posts');
+
+  function show() {
+    backToTop.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+    backToTop.classList.add('opacity-100', 'translate-y-0');
+  }
+  function hide() {
+    backToTop.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+    backToTop.classList.remove('opacity-100', 'translate-y-0');
+  }
+
+  var ticking = false;
+  function update() {
+    var downVisible = scrollDown && scrollDown.getBoundingClientRect().bottom > 0;
+    if (!downVisible && window.scrollY > 200) show(); else hide();
+    ticking = false;
+  }
+  window.addEventListener('scroll', function() {
+    if (!ticking) { window.requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  update();
+
+  backToTop.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+})();
+</script>
+
+
+<script>
+(function() {
+  var scrollBtn = document.getElementById('scroll-to-posts');
+  var postsSection = document.getElementById('posts');
+  if (scrollBtn && postsSection) {
+    scrollBtn.addEventListener('click', function() {
+      var top = postsSection.getBoundingClientRect().top + window.scrollY - 16;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    });
+  }
+})();
+</script>
+
+
+<script>
+(function() {
+  var prose = document.querySelector('.prose');
+  if (!prose) return;
+
+  var headings = prose.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  headings.forEach(function(heading) {
+    if (!heading.id) {
+      var text = heading.textContent || '';
+      var id = text.trim().toLowerCase().replace(/[\s]+/g, '-').replace(/[^一-龥\w\-]/g, '');
+      if (id) heading.id = id;
+    }
+    if (!heading.id || heading.querySelector('.heading-anchor')) return;
+    var anchor = document.createElement('a');
+    anchor.className = 'heading-anchor';
+    anchor.href = '#' + heading.id;
+    anchor.textContent = '#';
+    anchor.setAttribute('aria-hidden', 'true');
+    anchor.title = '复制链接';
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      var top = heading.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+      history.pushState(null, null, '#' + encodeURIComponent(heading.id));
+      var url = window.location.href.split('#')[0] + '#' + encodeURIComponent(heading.id);
+      if (navigator.clipboard) navigator.clipboard.writeText(url).then(function() {
+        if (window.cossToast) window.cossToast('链接已复制', 'success');
+      }).catch(function() {});
+    });
+    heading.classList.add('heading-with-anchor');
+    heading.appendChild(anchor);
+  });
+
+  // TOC smooth scroll
+  var tocLinks = document.querySelectorAll('.toc-link');
+  tocLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var href = this.getAttribute('href') || '';
+      var targetId = href.startsWith('#') ? href.slice(1) : href;
+      try { targetId = decodeURIComponent(targetId); } catch (err) {}
+      var target = document.getElementById(targetId);
+      if (!target) {
+        var linkText = this.textContent.trim();
+        headings.forEach(function(h) { if (h.textContent.replace('#', '').trim() === linkText) target = h; });
+      }
+      if (target) {
+        var top = target.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+        history.pushState(null, null, '#' + encodeURIComponent(target.id));
+      }
+    });
+  });
+
+  // TOC scrollspy（基于滚动位置实时计算，跟手无延迟）
+  if (tocLinks.length && headings.length) {
+    var headingArr = Array.prototype.slice.call(headings);
+    function setActiveToc() {
+      var current = headingArr[0];
+      for (var i = 0; i < headingArr.length; i++) {
+        if (headingArr[i].getBoundingClientRect().top <= 100) current = headingArr[i];
+        else break;
+      }
+      var curId = current ? current.id : '';
+      tocLinks.forEach(function(link) {
+        var href = link.getAttribute('href') || '';
+        var linkId = href.startsWith('#') ? href.slice(1) : href;
+        try { linkId = decodeURIComponent(linkId); } catch (err) {}
+        link.classList.toggle('active', linkId === curId);
+      });
+    }
+    var tocTicking = false;
+    window.addEventListener('scroll', function() {
+      if (!tocTicking) { window.requestAnimationFrame(function() { setActiveToc(); tocTicking = false; }); tocTicking = true; }
+    }, { passive: true });
+    setActiveToc();
+  }
+
+  // 进入时根据 hash 定位
+  if (window.location.hash) {
+    setTimeout(function() {
+      var hash = window.location.hash.slice(1);
+      try { hash = decodeURIComponent(hash); } catch (err) {}
+      var target = document.getElementById(hash);
+      if (target) {
+        var top = target.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+      }
+    }, 120);
+  }
+})();
+</script>
+
+
+<script>
+(function() {
+  var copyIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>';
+  var checkIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>';
+
+  // Coss UI outline button（small），完整 class
+  var copyBtnCls = "code-copy-btn not-prose [&_svg]:-mx-0.5 relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-1 whitespace-nowrap rounded-md border font-medium text-xs outline-none transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-md)-1px)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background h-7 px-2 [&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background bg-clip-padding shadow-xs not-active:not-data-pressed:before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-input/32 dark:bg-clip-border dark:not-active:not-data-pressed:before:shadow-[0_-1px_--theme(--color-white/8%)] [:hover,[data-pressed]]:bg-accent/50 dark:[:hover,[data-pressed]]:bg-input/64";
+
+  function makeCopyBtn() {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = copyBtnCls;
+    btn.title = '复制代码';
+    btn.setAttribute('aria-label', '复制代码');
+    btn.innerHTML = copyIcon;
+    return btn;
+  }
+
+  function bindCopy(btn, getText) {
+    btn.addEventListener('click', function() {
+      if (btn.classList.contains('copied')) return;
+      var text = getText();
+      function done() {
+        btn.classList.add('copied');
+        btn.innerHTML = '<span>Copied!</span>';
+        setTimeout(function() { btn.classList.remove('copied'); btn.innerHTML = copyIcon; }, 2000);
+      }
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(done).catch(function() {});
+      else {
+        var ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) {}
+        ta.remove();
+      }
+    });
+  }
+
+  // Hexo 高亮代码块：顶部工具条放复制按钮
+  document.querySelectorAll('figure.highlight').forEach(function(fig) {
+    if (fig.dataset.enhanced) return;
+    fig.dataset.enhanced = '1';
+    fig.classList.add('not-prose');
+    var header = document.createElement('div');
+    header.className = 'code-header';
+    var btn = makeCopyBtn();
+    header.appendChild(btn);
+    fig.insertBefore(header, fig.firstChild);
+    bindCopy(btn, function() {
+      var codeCell = fig.querySelector('td.code, .code');
+      return (codeCell ? codeCell.innerText : fig.innerText).replace(/\n$/, '');
+    });
+  });
+
+  // 普通代码块 pre > code：浮动复制按钮
+  document.querySelectorAll('.prose pre').forEach(function(pre) {
+    if (pre.closest('figure.highlight') || pre.dataset.enhanced) return;
+    pre.dataset.enhanced = '1';
+    var code = pre.querySelector('code');
+    var wrapper = document.createElement('div');
+    wrapper.className = 'code-block-wrapper';
+    pre.parentNode.insertBefore(wrapper, pre);
+    wrapper.appendChild(pre);
+    var toolbar = document.createElement('div');
+    toolbar.className = 'code-toolbar';
+    var btn2 = makeCopyBtn();
+    toolbar.appendChild(btn2);
+    wrapper.appendChild(toolbar);
+    bindCopy(btn2, function() { return (code ? code.innerText : pre.innerText).replace(/\n$/, ''); });
+  });
+})();
+</script>
+
+
+<script>
+(function() {
+  var lightbox = document.getElementById('lightbox');
+  var lightboxImg = document.getElementById('lightbox-img');
+  var lightboxClose = document.getElementById('lightbox-close');
+  if (!lightbox || !lightboxImg) return;
+
+  function open(src, alt) {
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    setTimeout(function() { lightboxImg.src = ''; }, 300);
+  }
+
+  document.querySelectorAll('.prose img:not(.no-zoom)').forEach(function(img) {
+    img.addEventListener('click', function() { open(img.currentSrc || img.src, img.alt); });
+  });
+
+  lightbox.addEventListener('click', function(e) { if (e.target === lightbox || e.target === lightboxImg) close(); });
+  if (lightboxClose) lightboxClose.addEventListener('click', close);
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && lightbox.classList.contains('open')) close(); });
+})();
+</script>
+
+
+<script>
+(function() {
+  function setup(img) {
+    var holder = img.parentElement;
+    if (!holder || holder.dataset.skeletonReady) return;
+    holder.dataset.skeletonReady = '1';
+    holder.classList.add('img-skeleton');
+    img.classList.add('img-fade');
+    function reveal() {
+      img.classList.add('loaded');
+      holder.classList.remove('img-skeleton');
+    }
+    if (img.complete && img.naturalWidth > 0) reveal();
+    else { img.addEventListener('load', reveal); img.addEventListener('error', reveal); }
+  }
+  document.querySelectorAll('.aspect-video img, [data-slot="avatar-image"]').forEach(setup);
+})();
+</script>
+
+
+<script>
+(function() {
+  document.querySelectorAll('.prose table').forEach(function(table) {
+    if (table.closest('figure')) return;
+    var parent = table.parentNode;
+    if (parent && parent.classList && parent.classList.contains('table-wrapper')) return;
+    var wrapper = document.createElement('div');
+    wrapper.className = 'table-wrapper';
+    parent.insertBefore(wrapper, table);
+    wrapper.appendChild(table);
+  });
+})();
+</script>
+
+<style>
+/* 标题锚点链接样式（尾随、小号、悬停显示） */
+.heading-anchor {
+  font-weight: 400;
+  color: var(--muted-foreground);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.2s, color 0.2s;
+  margin-left: 0.4em;
+  font-size: 0.8em;
+  cursor: pointer;
+  user-select: none;
+}
+.heading-with-anchor:hover .heading-anchor { opacity: 0.6; }
+.heading-anchor:hover { color: var(--primary); opacity: 1 !important; }
+</style>
+
+</body>
+</html>
