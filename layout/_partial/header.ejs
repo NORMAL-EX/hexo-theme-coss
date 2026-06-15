@@ -46,8 +46,8 @@
 
       <%# Right Actions %>
       <div class="flex items-center gap-2 shrink-0">
-        <%# Search - Desktop(lg+): 仿输入框样式按钮 %>
-        <button type="button" id="search-toggle" class="hidden lg:inline-flex items-center gap-2 h-8 pl-2.5 pr-1.5 rounded-md border border-input bg-background bg-clip-padding text-sm text-muted-foreground shadow-xs transition-colors hover:bg-accent/50 dark:bg-input/32 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] cursor-pointer" aria-label="搜索">
+        <%# Search - 平板/电脑(md+): 仿输入框样式按钮 %>
+        <button type="button" id="search-toggle" class="hidden md:inline-flex items-center gap-2 h-8 pl-2.5 pr-1.5 rounded-md border border-input bg-background bg-clip-padding text-sm text-muted-foreground shadow-xs transition-colors hover:bg-accent/50 dark:bg-input/32 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] cursor-pointer" aria-label="搜索">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
             <path d="m21 21-4.3-4.3"></path>
@@ -56,8 +56,8 @@
           <kbd class="pointer-events-none inline-flex h-5 min-w-5 select-none items-center justify-center gap-0.5 rounded bg-muted px-1 font-medium font-sans text-muted-foreground text-[0.625rem]" data-slot="kbd">Ctrl K</kbd>
         </button>
 
-        <%# Search - 手机/平板: outline 图标按钮 %>
-        <button type="button" id="search-toggle-mobile" class="lg:hidden <%= outlineIconBtn %>" aria-label="搜索">
+        <%# Search - 仅手机: outline 图标按钮 %>
+        <button type="button" id="search-toggle-mobile" class="md:hidden <%= outlineIconBtn %>" aria-label="搜索">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
             <path d="m21 21-4.3-4.3"></path>

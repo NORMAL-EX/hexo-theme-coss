@@ -335,31 +335,41 @@
   user-select: none;
 }
 
-/* Hexo 代码块样式（figure 在 JS 中加 not-prose，避免 typography 干扰间距）*/
+/* Hexo 代码块样式：强制扁平化，铲除内层一切边框/圆角/背景，只保留 figure 外框 */
 .prose figure.highlight {
   position: relative;
   margin: 1.5em 0;
   overflow: hidden;
   line-height: 1.7;
-  @apply border border-border rounded-lg bg-background bg-clip-padding shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] not-disabled:not-active:not-data-pressed:before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-input/32 dark:bg-clip-border dark:not-disabled:not-active:not-data-pressed:before:shadow-[0_-1px_--theme(--color-white/8%)];
+  @apply border border-border rounded-lg bg-background bg-clip-padding shadow-xs dark:bg-input/32 dark:bg-clip-border;
+}
+
+.prose figure.highlight table,
+.prose figure.highlight tbody,
+.prose figure.highlight tr,
+.prose figure.highlight td,
+.prose figure.highlight pre,
+.prose figure.highlight code {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
 }
 
 .prose figure.highlight table {
-  margin: 0;
   width: 100%;
   border-collapse: collapse;
 }
 
 .prose figure.highlight td {
-  padding: 0;
-  border: none;
   vertical-align: top;
 }
 
 .prose figure.highlight td.gutter {
   width: 1px;
   white-space: nowrap;
-  padding: 0.85rem 0.7rem 0.85rem 1rem;
+  padding: 0.8rem 0.7rem 0.8rem 1rem !important;
   text-align: right;
   color: var(--muted-foreground);
   opacity: 0.5;
@@ -368,15 +378,11 @@
 
 .prose figure.highlight td.code {
   width: 100%;
-  padding: 0.85rem 1rem;
+  padding: 0.8rem 1rem !important;
 }
 
 .prose figure.highlight pre {
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  border: none;
-  border-radius: 0;
+  padding: 0 !important;
   font-size: 0.85em;
   line-height: 1.7;
 }
