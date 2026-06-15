@@ -504,10 +504,11 @@ console.log(`╔═════════════════════�
 })();
 </script>
 
-<%# Wrap tables with rounded frame %>
+<%# Wrap tables with rounded frame（跳过代码块 figure 内的布局表格）%>
 <script>
 (function() {
   document.querySelectorAll('.prose table').forEach(function(table) {
+    if (table.closest('figure')) return;
     var parent = table.parentNode;
     if (parent && parent.classList && parent.classList.contains('table-wrapper')) return;
     var wrapper = document.createElement('div');
