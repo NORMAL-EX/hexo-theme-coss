@@ -1,41 +1,25 @@
 /**
  * Hexo Theme Coss - Custom Tags
- * 自定义标签：信息框和按钮
- *
- * 使用 Coss UI 的 Alert 和 Button 样式
+ * 自定义标签：信息框和按钮（全面使用 Coss UI 组件样式，class 值完整）
  *
  * 使用方法：
  *
  * 1. 信息框 (Alert)
  *    {% alert type title %}
- *    内容文本
+ *    内容文本（支持 Markdown）
  *    {% endalert %}
  *
  *    type: info | success | warning | error
- *    title: 可选的标题
+ *    title: 可选标题
  *
- *    示例:
- *    {% alert info 提示 %}
- *    这是一条提示信息
- *    {% endalert %}
+ * 2. 单行信息框 (note)
+ *    {% note type 内容文本 %}
  *
- *    {% alert warning %}
- *    这是一条警告信息（无标题）
- *    {% endalert %}
- *
- * 2. 按钮 (Button)
+ * 3. 按钮 (Button)
  *    {% btn url text [variant] [size] [icon] %}
- *
- *    url: 链接地址
- *    text: 按钮文本
- *    variant: primary | secondary (默认: primary)
- *    size: sm | md | lg (默认: md)
- *    icon: 可选的图标名称
- *
- *    示例:
- *    {% btn https://example.com 点击访问 %}
- *    {% btn https://example.com 查看更多 secondary %}
- *    {% btn https://example.com 下载 primary lg %}
+ *    variant: primary(默认实心) | secondary | outline
+ *    size: xs | sm | md(默认) | lg | xl
+ *    icon: download | link | github | arrow-right | external
  */
 
 'use strict';
@@ -44,7 +28,7 @@
 const lucideIcons = {
   // Alert 图标
   'info': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>',
-  'success': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>',
+  'success': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>',
   'warning': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>',
   'error': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m15 9-6 6"></path><path d="m9 9 6 6"></path></svg>',
   // Button 图标
@@ -55,145 +39,81 @@ const lucideIcons = {
   'external': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>'
 };
 
-// Coss UI Alert variant 样式 (使用 CSS 变量)
-const alertVariantStyles = {
-  'info': 'border-color: color-mix(in srgb, var(--info) 32%, transparent); background-color: color-mix(in srgb, var(--info) 4%, transparent);',
-  'success': 'border-color: color-mix(in srgb, var(--success) 32%, transparent); background-color: color-mix(in srgb, var(--success) 4%, transparent);',
-  'warning': 'border-color: color-mix(in srgb, var(--warning) 32%, transparent); background-color: color-mix(in srgb, var(--warning) 4%, transparent);',
-  'error': 'border-color: color-mix(in srgb, var(--destructive) 32%, transparent); background-color: color-mix(in srgb, var(--destructive) 4%, transparent);'
+// Coss UI Alert 基础类 + 各 variant 类（完整 class 值，源自 ui/alert.tsx）
+const ALERT_BASE = "relative grid w-full items-start gap-x-2 gap-y-0.5 rounded-xl border px-3.5 py-3 text-card-foreground text-sm has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] has-[>svg]:gap-x-2 [&>svg]:h-lh [&>svg]:w-4 my-4";
+const ALERT_VARIANTS = {
+  'info': 'border-info/32 bg-info/4 [&>svg]:text-info',
+  'success': 'border-success/32 bg-success/4 [&>svg]:text-success',
+  'warning': 'border-warning/32 bg-warning/4 [&>svg]:text-warning',
+  'error': 'border-destructive/32 bg-destructive/4 [&>svg]:text-destructive'
 };
+const ALERT_TITLE = "font-medium [svg~&]:col-start-2";
+const ALERT_DESC = "flex flex-col gap-1.5 text-muted-foreground [svg~&]:col-start-2 [&_p]:m-0 [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4";
 
-// Alert 图标颜色
-const alertIconColors = {
-  'info': 'color: var(--info);',
-  'success': 'color: var(--success);',
-  'warning': 'color: var(--warning);',
-  'error': 'color: var(--destructive);'
-};
-
-// 注册信息框标签 - 使用 Coss UI Alert 样式
-hexo.extend.tag.register('alert', function(args, content) {
-  const type = args[0] || 'info';
-  const title = args.slice(1).join(' ') || '';
-
+function renderAlert(type, title, innerHtml) {
   const validTypes = ['info', 'success', 'warning', 'error'];
   const alertType = validTypes.includes(type) ? type : 'info';
-
-  const renderedContent = hexo.render.renderSync({ text: content, engine: 'markdown' });
-
-  // 基础样式
-  const baseStyle = `
-    position: relative;
-    display: grid;
-    width: 100%;
-    align-items: start;
-    gap: 0 0.5rem;
-    border-radius: 0.75rem;
-    border-width: 1px;
-    border-style: solid;
-    padding: 0.75rem 0.875rem;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    color: var(--card-foreground);
-    margin: 1rem 0;
-    grid-template-columns: 1rem 1fr;
-  `.replace(/\s+/g, ' ').trim();
-
-  const variantStyle = alertVariantStyles[alertType];
-  const iconColor = alertIconColors[alertType];
   const icon = lucideIcons[alertType];
 
-  let html = `<div style="${baseStyle} ${variantStyle}" role="alert">`;
-  html += `<span style="${iconColor} display: flex; align-items: center; height: 1lh;">${icon}</span>`;
-  html += '<div style="grid-column-start: 2;">';
-
+  let html = `<div class="${ALERT_BASE} ${ALERT_VARIANTS[alertType]}" data-slot="alert" role="alert">`;
+  html += icon;
   if (title) {
-    html += `<div style="font-weight: 500; margin-bottom: 0.25rem;">${title}</div>`;
+    html += `<div class="${ALERT_TITLE}" data-slot="alert-title">${title}</div>`;
   }
-
-  html += `<div style="color: var(--muted-foreground);">${renderedContent}</div>`;
-  html += '</div></div>';
-
+  html += `<div class="${ALERT_DESC}" data-slot="alert-description">${innerHtml}</div>`;
+  html += '</div>';
   return html;
+}
+
+// 注册信息框标签（多行，支持 Markdown 内容） - Coss UI Alert
+hexo.extend.tag.register('alert', function (args, content) {
+  const type = args[0] || 'info';
+  const title = args.slice(1).join(' ') || '';
+  const renderedContent = hexo.render.renderSync({ text: content, engine: 'markdown' });
+  return renderAlert(type, title, renderedContent);
 }, { ends: true });
 
-// 注册按钮标签 - 使用 Coss UI Button 样式 (添加 CSS 类以支持 hover 效果)
-// 可自定义的按钮类：修改 `buttonVariantClasses.primary` 或 `buttonVariantClasses.secondary` 来覆盖样式
-const buttonVariantClasses = {
-  'primary': 'relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border bg-clip-padding font-medium text-sm outline-none transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 [&_svg:not([class*=\'size-\'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 h-9 px-3 border-border bg-background shadow-xs not-disabled:not-active:not-data-pressed:before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-input/32 dark:not-in-data-[slot=group]:bg-clip-border dark:not-disabled:before:shadow-[0_-1px_--theme(--color-white/4%)] dark:not-disabled:not-active:not-data-pressed:before:shadow-[0_-1px_--theme(--color-white/8%)] [&:is(:disabled,:active,[data-pressed])]:shadow-none [&:is(:hover,[data-pressed])]:bg-accent/50 dark:[&:is(:hover,[data-pressed])]:bg-input/64',
-  'secondary': 'relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border bg-clip-padding font-medium text-sm outline-none transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 [&_svg:not([class*=\'size-\'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 h-9 px-3 not-disabled:inset-shadow-[0_1px_--theme(--color-white/16%)] border-primary bg-primary text-primary-foreground shadow-primary/24 shadow-xs hover:bg-primary/90 [&:is(:active,[data-pressed])]:inset-shadow-[0_1px_--theme(--color-black/8%)] [&:is(:disabled,:active,[data-pressed])]:shadow-none'
+// 注册单行信息框标签 - Coss UI Alert
+hexo.extend.tag.register('note', function (args) {
+  const type = args[0] || 'info';
+  const text = args.slice(1).join(' ');
+  return renderAlert(type, '', text);
+});
+
+// Coss UI Button 基础类（完整 class 值，源自 ui/button.tsx）
+const BTN_BASE = "[&_svg]:-mx-0.5 relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border font-medium text-base outline-none transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 sm:text-sm [&_svg:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 no-underline";
+
+const BTN_VARIANTS = {
+  'primary': "not-disabled:inset-shadow-[0_1px_--theme(--color-white/16%)] border-primary bg-primary text-primary-foreground shadow-primary/24 shadow-xs hover:bg-primary/90 [&:is(:active,[data-pressed])]:inset-shadow-[0_1px_--theme(--color-black/8%)] [&:is(:disabled,:active,[data-pressed])]:shadow-none",
+  'secondary': "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/90 [&:is(:active,[data-pressed])]:bg-secondary/80",
+  'outline': "border-border bg-background bg-clip-padding shadow-xs not-disabled:not-active:not-data-pressed:before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-input/32 dark:not-in-data-[slot=group]:bg-clip-border dark:not-disabled:before:shadow-[0_-1px_--theme(--color-white/4%)] dark:not-disabled:not-active:not-data-pressed:before:shadow-[0_-1px_--theme(--color-white/8%)] [&:is(:disabled,:active,[data-pressed])]:shadow-none [&:is(:hover,[data-pressed])]:bg-accent/50 dark:[&:is(:hover,[data-pressed])]:bg-input/64"
 };
 
-const buttonSizeClasses = {
-  'xs': 'coss-btn-xs',
-  'sm': 'coss-btn-sm',
-  'md': 'coss-btn-md',
-  'lg': 'coss-btn-lg',
-  'xl': 'coss-btn-xl'
+const BTN_SIZES = {
+  'xs': "h-7 gap-1 rounded-md px-[calc(--spacing(2)-1px)] text-sm before:rounded-[calc(var(--radius-md)-1px)] sm:h-6 sm:text-xs",
+  'sm': "h-8 gap-1.5 px-[calc(--spacing(2.5)-1px)] sm:h-7",
+  'md': "h-9 px-[calc(--spacing(3)-1px)] sm:h-8",
+  'lg': "h-10 px-[calc(--spacing(3.5)-1px)] sm:h-9",
+  'xl': "h-11 px-[calc(--spacing(4)-1px)] text-lg sm:h-10 sm:text-base [&_svg:not([class*='size-'])]:size-5 sm:[&_svg:not([class*='size-'])]:size-4.5"
 };
 
-hexo.extend.tag.register('btn', function(args) {
+hexo.extend.tag.register('btn', function (args) {
   if (args.length < 2) {
-    return '<span style="color: var(--destructive);">[错误] btn 标签需要至少 url 和 text 两个参数</span>';
+    return '<span class="text-destructive text-sm">[错误] btn 标签需要至少 url 和 text 两个参数</span>';
   }
 
   const url = args[0];
   const text = args[1];
-  const variant = args[2] || 'primary';
-  const size = args[3] || 'md';
+  const variant = BTN_VARIANTS[args[2]] ? args[2] : 'primary';
+  const size = BTN_SIZES[args[3]] ? args[3] : 'md';
   const icon = args[4] || '';
 
-  const validVariants = ['primary', 'secondary'];
-  const buttonVariant = validVariants.includes(variant) ? variant : 'primary';
-
-  const validSizes = ['xs', 'sm', 'md', 'lg', 'xl'];
-  const buttonSize = validSizes.includes(size) ? size : 'md';
-
-  const iconHtml = lucideIcons[icon] ? `<span style="display: inline-flex; width: 1rem; height: 1rem;">${lucideIcons[icon]}</span>` : '';
-
+  const iconHtml = lucideIcons[icon] || '';
   const isExternal = url.startsWith('http://') || url.startsWith('https://');
-  const target = isExternal ? 'target="_blank"' : 'target="_self"';
+  const rel = isExternal ? ' rel="noopener noreferrer"' : '';
+  const target = isExternal ? '_blank' : '_self';
 
-  // 使用可配置的类名来控制样式，这样可以支持 hover 效果并允许用户自定义
-  const variantClass = buttonVariantClasses[buttonVariant] || buttonVariantClasses['primary'];
-  const btnClass = variantClass;
+  const cls = `${BTN_BASE} ${BTN_SIZES[size]} ${BTN_VARIANTS[variant]}`;
 
-  // 使用 button 标签并通过 onclick 处理导航
-  const onclickHandler = `window.open('${url}', '${isExternal ? '_blank' : '_self'}')`;
-
-  return `<button class="${btnClass}" onclick="${onclickHandler}">${iconHtml}${text}</button>`;
-});
-
-// 注册简化的信息框标签（单行语法）- 使用 Coss UI Alert 样式
-// 使用方式: {% note type 内容文本 %}
-hexo.extend.tag.register('note', function(args) {
-  const type = args[0] || 'info';
-  const text = args.slice(1).join(' ');
-
-  const validTypes = ['info', 'success', 'warning', 'error'];
-  const alertType = validTypes.includes(type) ? type : 'info';
-
-  // 基础样式
-  const baseStyle = `
-    position: relative;
-    display: grid;
-    width: 100%;
-    align-items: start;
-    gap: 0 0.5rem;
-    border-radius: 0.75rem;
-    border-width: 1px;
-    border-style: solid;
-    padding: 0.75rem 0.875rem;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    color: var(--card-foreground);
-    margin: 1rem 0;
-    grid-template-columns: 1rem 1fr;
-  `.replace(/\s+/g, ' ').trim();
-
-  const variantStyle = alertVariantStyles[alertType];
-  const iconColor = alertIconColors[alertType];
-  const icon = lucideIcons[alertType];
-
-  return `<div style="${baseStyle} ${variantStyle}" role="alert"><span style="${iconColor} display: flex; align-items: center; height: 1lh;">${icon}</span><div style="color: var(--muted-foreground); grid-column-start: 2;">${text}</div></div>`;
+  return `<a class="${cls}" href="${url}" target="${target}"${rel} data-slot="button">${iconHtml}${text}</a>`;
 });

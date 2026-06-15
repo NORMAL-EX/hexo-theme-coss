@@ -3,7 +3,10 @@
 <head>
   <%- partial('_partial/head') %>
 </head>
-<body class="min-h-screen flex flex-col bg-background text-foreground">
+<body class="min-h-screen flex flex-col bg-background text-foreground antialiased selection:bg-primary/20">
+  <%# 顶部阅读进度条 %>
+  <div id="reading-progress" aria-hidden="true"></div>
+
   <%- partial('_partial/header') %>
 
   <main class="flex-1">
@@ -12,18 +15,17 @@
 
   <%- partial('_partial/footer') %>
 
-  <%# Search Modal %>
+  <%# Search Modal - Coss UI dialog style %>
   <div id="search-modal" class="fixed inset-0 z-50 hidden flex items-start justify-center pt-[10vh] search-modal-overlay">
-    <div class="search-modal-content w-full max-w-[550px] mx-4 bg-background rounded-lg shadow-lg border">
+    <div class="search-modal-content w-full max-w-[560px] mx-4 bg-popover text-popover-foreground rounded-xl shadow-2xl border bg-clip-padding">
       <div class="px-4 pt-4 pb-2">
         <div class="relative">
-          <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
             <path d="m21 21-4.3-4.3"></path>
           </svg>
-          <input type="text" id="search-input" placeholder="搜索文章..." class="w-full pl-10 pr-10 py-2 bg-background border border-input rounded-md transition-shadow focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/24 focus-visible:border-ring focus-visible:shadow-none before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-md)-1px)] not-focus-visible:before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-input/32 dark:not-focus-visible:before:shadow-[0_-1px_--theme(--color-white/8%)]
-">
-          <button id="search-close" class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
+          <input type="text" id="search-input" placeholder="搜索文章..." autocomplete="off" class="w-full pl-10 pr-10 h-10 bg-background border border-input rounded-md text-sm transition-shadow focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/24 focus-visible:border-ring dark:bg-input/32">
+          <button id="search-close" class="absolute right-2.5 top-1/2 -translate-y-1/2 inline-flex items-center justify-center size-6 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer" aria-label="关闭搜索">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M18 6 6 18"></path>
               <path d="m6 6 12 12"></path>
@@ -31,22 +33,47 @@
           </button>
         </div>
       </div>
-      <div id="search-results" class="max-h-[400px] overflow-y-auto">
-        <div class="px-4 py-8 text-center text-muted-foreground">输入关键词开始搜索</div>
+      <div id="search-results" class="max-h-[420px] overflow-y-auto">
+        <div class="px-4 py-10 text-center text-sm text-muted-foreground">输入关键词开始搜索</div>
       </div>
-      <div class="px-4 py-3 border-t text-xs text-muted-foreground flex items-center justify-between">
-        <span>按 ESC 关闭</span>
-        <span>Ctrl+K 快捷搜索</span>
+      <div class="px-4 py-3 border-t text-xs text-muted-foreground flex items-center justify-between gap-2">
+        <span class="inline-flex items-center gap-1.5">
+          <kbd class="pointer-events-none inline-flex h-5 min-w-5 select-none items-center justify-center gap-1 rounded bg-muted px-1 font-medium font-sans text-muted-foreground text-xs [&_svg:not([class*='size-'])]:size-3" data-slot="kbd">↵</kbd>
+          打开
+        </span>
+        <span class="inline-flex items-center gap-1.5">
+          <kbd class="pointer-events-none inline-flex h-5 min-w-5 select-none items-center justify-center gap-1 rounded bg-muted px-1 font-medium font-sans text-muted-foreground text-xs [&_svg:not([class*='size-'])]:size-3" data-slot="kbd">Esc</kbd>
+          关闭
+        </span>
+        <span class="inline-flex items-center gap-1.5">
+          <kbd class="pointer-events-none inline-flex h-5 min-w-5 select-none items-center justify-center gap-1 rounded bg-muted px-1 font-medium font-sans text-muted-foreground text-xs [&_svg:not([class*='size-'])]:size-3" data-slot="kbd">Ctrl</kbd>
+          <kbd class="pointer-events-none inline-flex h-5 min-w-5 select-none items-center justify-center gap-1 rounded bg-muted px-1 font-medium font-sans text-muted-foreground text-xs [&_svg:not([class*='size-'])]:size-3" data-slot="kbd">K</kbd>
+          搜索
+        </span>
       </div>
     </div>
   </div>
 
-  <%# Back to Top Button %>
-  <button id="back-to-top" class="fixed bottom-6 right-6 z-50 h-10 w-10 rounded-full shadow-lg border bg-background flex items-center justify-center opacity-0 pointer-events-none translate-y-4 transition-[transform,opacity] duration-300" aria-label="返回顶部">
+  <%# Back to Top Button - Coss UI outline icon button style %>
+  <button id="back-to-top" class="fixed bottom-6 right-6 z-50 inline-flex items-center justify-center size-10 rounded-full border bg-background bg-clip-padding text-muted-foreground shadow-lg opacity-0 pointer-events-none translate-y-4 transition-[transform,opacity,background-color,color] duration-300 hover:bg-accent hover:text-foreground dark:bg-input/32 dark:border-input dark:hover:bg-input/50 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] cursor-pointer" aria-label="返回顶部">
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="m18 15-6-6-6 6"></path>
     </svg>
   </button>
+
+  <%# Image Lightbox %>
+  <div id="lightbox" aria-hidden="true">
+    <button id="lightbox-close" class="cursor-pointer" aria-label="关闭图片">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6 6 18"></path>
+        <path d="m6 6 12 12"></path>
+      </svg>
+    </button>
+    <img id="lightbox-img" src="" alt="">
+  </div>
+
+  <%# Toast 通知容器 %>
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
   <%- partial('_partial/scripts') %>
 </body>

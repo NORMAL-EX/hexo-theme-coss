@@ -1,0 +1,37 @@
+<section class="relative flex flex-col items-center justify-center min-h-[calc(100vh-8rem)] px-4 overflow-hidden">
+  <%# 渐变光晕背景 %>
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+
+  <%# Coss UI Empty %>
+  <div class="flex min-w-0 flex-col items-center justify-center gap-6 text-balance text-center" data-slot="empty">
+    <%# 大号 404 渐变数字 %>
+    <h1 class="coss-rise coss-rise-1 text-8xl sm:text-9xl font-bold tracking-tighter leading-none bg-gradient-to-br from-info via-primary to-warning bg-clip-text text-transparent">404</h1>
+
+    <div class="coss-rise coss-rise-2 flex max-w-md flex-col items-center text-center gap-1" data-slot="empty-header">
+      <div class="font-semibold text-2xl leading-tight" data-slot="empty-title">页面走丢了</div>
+      <p class="text-muted-foreground text-sm leading-relaxed mt-1" data-slot="empty-description">你访问的页面不存在或已被移动。不妨返回首页，或搜索你感兴趣的内容。</p>
+    </div>
+
+    <%# 操作按钮 - Coss UI Button (primary + outline) %>
+    <div class="coss-rise coss-rise-3 flex flex-wrap items-center justify-center gap-3" data-slot="empty-content">
+      <a href="<%= url_for('/') %>" class="relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border font-medium text-sm outline-none transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 h-9 px-3.5 not-disabled:inset-shadow-[0_1px_--theme(--color-white/16%)] border-primary bg-primary text-primary-foreground shadow-primary/24 shadow-xs hover:bg-primary/90">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><path d="M9 22V12h6v10"></path></svg>
+        返回首页
+      </a>
+      <button type="button" id="search-toggle-404" class="relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border font-medium text-sm outline-none transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 h-9 px-3.5 border-border bg-background bg-clip-padding shadow-xs not-disabled:not-active:not-data-pressed:before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-input/32 dark:bg-clip-border dark:not-disabled:before:shadow-[0_-1px_--theme(--color-white/8%)] [:hover,[data-pressed]]:bg-accent/50 dark:[:hover,[data-pressed]]:bg-input/64">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        搜索文章
+      </button>
+    </div>
+  </div>
+</section>
+<script>
+  (function () {
+    var btn = document.getElementById('search-toggle-404');
+    if (btn) btn.addEventListener('click', function () {
+      var t = document.getElementById('search-toggle') || document.getElementById('search-toggle-mobile');
+      if (t) t.click();
+    });
+  })();
+</script>

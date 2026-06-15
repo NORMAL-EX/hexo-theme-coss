@@ -1,58 +1,85 @@
-<header class="sticky top-0 z-50 w-full border-b bg-background">
+<%
+  // 当前路径归一化，用于导航高亮
+  var normalizePath = function (p) {
+    return ('/' + (p || '')).replace(/index\.html$/, '').replace(/\/+$/, '') || '/';
+  };
+  var currentPath = normalizePath(page.path);
+%>
+<header class="sticky top-0 z-50 w-full border-b coss-glass">
   <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-    <div class="flex h-14 items-center justify-between">
+    <div class="flex h-14 items-center justify-between gap-4">
       <%# Logo %>
-      <a href="<%= url_for('/') %>" class="flex items-center space-x-2">
+      <a href="<%= url_for('/') %>" class="flex items-center gap-2.5 shrink-0 group">
         <% if (theme.logo) { %>
-        <img src="<%= url_for(theme.logo) %>" alt="<%= config.title %>" class="h-8 w-8 rounded-full object-cover">
+        <span class="inline-flex size-8 shrink-0 select-none items-center justify-center overflow-hidden rounded-full bg-background align-middle ring-1 ring-border transition-transform group-hover:scale-105" data-slot="avatar">
+          <img src="<%= url_for(theme.logo) %>" alt="<%= config.title %>" class="size-full object-cover" data-slot="avatar-image">
+        </span>
         <% } else { %>
-        <span class="text-xl font-bold"><%= config.title %></span>
+        <span class="text-xl font-bold tracking-tight"><%= config.title %></span>
         <% } %>
         <% if (theme.header_title) { %>
-        <span class="text-lg font-semibold"><%= theme.header_title %></span>
+        <span class="text-base font-semibold tracking-tight hidden sm:inline"><%= theme.header_title %></span>
         <% } %>
       </a>
 
       <%# Desktop Navigation %>
-      <nav class="hidden md:flex items-center space-x-6">
+      <nav class="hidden md:flex items-center gap-1 flex-1 justify-center">
         <% if (theme.menu) { %>
           <% for (var key in theme.menu) { %>
-            <%# 检查是否是友链菜单项，如果 links.enable 为 false 则不显示 %>
             <% var menuPath = theme.menu[key]; %>
             <% var isLinksMenu = menuPath === '/links/' || menuPath === '/links'; %>
             <% var linksEnabled = !theme.links || theme.links.enable !== false; %>
             <% if (!isLinksMenu || linksEnabled) { %>
-            <a href="<%= url_for(menuPath) %>" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-              <%= key %>
-            </a>
+              <%
+                var target = normalizePath(menuPath);
+                var menuActive = target === '/' ? currentPath === '/' : (currentPath === target || currentPath.indexOf(target + '/') === 0);
+              %>
+              <a href="<%= url_for(menuPath) %>" class="relative inline-flex items-center h-8 px-3 rounded-md text-sm font-medium transition-colors <%= menuActive ? 'text-foreground bg-accent' : 'text-muted-foreground hover:text-foreground hover:bg-accent/60' %>">
+                <%= key %>
+              </a>
             <% } %>
           <% } %>
         <% } %>
       </nav>
 
       <%# Right Actions %>
-      <div class="flex items-center space-x-2">
-        <%# Search Button - Coss UI ghost button style %>
-        <button type="button" class="inline-flex items-center justify-center size-8 rounded-md text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] cursor-pointer" id="search-toggle" aria-label="搜索">
+      <div class="flex items-center gap-2 shrink-0">
+        <%# Search - Desktop: 仿输入框样式按钮 %>
+        <button type="button" id="search-toggle" class="hidden md:inline-flex items-center gap-2 h-8 pl-2.5 pr-1.5 rounded-md border border-input bg-background bg-clip-padding text-sm text-muted-foreground shadow-xs transition-colors hover:bg-accent/50 dark:bg-input/32 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] cursor-pointer" aria-label="搜索">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+          <span class="pr-6">搜索文章</span>
+          <kbd class="pointer-events-none inline-flex h-5 min-w-5 select-none items-center justify-center gap-0.5 rounded bg-muted px-1 font-medium font-sans text-muted-foreground text-[0.625rem]" data-slot="kbd">Ctrl K</kbd>
+        </button>
+
+        <%# Search - Mobile: 图标按钮 %>
+        <button type="button" id="search-toggle-mobile" class="md:hidden inline-flex items-center justify-center size-8 rounded-md text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] cursor-pointer" aria-label="搜索">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
             <path d="m21 21-4.3-4.3"></path>
           </svg>
         </button>
 
-        <%# Theme Toggle - Coss UI ghost button style %>
-        <button type="button" class="inline-flex items-center justify-center size-8 rounded-md text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] cursor-pointer" id="theme-toggle" aria-label="切换主题">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-            <path d="M12 3l0 18" />
-            <path d="M12 9l4.65 -4.65" />
-            <path d="M12 14.3l7.37 -7.37" />
-            <path d="M12 19.6l8.85 -8.85" />
+        <%# Theme Toggle - Coss UI ghost icon button style %>
+        <button type="button" class="inline-flex items-center justify-center size-8 rounded-md text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] cursor-pointer" id="theme-toggle" aria-label="切换主题" title="切换主题">
+          <%# 浅色图标 %>
+          <svg class="theme-icon-light hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path>
+          </svg>
+          <%# 深色图标 %>
+          <svg class="theme-icon-dark hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+          <%# 跟随系统图标 %>
+          <svg class="theme-icon-system" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="14" x="2" y="3" rx="2"></rect><line x1="8" x2="16" y1="21" y2="21"></line><line x1="12" x2="12" y1="17" y2="21"></line>
           </svg>
         </button>
 
-        <%# Mobile Menu Toggle - Coss UI ghost button style %>
+        <%# Mobile Menu Toggle - Coss UI ghost icon button style %>
         <button type="button" class="inline-flex md:hidden items-center justify-center size-8 rounded-md text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 outline-none focus-visible:ring-ring/50 focus-visible:ring-[3px] cursor-pointer" id="mobile-menu-toggle" aria-label="打开菜单">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="4" x2="20" y1="12" y2="12"></line>
@@ -65,18 +92,21 @@
   </div>
 
   <%# Mobile Menu %>
-  <div class="hidden md:hidden border-t" id="mobile-menu">
-    <nav class="flex flex-col space-y-2 p-4">
+  <div class="hidden md:hidden border-t coss-glass" id="mobile-menu">
+    <nav class="flex flex-col space-y-1 p-4">
       <% if (theme.menu) { %>
         <% for (var key in theme.menu) { %>
-          <%# 检查是否是友链菜单项，如果 links.enable 为 false 则不显示 %>
           <% var menuPath = theme.menu[key]; %>
           <% var isLinksMenu = menuPath === '/links/' || menuPath === '/links'; %>
           <% var linksEnabled = !theme.links || theme.links.enable !== false; %>
           <% if (!isLinksMenu || linksEnabled) { %>
-          <a href="<%= url_for(menuPath) %>" class="text-lg font-medium text-muted-foreground transition-colors hover:text-foreground flex items-center py-2">
-            <%= key %>
-          </a>
+            <%
+              var target = normalizePath(menuPath);
+              var menuActive = target === '/' ? currentPath === '/' : (currentPath === target || currentPath.indexOf(target + '/') === 0);
+            %>
+            <a href="<%= url_for(menuPath) %>" class="flex items-center py-2.5 px-3 rounded-md text-base font-medium transition-colors <%= menuActive ? 'text-foreground bg-accent' : 'text-muted-foreground hover:text-foreground hover:bg-accent/60' %>">
+              <%= key %>
+            </a>
           <% } %>
         <% } %>
       <% } %>

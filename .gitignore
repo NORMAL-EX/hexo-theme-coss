@@ -1,0 +1,23 @@
+# 依赖
+node_modules/
+
+# 日志
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 缓存与临时文件
+.cache/
+.vite/
+.temp/
+.DS_Store
+Thumbs.db
+
+# 编辑器
+.idea/
+.vscode/
+*.swp
+
+# 构建中间产物（注意：source/ 为主题发布产物，需保留并提交）
+dist/

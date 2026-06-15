@@ -1,213 +1,231 @@
+<%
+  // 字数与阅读时长
+  var plainContent = (page.content || '').replace(/<[^>]+>/g, '');
+  var wordCount = plainContent.replace(/\s+/g, '').length;
+  var readTime = Math.max(1, Math.ceil(wordCount / 350));
+
+  // 相关文章（按共同标签评分）
+  var relatedPosts = [];
+  try {
+    if (page.tags && page.tags.length > 0) {
+      var tagArr = page.tags.toArray ? page.tags.toArray() : page.tags;
+      var tagNames = tagArr.map(function (t) { return t.name; });
+      var allPosts = site.posts.toArray ? site.posts.toArray() : site.posts;
+      var scored = [];
+      allPosts.forEach(function (p) {
+        if (p.path === page.path) return;
+        var pts = p.tags && p.tags.toArray ? p.tags.toArray() : (p.tags || []);
+        var shared = 0;
+        pts.forEach(function (t) { if (tagNames.indexOf(t.name) >= 0) shared++; });
+        if (shared > 0) scored.push({ post: p, score: shared });
+      });
+      scored.sort(function (a, b) { return (b.score - a.score) || (b.post.date - a.post.date); });
+      relatedPosts = scored.slice(0, 3).map(function (s) { return s.post; });
+    }
+  } catch (e) { relatedPosts = []; }
+
+  var firstCategory = page.categories && page.categories.length > 0 ? (page.categories.toArray ? page.categories.toArray()[0] : page.categories.data[0]) : null;
+%>
 <div class="py-8">
   <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
     <div class="flex flex-col lg:flex-row gap-8">
       <%# Main Content %>
-        <div class="flex-1 min-w-0">
-          <article
-            class="relative flex flex-col gap-6 rounded-2xl border bg-card bg-clip-padding text-card-foreground shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)] overflow-hidden">
-            <%# Cover Image %>
-              <% if (page.cover) { %>
-                <div class="aspect-video overflow-hidden">
-                  <img src="<%= page.cover %>" alt="<%= page.title %>" class="w-full h-full object-cover">
-                </div>
-                <% } %>
+      <div class="flex-1 min-w-0">
+        <%# Breadcrumb - Coss UI %>
+        <nav aria-label="breadcrumb" data-slot="breadcrumb" class="mb-4">
+          <ol class="wrap-break-word flex flex-wrap items-center gap-1.5 text-muted-foreground text-sm sm:gap-2.5" data-slot="breadcrumb-list">
+            <li class="inline-flex items-center gap-1.5" data-slot="breadcrumb-item">
+              <a href="<%= url_for('/') %>" class="transition-colors hover:text-foreground" data-slot="breadcrumb-link">首页</a>
+            </li>
+            <% if (firstCategory) { %>
+            <li class="opacity-80 [&>svg]:size-4" data-slot="breadcrumb-separator" role="presentation" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+            </li>
+            <li class="inline-flex items-center gap-1.5" data-slot="breadcrumb-item">
+              <a href="<%= url_for(firstCategory.path) %>" class="transition-colors hover:text-foreground" data-slot="breadcrumb-link"><%= firstCategory.name %></a>
+            </li>
+            <% } %>
+            <li class="opacity-80 [&>svg]:size-4" data-slot="breadcrumb-separator" role="presentation" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+            </li>
+            <li class="inline-flex items-center gap-1.5 min-w-0" data-slot="breadcrumb-item">
+              <span class="font-normal text-foreground line-clamp-1" data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page"><%= page.title %></span>
+            </li>
+          </ol>
+        </nav>
 
-                  <div class="p-6 lg:p-8">
-                    <%# Title - 靠左对齐 %>
-                      <h1 class="text-3xl font-bold mb-4 text-left">
-                        <%= page.title %>
-                      </h1>
+        <article class="relative flex flex-col rounded-2xl border bg-card bg-clip-padding text-card-foreground shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)] overflow-hidden">
+          <%# Cover Image %>
+          <% if (page.cover) { %>
+          <div class="aspect-video overflow-hidden">
+            <img src="<%= page.cover %>" alt="<%= page.title %>" class="w-full h-full object-cover no-zoom">
+          </div>
+          <% } %>
 
-                      <%# Meta Info %>
-                        <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-6">
-                          <span class="flex items-center gap-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                              stroke-linejoin="round">
-                              <path d="M8 2v4"></path>
-                              <path d="M16 2v4"></path>
-                              <rect width="18" height="18" x="3" y="4" rx="2"></rect>
-                              <path d="M3 10h18"></path>
-                            </svg>
-                            <time datetime="<%= date_xml(page.date) %>">
-                              <%= date(page.date, 'YYYY年MM月DD日' ) %>
-                            </time>
-                          </span>
+          <div class="p-6 lg:p-8">
+            <%# Title %>
+            <h1 class="text-3xl sm:text-4xl font-bold mb-4 text-left tracking-tight leading-tight"><%= page.title %></h1>
 
-                          <% if (page.updated && page.updated.toISOString() !==page.date.toISOString()) { %>
-                            <span class="flex items-center gap-1">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
-                              </svg>
-                              <span>更新于 <%= date(page.updated, 'YYYY年MM月DD日' ) %></span>
-                            </span>
-                            <% } %>
+            <%# Meta Info %>
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground mb-6">
+              <span class="post-stat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>
+                <time datetime="<%= date_xml(page.date) %>"><%= date(page.date, 'YYYY年MM月DD日') %></time>
+              </span>
 
-                              <% if (page.categories && page.categories.length> 0) { %>
-                                <span class="flex items-center gap-1">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path
-                                      d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z">
-                                    </path>
-                                  </svg>
-                                  <% page.categories.each(function(cat, idx) { %>
-                                    <a href="<%= url_for(cat.path) %>" class="hover:text-foreground">
-                                      <%= cat.name %>
-                                    </a>
-                                    <% if (idx < page.categories.length - 1) { %>, <% } %>
-                                        <% }); %>
-                                </span>
-                                <% } %>
-                        </div>
-
-                        <%# Tags %>
-                          <% if (page.tags && page.tags.length> 0) { %>
-                            <div class="flex flex-wrap gap-2 mb-6">
-                              <% page.tags.each(function(tag) { %>
-                                <a href="<%= url_for(tag.path) %>"
-                                  class="relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-sm border border-transparent font-medium outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 [&_svg:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-3.5 sm:[&_svg:not([class*='size-'])]:size-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [button,a&]:cursor-pointer [button,a&]:pointer-coarse:after:absolute [button,a&]:pointer-coarse:after:size-full [button,a&]:pointer-coarse:after:min-h-11 [button,a&]:pointer-coarse:after:min-w-11 h-5.5 min-w-5.5 px-1 sm:h-4.5 sm:min-w-4.5 sm:text-xs bg-secondary text-secondary-foreground [button,a&]:hover:bg-secondary/90 text-xs cursor-pointer hover:bg-accent">
-                                  <%= tag.name %>
-                                </a>
-                                <% }); %>
-                            </div>
-                            <% } %>
-
-                              <%# Content %>
-                                <div
-                                  class="prose prose-neutral dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-headings:font-semibold prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-code:before:content-none prose-code:after:content-none prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-muted prose-pre:border prose-img:rounded-lg prose-img:shadow-md prose-blockquote:border-l-primary prose-blockquote:bg-muted/50 prose-blockquote:py-1">
-                                  <%- page.content %>
-                                </div>
-
-                                <%# Copyright %>
-                                  <% if (theme.copyright?.enable !==false && page.copyright !==false) { %>
-                                    <% var rawPermalink=config.url.replace(/\/$/, '' ) + '/' + page.path; %>
-                                      <div
-                                        class="mt-8 p-4 bg-neutral-50 dark:bg-neutral-950 rounded-lg text-sm text-muted-foreground">
-                                        <p class="mb-2">
-                                          <strong>本文作者：</strong>
-                                          <%= config.author %>
-                                        </p>
-                                        <p class="mb-2">
-                                          <strong>本文链接：</strong>
-                                          <a href="<%= rawPermalink %>" class="text-primary hover:underline break-all">
-                                            <%= rawPermalink %>
-                                          </a>
-                                        </p>
-                                        <p>
-                                          <strong>版权声明：</strong>
-                                          <%= theme.copyright.text || '本博客所有文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！'
-                                            %>
-                                        </p>
-                                      </div>
-                                      <% } %>
-
-
-                                        <%# Post Navigation %>
-                                          <div
-                                            class="mt-8 pt-8 border-t flex flex-col sm:flex-row justify-between gap-4">
-                                            <% if (page.prev) { %>
-                                              <a href="<%= url_for(page.prev.path) %>"
-                                                class="[&_svg]:-mx-0.5 relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border font-medium text-base outline-none transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 sm:text-sm [&_svg:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background bg-clip-padding shadow-xs not-disabled:not-active:not-data-pressed:before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-input/32 dark:not-in-data-[slot=group]:bg-clip-border dark:not-disabled:before:shadow-[0_-1px_--theme(--color-white/4%)] dark:not-disabled:not-active:not-data-pressed:before:shadow-[0_-1px_--theme(--color-white/8%)] [:disabled,:active,[data-pressed]]:shadow-none [:hover,[data-pressed]]:bg-accent/50 dark:[:hover,[data-pressed]]:bg-input/64 h-9 px-3">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                  stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
-                                                  <path d="m15 18-6-6 6-6" />
-                                                </svg>
-                                                <span class="truncate">
-                                                  <%= page.prev.title %>
-                                                </span>
-                                              </a>
-                                              <% } else { %>
-                                                <div></div>
-                                                <% } %>
-
-                                                  <% if (page.next) { %>
-                                                    <a href="<%= url_for(page.next.path) %>"
-                                                      class="relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border bg-clip-padding font-medium text-sm outline-none transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-64 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 h-9 px-3 not-disabled:inset-shadow-[0_1px_--theme(--color-white/16%)] border-primary bg-primary text-primary-foreground shadow-primary/24 shadow-xs hover:bg-primary/90 [&:is(:active,[data-pressed])]:inset-shadow-[0_1px_--theme(--color-black/8%)] [&:is(:disabled,:active,[data-pressed])]:shadow-none
-">
-                                                      <span class="truncate">
-                                                        <%= page.next.title %>
-                                                      </span>
-                                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="shrink-0">
-                                                        <path d="m9 18 6-6-6-6" />
-                                                      </svg>
-                                                    </a>
-                                                    <% } else { %>
-                                                      <div></div>
-                                                      <% } %>
-                                          </div>
-
-                                          <%# Comments %>
-                                            <%- partial('_partial/comment') %>
-                  </div>
-          </article>
-        </div>
-
-        <%# Sidebar with TOC - only show if there's content %>
-          <% var showAuthor=!theme.sidebar || theme.sidebar.showAuthor !==false; var showCategories=(!theme.sidebar ||
-            theme.sidebar.showCategories !==false) && site.categories.length> 0;
-            var showTags = (!theme.sidebar || theme.sidebar.showTags !== false) && site.tags.length > 0;
-            var showRecent = !theme.sidebar || theme.sidebar.showRecent !== false;
-            var hasSidebarContent = showAuthor || showCategories || showTags || showRecent;
-            var hasToc = page.toc !== false && toc(page.content).length > 0;
-            %>
-            <% if (hasSidebarContent || hasToc) { %>
-              <div class="w-full lg:w-80 shrink-0">
-                <div class="lg:sticky lg:top-20 space-y-6">
-                  <%# TOC %>
-                    <% if (hasToc) { %>
-                      <div
-                        class="relative flex flex-col rounded-2xl border bg-card bg-clip-padding text-card-foreground shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)] p-4">
-                        <h4 class="font-semibold mb-4">目录</h4>
-                        <nav class="text-sm">
-                          <%- toc(page.content, {class: 'toc' , list_number: false}) %>
-                        </nav>
-                      </div>
-                      <% } %>
-
-                        <% if (hasSidebarContent) { %>
-                          <%- partial('_partial/sidebar') %>
-                            <% } %>
-                </div>
-              </div>
+              <% if (page.updated && page.updated.toISOString() !== page.date.toISOString()) { %>
+              <span class="post-stat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M8 16H3v5"></path></svg>
+                更新于 <%= date(page.updated, 'YYYY年MM月DD日') %>
+              </span>
               <% } %>
+
+              <% if (firstCategory) { %>
+              <span class="post-stat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+                <a href="<%= url_for(firstCategory.path) %>" class="hover:text-foreground transition-colors"><%= firstCategory.name %></a>
+              </span>
+              <% } %>
+
+              <% if (wordCount > 0) { %>
+              <span class="post-stat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"></path><path d="M9 20h6"></path><path d="M12 4v16"></path></svg>
+                <%= wordCount %> 字
+              </span>
+              <span class="post-stat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                约 <%= readTime %> 分钟
+              </span>
+              <% } %>
+            </div>
+
+            <%# Tags %>
+            <% if (page.tags && page.tags.length > 0) { %>
+            <div class="flex flex-wrap gap-2 mb-6">
+              <% page.tags.each(function(tag) { %>
+              <a href="<%= url_for(tag.path) %>" class="relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-sm border border-transparent font-medium outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background [&_svg:not([class*='size-'])]:size-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 [button,a&]:cursor-pointer h-5.5 min-w-5.5 px-1.5 text-xs sm:h-4.5 sm:text-[0.625rem] bg-secondary text-secondary-foreground [button,a&]:hover:bg-secondary/90" data-slot="badge">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+                <%= tag.name %>
+              </a>
+              <% }); %>
+            </div>
+            <% } %>
+
+            <%# Separator %>
+            <div class="shrink-0 bg-border h-px w-full mb-8" data-slot="separator" role="none"></div>
+
+            <%# Content %>
+            <div class="prose prose-neutral dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-headings:font-semibold prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-code:before:content-none prose-code:after:content-none prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-muted prose-pre:border prose-img:rounded-lg prose-img:shadow-md prose-blockquote:border-l-primary prose-blockquote:bg-muted/50 prose-blockquote:py-1">
+              <%- page.content %>
+            </div>
+
+            <%# Copyright %>
+            <% if (theme.copyright && theme.copyright.enable !== false && page.copyright !== false) { %>
+            <% var rawPermalink = config.url.replace(/\/$/, '') + '/' + page.path; %>
+            <div class="relative grid w-full items-start gap-x-2 gap-y-0.5 rounded-xl border border-info/32 bg-info/4 px-3.5 py-3 text-card-foreground text-sm has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] has-[>svg]:gap-x-2 [&>svg]:h-lh [&>svg]:w-4 mt-8" data-slot="alert" role="alert">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-info"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+              <div class="font-medium [svg~&]:col-start-2">版权声明</div>
+              <div class="flex flex-col gap-1 text-muted-foreground [svg~&]:col-start-2">
+                <span><strong class="font-medium text-foreground">本文链接：</strong><a href="<%= rawPermalink %>" class="text-primary hover:underline break-all"><%= rawPermalink %></a></span>
+                <span><%= theme.copyright.text || '本博客所有文章除特别声明外，均采用 CC BY-NC-SA 4.0 许可协议。转载请注明出处！' %></span>
+              </div>
+            </div>
+            <% } %>
+
+            <%# Post Navigation - 上一篇/下一篇卡片 %>
+            <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <% if (page.prev) { %>
+              <a href="<%= url_for(page.prev.path) %>" class="post-card group relative flex items-center gap-3 rounded-xl border bg-card bg-clip-padding p-4 text-card-foreground shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-muted-foreground transition-transform group-hover:-translate-x-0.5 group-hover:text-primary"><path d="m15 18-6-6 6-6"></path></svg>
+                <div class="min-w-0">
+                  <div class="text-xs text-muted-foreground mb-0.5">上一篇</div>
+                  <div class="text-sm font-medium truncate group-hover:text-primary transition-colors"><%= page.prev.title %></div>
+                </div>
+              </a>
+              <% } else { %><div class="hidden sm:block"></div><% } %>
+
+              <% if (page.next) { %>
+              <a href="<%= url_for(page.next.path) %>" class="post-card group relative flex items-center gap-3 rounded-xl border bg-card bg-clip-padding p-4 text-card-foreground shadow-xs sm:text-right before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)]">
+                <div class="min-w-0 sm:ml-auto order-2 sm:order-1">
+                  <div class="text-xs text-muted-foreground mb-0.5">下一篇</div>
+                  <div class="text-sm font-medium truncate group-hover:text-primary transition-colors"><%= page.next.title %></div>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 order-1 sm:order-2 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary"><path d="m9 18 6-6-6-6"></path></svg>
+              </a>
+              <% } else { %><div class="hidden sm:block"></div><% } %>
+            </div>
+
+            <%# Related Posts - 相关文章 %>
+            <% if (relatedPosts.length > 0) { %>
+            <div class="mt-10">
+              <div class="flex items-center gap-2 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+                <h3 class="text-lg font-semibold">相关文章</h3>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <% relatedPosts.forEach(function(rp) { %>
+                <a href="<%= url_for(rp.path) %>" class="post-card group relative flex flex-col rounded-xl border bg-card bg-clip-padding text-card-foreground shadow-xs overflow-hidden before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)]">
+                  <% if (rp.cover) { %>
+                  <div class="aspect-video overflow-hidden cover-zoom">
+                    <img src="<%= rp.cover %>" alt="<%= rp.title %>" loading="lazy" class="w-full h-full object-cover">
+                  </div>
+                  <% } %>
+                  <div class="p-4">
+                    <div class="text-sm font-medium line-clamp-2 group-hover:text-primary transition-colors"><%= rp.title %></div>
+                    <div class="text-xs text-muted-foreground mt-1.5 tabular-nums"><%= date(rp.date, 'YYYY-MM-DD') %></div>
+                  </div>
+                </a>
+                <% }); %>
+              </div>
+            </div>
+            <% } %>
+
+            <%# Comments %>
+            <%- partial('_partial/comment') %>
+          </div>
+        </article>
+      </div>
+
+      <%# Sidebar with TOC %>
+      <%
+        var showAuthor = !theme.sidebar || theme.sidebar.showAuthor !== false;
+        var showCategories = (!theme.sidebar || theme.sidebar.showCategories !== false) && site.categories.length > 0;
+        var showTags = (!theme.sidebar || theme.sidebar.showTags !== false) && site.tags.length > 0;
+        var showRecent = !theme.sidebar || theme.sidebar.showRecent !== false;
+        var hasSidebarContent = showAuthor || showCategories || showTags || showRecent;
+        var hasToc = page.toc !== false && toc(page.content).length > 0;
+      %>
+      <% if (hasSidebarContent || hasToc) { %>
+      <div class="w-full lg:w-80 shrink-0">
+        <div class="lg:sticky lg:top-20 space-y-6">
+          <%# TOC %>
+          <% if (hasToc) { %>
+          <div class="relative flex flex-col rounded-2xl border bg-card bg-clip-padding text-card-foreground shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)] p-4">
+            <div class="flex items-center gap-2 mb-3 px-1">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground"><line x1="21" x2="3" y1="6" y2="6"></line><line x1="15" x2="3" y1="12" y2="12"></line><line x1="17" x2="3" y1="18" y2="18"></line></svg>
+              <h4 class="font-semibold">目录</h4>
+            </div>
+            <nav class="text-sm max-h-[calc(100vh-12rem)] overflow-y-auto">
+              <%- toc(page.content, { class: 'toc', list_number: false }) %>
+            </nav>
+          </div>
+          <% } %>
+
+          <% if (hasSidebarContent) { %>
+          <%- partial('_partial/sidebar') %>
+          <% } %>
+        </div>
+      </div>
+      <% } %>
     </div>
   </div>
 </div>
 
 <style>
-  .toc-level-1 {
-    margin-left: 0;
-  }
-
-  .toc-level-2 {
-    margin-left: 1rem;
-  }
-
-  .toc-level-3 {
-    margin-left: 2rem;
-  }
-
-  .toc-level-4 {
-    margin-left: 3rem;
-  }
-
-  .toc-link {
-    display: block;
-    padding: 0.25rem 0;
-    color: var(--muted-foreground);
-    transition: color 0.2s;
-  }
-
-  .toc-link:hover {
-    color: var(--foreground);
-  }
+  .toc ol, .toc ul { list-style: none; margin: 0; padding-left: 0; }
+  .toc .toc-child { padding-left: 0.75rem; }
+  .toc-level-1 { margin-left: 0; }
+  .toc-level-2 { margin-left: 0.75rem; }
+  .toc-level-3 { margin-left: 1.5rem; }
+  .toc-level-4 { margin-left: 2.25rem; }
 </style>

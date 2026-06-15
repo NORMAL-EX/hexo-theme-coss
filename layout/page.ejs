@@ -29,7 +29,9 @@
       %>
       <% if (hasSidebarContent) { %>
       <div class="w-full lg:w-80 shrink-0">
-        <%- partial('_partial/sidebar') %>
+        <div class="lg:sticky lg:top-20">
+          <%- partial('_partial/sidebar') %>
+        </div>
       </div>
       <% } %>
     </div>
