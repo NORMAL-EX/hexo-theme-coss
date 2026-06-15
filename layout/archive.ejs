@@ -29,7 +29,7 @@
             <% years.forEach(function(year) { %>
             <div class="mb-8 last:mb-0">
               <h2 class="text-xl font-semibold mb-4 flex items-center gap-2 text-left">
-                <span class="bg-gradient-to-r from-info via-primary to-warning bg-clip-text text-transparent"><%= year %></span>
+                <span class="text-foreground"><%= year %></span>
                 <span class="relative inline-flex shrink-0 items-center justify-center rounded-sm border border-transparent font-medium h-5 min-w-5 px-[calc(--spacing(1)-1px)] text-xs bg-secondary text-secondary-foreground" data-slot="badge"><%= yearGroups[year].length %></span>
               </h2>
 

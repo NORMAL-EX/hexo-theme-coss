@@ -22,7 +22,7 @@ console.log(`╔═════════════════════�
 <script>
 (function() {
   var icons = {
-    success: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>',
+    success: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>',
     info: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>',
     error: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m15 9-6 6"></path><path d="m9 9 6 6"></path></svg>'
   };
@@ -46,52 +46,67 @@ console.log(`╔═════════════════════�
 })();
 </script>
 
-<%# Theme Toggle Script %>
+<%# Theme Toggle Menu Script %>
 <script>
 (function() {
-  var themeToggle = document.getElementById('theme-toggle');
   var html = document.documentElement;
   var STORAGE_KEY = 'hexo-theme-mode';
+  var menu = document.getElementById('theme-menu');
+  var trigger = document.getElementById('theme-trigger');
+  var popup = document.getElementById('theme-popup');
+  var options = popup ? popup.querySelectorAll('.theme-option') : [];
 
-  function getTheme() {
-    return localStorage.getItem(STORAGE_KEY) || 'system';
+  function getTheme() { return localStorage.getItem(STORAGE_KEY) || 'system'; }
+  function systemDark() { return window.matchMedia('(prefers-color-scheme: dark)').matches; }
+
+  function applyTheme(theme) {
+    if (theme === 'dark' || (theme === 'system' && systemDark())) html.classList.add('dark');
+    else html.classList.remove('dark');
+  }
+
+  function updateTrigger(theme) {
+    if (!trigger) return;
+    var l = trigger.querySelector('.theme-icon-light');
+    var d = trigger.querySelector('.theme-icon-dark');
+    var s = trigger.querySelector('.theme-icon-system');
+    [l, d, s].forEach(function(el) { if (el) el.classList.add('hidden'); });
+    var active = theme === 'light' ? l : theme === 'dark' ? d : s;
+    if (active) active.classList.remove('hidden');
+    var labels = { light: '浅色模式', dark: '深色模式', system: '跟随系统' };
+    trigger.setAttribute('title', '主题：' + (labels[theme] || '跟随系统'));
+  }
+
+  function updateChecks(theme) {
+    options.forEach(function(opt) {
+      var chk = opt.querySelector('.theme-check');
+      var on = opt.getAttribute('data-theme') === theme;
+      if (chk) chk.classList.toggle('hidden', !on);
+      opt.setAttribute('aria-checked', on ? 'true' : 'false');
+    });
   }
 
   function setTheme(theme) {
     localStorage.setItem(STORAGE_KEY, theme);
     applyTheme(theme);
-    updateIcon(theme);
+    updateTrigger(theme);
+    updateChecks(theme);
   }
 
-  function applyTheme(theme) {
-    if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      html.classList.add('dark');
-    } else {
-      html.classList.remove('dark');
-    }
-  }
+  function openMenu() { if (popup) { popup.classList.remove('closed'); if (trigger) trigger.setAttribute('aria-expanded', 'true'); } }
+  function closeMenu() { if (popup) { popup.classList.add('closed'); if (trigger) trigger.setAttribute('aria-expanded', 'false'); } }
 
-  function updateIcon(theme) {
-    if (!themeToggle) return;
-    var light = themeToggle.querySelector('.theme-icon-light');
-    var dark = themeToggle.querySelector('.theme-icon-dark');
-    var system = themeToggle.querySelector('.theme-icon-system');
-    [light, dark, system].forEach(function(el) { if (el) el.classList.add('hidden'); });
-    var active = theme === 'light' ? light : theme === 'dark' ? dark : system;
-    if (active) active.classList.remove('hidden');
-    var labels = { light: '浅色模式', dark: '深色模式', system: '跟随系统' };
-    themeToggle.setAttribute('title', '主题：' + (labels[theme] || '跟随系统'));
-  }
+  updateTrigger(getTheme());
+  updateChecks(getTheme());
 
-  updateIcon(getTheme());
-
-  if (themeToggle) {
-    themeToggle.addEventListener('click', function() {
-      var current = getTheme();
-      var next = current === 'light' ? 'dark' : current === 'dark' ? 'system' : 'light';
-      setTheme(next);
-    });
-  }
+  if (trigger) trigger.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (popup && popup.classList.contains('closed')) openMenu(); else closeMenu();
+  });
+  options.forEach(function(opt) {
+    opt.addEventListener('click', function() { setTheme(opt.getAttribute('data-theme')); closeMenu(); });
+  });
+  document.addEventListener('click', function(e) { if (menu && !menu.contains(e.target)) closeMenu(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMenu(); });
 
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
     if (getTheme() === 'system') applyTheme('system');
