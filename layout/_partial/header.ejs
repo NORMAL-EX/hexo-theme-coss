@@ -16,22 +16,18 @@
 <header class="sticky top-0 z-50 w-full border-b bg-background">
   <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
     <div class="flex h-14 items-center justify-between gap-4">
-      <%# Logo %>
+      <%# Logo - 手机仅标题文字，sm+ 才显示头像图标 %>
       <a href="<%= url_for('/') %>" class="flex items-center gap-2.5 shrink-0 group">
         <% if (theme.logo) { %>
-        <span class="inline-flex size-8 shrink-0 select-none items-center justify-center overflow-hidden rounded-full bg-background align-middle ring-1 ring-border transition-transform group-hover:scale-105" data-slot="avatar">
+        <span class="hidden sm:inline-flex size-8 shrink-0 select-none items-center justify-center overflow-hidden rounded-full bg-background align-middle ring-1 ring-border transition-transform group-hover:scale-105" data-slot="avatar">
           <img src="<%= url_for(theme.logo) %>" alt="<%= config.title %>" class="size-full object-cover" data-slot="avatar-image">
         </span>
-        <% } else { %>
-        <span class="text-xl font-bold tracking-tight"><%= config.title %></span>
         <% } %>
-        <% if (theme.header_title) { %>
-        <span class="text-base font-semibold tracking-tight hidden sm:inline"><%= theme.header_title %></span>
-        <% } %>
+        <span class="text-base sm:text-lg font-semibold tracking-tight"><%= theme.header_title || config.title %></span>
       </a>
 
-      <%# Desktop/Tablet Navigation - md+ 显示 %>
-      <nav class="hidden md:flex items-center gap-1 flex-1 justify-center">
+      <%# Desktop Navigation - 仅电脑(lg+)显示 %>
+      <nav class="hidden lg:flex items-center gap-1 flex-1 justify-center">
         <% if (theme.menu) { %>
           <% for (var key in theme.menu) { %>
             <% var menuPath = theme.menu[key]; %>
@@ -39,14 +35,9 @@
             <% var linksEnabled = !theme.links || theme.links.enable !== false; %>
             <% if (!isLinksMenu || linksEnabled) { %>
               <% if (isMenuActive(menuPath)) { %>
-              <a href="<%= url_for(menuPath) %>" class="inline-flex items-center gap-1.5 h-8 text-sm font-medium text-foreground" aria-current="page">
-                <span class="h-4 w-1 rounded-full bg-primary"></span>
-                <span class="rounded-md bg-accent px-2.5 py-1"><%= key %></span>
-              </a>
+              <a href="<%= url_for(menuPath) %>" class="inline-flex items-center h-8 px-3 rounded-md text-sm font-medium text-foreground bg-accent" aria-current="page"><%= key %></a>
               <% } else { %>
-              <a href="<%= url_for(menuPath) %>" class="inline-flex items-center h-8 px-3 rounded-md text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/60">
-                <%= key %>
-              </a>
+              <a href="<%= url_for(menuPath) %>" class="inline-flex items-center h-8 px-3 rounded-md text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/60"><%= key %></a>
               <% } %>
             <% } %>
           <% } %>
@@ -65,7 +56,7 @@
           <kbd class="pointer-events-none inline-flex h-5 min-w-5 select-none items-center justify-center gap-0.5 rounded bg-muted px-1 font-medium font-sans text-muted-foreground text-[0.625rem]" data-slot="kbd">Ctrl K</kbd>
         </button>
 
-        <%# Search - Mobile/Tablet: outline 图标按钮 %>
+        <%# Search - 手机/平板: outline 图标按钮 %>
         <button type="button" id="search-toggle-mobile" class="lg:hidden <%= outlineIconBtn %>" aria-label="搜索">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
@@ -76,16 +67,13 @@
         <%# Theme Toggle - Coss UI Menu 下拉（选项与图标参考 Cloud-PE-Website） %>
         <div class="relative" id="theme-menu">
           <button type="button" id="theme-trigger" aria-label="切换主题" aria-haspopup="menu" aria-expanded="false" class="<%= outlineIconBtn %>">
-            <%# 浅色图标 %>
             <svg class="theme-icon-light hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="4"></circle>
               <path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path>
             </svg>
-            <%# 深色图标 %>
             <svg class="theme-icon-dark hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
             </svg>
-            <%# 跟随系统图标 (CircleHalf) %>
             <svg class="theme-icon-system hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
               <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
@@ -93,7 +81,6 @@
             </svg>
           </button>
 
-          <%# 下拉菜单 - Coss UI MenuPopup %>
           <div id="theme-popup" class="theme-popup closed absolute right-0 top-full mt-2 z-50 min-w-[150px] rounded-lg border bg-popover bg-clip-padding shadow-lg outline-none before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)]" role="menu" aria-label="主题选择">
             <div class="p-1">
               <button type="button" data-theme="light" role="menuitemradio" class="theme-option [&_svg]:-mx-0.5 flex min-h-8 w-full cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1 text-base outline-none hover:bg-accent hover:text-accent-foreground sm:min-h-7 sm:text-sm [&_svg:not([class*='opacity-'])]:opacity-80 [&_svg:not([class*='size-'])]:size-4.5 sm:[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0">
@@ -115,8 +102,8 @@
           </div>
         </div>
 
-        <%# Mobile Menu Toggle - outline 图标按钮（仅 md 以下显示）%>
-        <button type="button" class="md:hidden <%= outlineIconBtn %>" id="mobile-menu-toggle" aria-label="打开菜单">
+        <%# Mobile/Tablet Menu Toggle - outline 图标按钮（lg 以下显示）%>
+        <button type="button" class="lg:hidden <%= outlineIconBtn %>" id="mobile-menu-toggle" aria-label="打开菜单">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="4" x2="20" y1="12" y2="12"></line>
             <line x1="4" x2="20" y1="6" y2="6"></line>
@@ -127,8 +114,8 @@
     </div>
   </div>
 
-  <%# Mobile Menu %>
-  <div class="hidden md:hidden border-t bg-background" id="mobile-menu">
+  <%# Mobile/Tablet Menu %>
+  <div class="hidden lg:hidden border-t bg-background" id="mobile-menu">
     <nav class="flex flex-col space-y-1 p-4">
       <% if (theme.menu) { %>
         <% for (var key in theme.menu) { %>
@@ -137,14 +124,9 @@
           <% var linksEnabled = !theme.links || theme.links.enable !== false; %>
           <% if (!isLinksMenu || linksEnabled) { %>
             <% if (isMenuActive(menuPath)) { %>
-            <a href="<%= url_for(menuPath) %>" class="relative flex items-center py-2.5 px-3 rounded-md text-base font-medium text-foreground bg-accent" aria-current="page">
-              <span class="absolute left-1 top-1/2 -translate-y-1/2 h-5 w-1 rounded-full bg-primary"></span>
-              <%= key %>
-            </a>
+            <a href="<%= url_for(menuPath) %>" class="flex items-center py-2.5 px-3 rounded-md text-base font-medium text-foreground bg-accent" aria-current="page"><%= key %></a>
             <% } else { %>
-            <a href="<%= url_for(menuPath) %>" class="flex items-center py-2.5 px-3 rounded-md text-base font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/60">
-              <%= key %>
-            </a>
+            <a href="<%= url_for(menuPath) %>" class="flex items-center py-2.5 px-3 rounded-md text-base font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/60"><%= key %></a>
             <% } %>
           <% } %>
         <% } %>

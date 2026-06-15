@@ -388,17 +388,14 @@ console.log(`╔═════════════════════�
   // Coss UI outline button（small），完整 class
   var copyBtnCls = "code-copy-btn not-prose [&_svg]:-mx-0.5 relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-1 whitespace-nowrap rounded-md border font-medium text-xs outline-none transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-md)-1px)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background h-7 px-2 [&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background bg-clip-padding shadow-xs not-active:not-data-pressed:before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-input/32 dark:bg-clip-border dark:not-active:not-data-pressed:before:shadow-[0_-1px_--theme(--color-white/8%)] [:hover,[data-pressed]]:bg-accent/50 dark:[:hover,[data-pressed]]:bg-input/64";
 
-  function makeToolbar() {
-    var toolbar = document.createElement('div');
-    toolbar.className = 'code-toolbar';
+  function makeCopyBtn() {
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = copyBtnCls;
     btn.title = '复制代码';
     btn.setAttribute('aria-label', '复制代码');
     btn.innerHTML = copyIcon;
-    toolbar.appendChild(btn);
-    return { toolbar: toolbar, btn: btn };
+    return btn;
   }
 
   function bindCopy(btn, getText) {
@@ -420,20 +417,23 @@ console.log(`╔═════════════════════�
     });
   }
 
-  // Hexo 高亮代码块
+  // Hexo 高亮代码块：顶部工具条放复制按钮
   document.querySelectorAll('figure.highlight').forEach(function(fig) {
     if (fig.dataset.enhanced) return;
     fig.dataset.enhanced = '1';
     fig.classList.add('not-prose');
-    var t = makeToolbar();
-    fig.appendChild(t.toolbar);
-    bindCopy(t.btn, function() {
+    var header = document.createElement('div');
+    header.className = 'code-header';
+    var btn = makeCopyBtn();
+    header.appendChild(btn);
+    fig.insertBefore(header, fig.firstChild);
+    bindCopy(btn, function() {
       var codeCell = fig.querySelector('td.code, .code');
       return (codeCell ? codeCell.innerText : fig.innerText).replace(/\n$/, '');
     });
   });
 
-  // 普通代码块 pre > code
+  // 普通代码块 pre > code：浮动复制按钮
   document.querySelectorAll('.prose pre').forEach(function(pre) {
     if (pre.closest('figure.highlight') || pre.dataset.enhanced) return;
     pre.dataset.enhanced = '1';
@@ -442,9 +442,12 @@ console.log(`╔═════════════════════�
     wrapper.className = 'code-block-wrapper';
     pre.parentNode.insertBefore(wrapper, pre);
     wrapper.appendChild(pre);
-    var t = makeToolbar();
-    wrapper.appendChild(t.toolbar);
-    bindCopy(t.btn, function() { return (code ? code.innerText : pre.innerText).replace(/\n$/, ''); });
+    var toolbar = document.createElement('div');
+    toolbar.className = 'code-toolbar';
+    var btn2 = makeCopyBtn();
+    toolbar.appendChild(btn2);
+    wrapper.appendChild(toolbar);
+    bindCopy(btn2, function() { return (code ? code.innerText : pre.innerText).replace(/\n$/, ''); });
   });
 })();
 </script>

@@ -1431,21 +1431,26 @@ aside ::-webkit-scrollbar-thumb:hover,
   z-index: 2;
 }
 
-/* 代码复制按钮：本体使用 Coss UI button 类，这里仅控制「已复制」绿色态 */
-.code-copy-btn.copied {
-  color: var(--success);
-  border-color: color-mix(in srgb, var(--success) 45%, transparent);
+/* 代码复制按钮本体使用 Coss UI button 类；点击后仅显示 Copied! 文字，不变色 */
+
+/* 代码块顶部工具条（Hexo 高亮块）：复制按钮放这里，不再悬浮在空白处 */
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.4rem 0.55rem;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--muted) 28%, transparent);
 }
 
 /* ---------- 文章目录滚动高亮 ---------- */
 .toc-link {
   position: relative;
   display: block;
-  padding: 0.25rem 0 0.25rem 0.75rem;
-  border-left: 2px solid transparent;
+  padding: 0.3rem 0.5rem 0.3rem 0.85rem;
   color: var(--muted-foreground);
-  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
-  border-radius: 0 var(--radius) var(--radius) 0;
+  border-radius: var(--radius);
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .toc-link:hover {
@@ -1453,11 +1458,23 @@ aside ::-webkit-scrollbar-thumb:hover,
   background-color: color-mix(in srgb, var(--accent) 70%, transparent);
 }
 
+/* 选中项：左侧圆角竖线 + 右侧圆角矩形 */
 .toc-link.active {
   color: var(--primary);
   font-weight: 600;
-  border-left-color: var(--primary);
-  background-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  background-color: var(--accent);
+}
+
+.toc-link.active::before {
+  content: "";
+  position: absolute;
+  left: 0.3rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 0.95rem;
+  border-radius: 9999px;
+  background: var(--primary);
 }
 
 /* ---------- 文章信息统计行 ---------- */

@@ -31,8 +31,8 @@
     <div class="flex flex-col lg:flex-row gap-8">
       <%# Main Content %>
       <div class="flex-1 min-w-0">
-        <%# Breadcrumb - Coss UI %>
-        <nav aria-label="breadcrumb" data-slot="breadcrumb" class="mb-4">
+        <%# Breadcrumb - Coss UI（外层圆角矩形）%>
+        <nav aria-label="breadcrumb" data-slot="breadcrumb" class="mb-6 flex w-fit max-w-full rounded-lg border bg-card bg-clip-padding px-3 py-2 shadow-xs">
           <ol class="wrap-break-word flex flex-wrap items-center gap-1.5 text-muted-foreground text-sm sm:gap-2.5" data-slot="breadcrumb-list">
             <li class="inline-flex items-center gap-1.5" data-slot="breadcrumb-item">
               <a href="<%= url_for('/') %>" class="transition-colors hover:text-foreground" data-slot="breadcrumb-link">首页</a>
