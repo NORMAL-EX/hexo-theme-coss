@@ -240,40 +240,34 @@ console.log(`╔═════════════════════�
 })();
 </script>
 
-<%# Back to Top + Scroll-to-Posts visibility %>
+<%# Back to Top visibility（仅在向下箭头滚出视口后才显示，二者不同时出现）%>
 <script>
 (function() {
   var backToTop = document.getElementById('back-to-top');
-  var scrollToPostsBtn = document.getElementById('scroll-to-posts');
+  if (!backToTop) return;
+  var scrollDown = document.getElementById('scroll-to-posts');
 
-  function show(el, extra) {
-    if (!el) return;
-    el.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
-    el.classList.add('opacity-100', 'translate-y-0');
+  function show() {
+    backToTop.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+    backToTop.classList.add('opacity-100', 'translate-y-0');
   }
-  function hide(el) {
-    if (!el) return;
-    el.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
-    el.classList.remove('opacity-100', 'translate-y-0');
-  }
-  function hidePosts() {
-    if (!scrollToPostsBtn) return;
-    scrollToPostsBtn.classList.add('opacity-0', 'pointer-events-none');
-    scrollToPostsBtn.classList.remove('opacity-100');
-  }
-  function showPosts() {
-    if (!scrollToPostsBtn) return;
-    scrollToPostsBtn.classList.remove('opacity-0', 'pointer-events-none');
-    scrollToPostsBtn.classList.add('opacity-100');
+  function hide() {
+    backToTop.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+    backToTop.classList.remove('opacity-100', 'translate-y-0');
   }
 
-  if (backToTop || scrollToPostsBtn) {
-    window.addEventListener('scroll', function() {
-      if (window.scrollY > 300) { show(backToTop); hidePosts(); }
-      else { hide(backToTop); showPosts(); }
-    }, { passive: true });
+  var ticking = false;
+  function update() {
+    var downVisible = scrollDown && scrollDown.getBoundingClientRect().bottom > 0;
+    if (!downVisible && window.scrollY > 200) show(); else hide();
+    ticking = false;
   }
-  if (backToTop) backToTop.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  window.addEventListener('scroll', function() {
+    if (!ticking) { window.requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  update();
+
+  backToTop.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
 })();
 </script>
 
@@ -346,21 +340,28 @@ console.log(`╔═════════════════════�
     });
   });
 
-  // TOC scrollspy
+  // TOC scrollspy（基于滚动位置实时计算，跟手无延迟）
   if (tocLinks.length && headings.length) {
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (!entry.isIntersecting) return;
-        var targetId = entry.target.id;
-        tocLinks.forEach(function(link) {
-          var href = link.getAttribute('href') || '';
-          var linkId = href.startsWith('#') ? href.slice(1) : href;
-          try { linkId = decodeURIComponent(linkId); } catch (err) {}
-          link.classList.toggle('active', linkId === targetId);
-        });
+    var headingArr = Array.prototype.slice.call(headings);
+    function setActiveToc() {
+      var current = headingArr[0];
+      for (var i = 0; i < headingArr.length; i++) {
+        if (headingArr[i].getBoundingClientRect().top <= 100) current = headingArr[i];
+        else break;
+      }
+      var curId = current ? current.id : '';
+      tocLinks.forEach(function(link) {
+        var href = link.getAttribute('href') || '';
+        var linkId = href.startsWith('#') ? href.slice(1) : href;
+        try { linkId = decodeURIComponent(linkId); } catch (err) {}
+        link.classList.toggle('active', linkId === curId);
       });
-    }, { rootMargin: '-80px 0px -75% 0px', threshold: 0 });
-    headings.forEach(function(h) { observer.observe(h); });
+    }
+    var tocTicking = false;
+    window.addEventListener('scroll', function() {
+      if (!tocTicking) { window.requestAnimationFrame(function() { setActiveToc(); tocTicking = false; }); tocTicking = true; }
+    }, { passive: true });
+    setActiveToc();
   }
 
   // 进入时根据 hash 定位
@@ -384,12 +385,15 @@ console.log(`╔═════════════════════�
   var copyIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>';
   var checkIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>';
 
+  // Coss UI outline button（small），完整 class
+  var copyBtnCls = "code-copy-btn not-prose [&_svg]:-mx-0.5 relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-1 whitespace-nowrap rounded-md border font-medium text-xs outline-none transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-md)-1px)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background h-7 px-2 [&_svg:not([class*='size-'])]:size-3.5 [&_svg]:pointer-events-none [&_svg]:shrink-0 border-border bg-background bg-clip-padding shadow-xs not-active:not-data-pressed:before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-input/32 dark:bg-clip-border dark:not-active:not-data-pressed:before:shadow-[0_-1px_--theme(--color-white/8%)] [:hover,[data-pressed]]:bg-accent/50 dark:[:hover,[data-pressed]]:bg-input/64";
+
   function makeToolbar() {
     var toolbar = document.createElement('div');
     toolbar.className = 'code-toolbar';
     var btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'code-copy-btn';
+    btn.className = copyBtnCls;
     btn.title = '复制代码';
     btn.setAttribute('aria-label', '复制代码');
     btn.innerHTML = copyIcon;
@@ -420,6 +424,7 @@ console.log(`╔═════════════════════�
   document.querySelectorAll('figure.highlight').forEach(function(fig) {
     if (fig.dataset.enhanced) return;
     fig.dataset.enhanced = '1';
+    fig.classList.add('not-prose');
     var t = makeToolbar();
     fig.appendChild(t.toolbar);
     bindCopy(t.btn, function() {

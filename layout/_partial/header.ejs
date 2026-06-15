@@ -30,8 +30,8 @@
         <% } %>
       </a>
 
-      <%# Desktop Navigation - 仅在足够宽（lg+）时显示 %>
-      <nav class="hidden lg:flex items-center gap-1 flex-1 justify-center">
+      <%# Desktop/Tablet Navigation - md+ 显示 %>
+      <nav class="hidden md:flex items-center gap-1 flex-1 justify-center">
         <% if (theme.menu) { %>
           <% for (var key in theme.menu) { %>
             <% var menuPath = theme.menu[key]; %>
@@ -115,8 +115,8 @@
           </div>
         </div>
 
-        <%# Mobile Menu Toggle - outline 图标按钮 %>
-        <button type="button" class="lg:hidden <%= outlineIconBtn %>" id="mobile-menu-toggle" aria-label="打开菜单">
+        <%# Mobile Menu Toggle - outline 图标按钮（仅 md 以下显示）%>
+        <button type="button" class="md:hidden <%= outlineIconBtn %>" id="mobile-menu-toggle" aria-label="打开菜单">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="4" x2="20" y1="12" y2="12"></line>
             <line x1="4" x2="20" y1="6" y2="6"></line>
@@ -128,7 +128,7 @@
   </div>
 
   <%# Mobile Menu %>
-  <div class="hidden lg:hidden border-t bg-background" id="mobile-menu">
+  <div class="hidden md:hidden border-t bg-background" id="mobile-menu">
     <nav class="flex flex-col space-y-1 p-4">
       <% if (theme.menu) { %>
         <% for (var key in theme.menu) { %>
@@ -137,9 +137,9 @@
           <% var linksEnabled = !theme.links || theme.links.enable !== false; %>
           <% if (!isLinksMenu || linksEnabled) { %>
             <% if (isMenuActive(menuPath)) { %>
-            <a href="<%= url_for(menuPath) %>" class="flex items-center gap-2 text-base font-medium text-foreground" aria-current="page">
-              <span class="h-5 w-1 rounded-full bg-primary shrink-0"></span>
-              <span class="flex-1 rounded-md bg-accent px-3 py-2"><%= key %></span>
+            <a href="<%= url_for(menuPath) %>" class="relative flex items-center py-2.5 px-3 rounded-md text-base font-medium text-foreground bg-accent" aria-current="page">
+              <span class="absolute left-1 top-1/2 -translate-y-1/2 h-5 w-1 rounded-full bg-primary"></span>
+              <%= key %>
             </a>
             <% } else { %>
             <a href="<%= url_for(menuPath) %>" class="flex items-center py-2.5 px-3 rounded-md text-base font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-accent/60">

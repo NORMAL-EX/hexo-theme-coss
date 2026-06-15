@@ -335,68 +335,54 @@
   user-select: none;
 }
 
-/* Hexo 代码块样式 */
+/* Hexo 代码块样式（figure 在 JS 中加 not-prose，避免 typography 干扰间距）*/
 .prose figure.highlight {
+  position: relative;
   margin: 1.5em 0;
-  border-radius: 0.5rem;
   overflow: hidden;
-    @apply relative border border-border rounded-lg bg-background bg-clip-padding shadow-xs transition-shadow before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] not-disabled:not-active:not-data-pressed:before:shadow-[0_1px_--theme(--color-black/4%)] active:shadow-none dark:bg-input/32 dark:bg-clip-border dark:not-disabled:before:shadow-[0_-1px_--theme(--color-white/4%)] dark:not-disabled:not-active:not-data-pressed:before:shadow-[0_-1px_--theme(--color-white/8%)]
-}
-
-.prose figure.highlight figcaption {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5em 1em;
-  background-color: var(--muted);
-  border-bottom: 1px solid var(--border);
-  font-size: 0.875em;
-}
-
-.prose figure.highlight figcaption span {
-  color: var(--muted-foreground);
-}
-
-.prose figure.highlight figcaption a {
-  color: var(--primary);
+  line-height: 1.7;
+  @apply border border-border rounded-lg bg-background bg-clip-padding shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-lg)-1px)] not-disabled:not-active:not-data-pressed:before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-input/32 dark:bg-clip-border dark:not-disabled:not-active:not-data-pressed:before:shadow-[0_-1px_--theme(--color-white/8%)];
 }
 
 .prose figure.highlight table {
   margin: 0;
   width: 100%;
+  border-collapse: collapse;
 }
 
-.prose figure.highlight table td {
+.prose figure.highlight td {
   padding: 0;
   border: none;
+  vertical-align: top;
 }
 
-.prose figure.highlight table td.gutter {
-  width: 25px;
-  padding: 0.5em;
-  background-color: var(--muted);
+.prose figure.highlight td.gutter {
+  width: 1px;
+  white-space: nowrap;
+  padding: 0.85rem 0.7rem 0.85rem 1rem;
   text-align: right;
-  vertical-align: top;
+  color: var(--muted-foreground);
+  opacity: 0.5;
   user-select: none;
 }
 
-.prose figure.highlight table td.gutter pre {
+.prose figure.highlight td.code {
+  width: 100%;
+  padding: 0.85rem 1rem;
+}
+
+.prose figure.highlight pre {
   margin: 0;
   padding: 0;
   background: transparent;
   border: none;
-  color: var(--muted-foreground);
+  border-radius: 0;
+  font-size: 0.85em;
+  line-height: 1.7;
 }
 
-.prose figure.highlight table td.code {
-  padding: 0.5em 1em;
-}
-
-.prose figure.highlight table td.code pre {
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  border: none;
+.prose figure.highlight td.code pre {
+  overflow-x: auto;
 }
 
 /* 表格样式 */
@@ -1445,66 +1431,10 @@ aside ::-webkit-scrollbar-thumb:hover,
   z-index: 2;
 }
 
-.code-lang-label {
-  display: inline-flex;
-  align-items: center;
-  height: 1.75rem;
-  padding: 0 0.5rem;
-  border-radius: calc(var(--radius) - 4px);
-  background: color-mix(in srgb, var(--muted) 60%, transparent);
-  color: var(--muted-foreground);
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  user-select: none;
-  opacity: 0.6;
-  transition: opacity 0.2s ease;
-}
-
-.code-copy-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-  min-width: 1.75rem;
-  height: 1.75rem;
-  padding: 0 0.4rem;
-  border-radius: calc(var(--radius) - 4px);
-  background: color-mix(in srgb, var(--muted) 90%, transparent);
-  color: var(--muted-foreground);
-  border: 1px solid var(--border);
-  cursor: pointer;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  line-height: 1;
-  white-space: nowrap;
-  opacity: 0.85;
-  transition: opacity 0.2s ease, color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
-}
-
-.code-copy-btn svg {
-  width: 0.95rem;
-  height: 0.95rem;
-}
-
-.code-copy-btn:hover {
-  color: var(--foreground);
-  background: var(--accent);
-  opacity: 1;
-}
-
+/* 代码复制按钮：本体使用 Coss UI button 类，这里仅控制「已复制」绿色态 */
 .code-copy-btn.copied {
   color: var(--success);
-  border-color: color-mix(in srgb, var(--success) 40%, transparent);
-}
-
-.code-block-wrapper:hover .code-lang-label,
-.code-block-wrapper:hover .code-copy-btn,
-figure.highlight:hover .code-lang-label,
-figure.highlight:hover .code-copy-btn {
-  opacity: 1;
+  border-color: color-mix(in srgb, var(--success) 45%, transparent);
 }
 
 /* ---------- 文章目录滚动高亮 ---------- */
