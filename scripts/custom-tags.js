@@ -103,10 +103,14 @@ hexo.extend.tag.register('btn', function (args) {
   }
 
   const url = args[0];
-  const text = args[1];
-  const variant = BTN_VARIANTS[args[2]] ? args[2] : 'primary';
-  const size = BTN_SIZES[args[3]] ? args[3] : 'md';
-  const icon = args[4] || '';
+  const rest = args.slice(1);
+
+  // 从末尾依次识别 icon / size / variant，剩余部分全部作为按钮文字（允许含空格）
+  let icon = '', size = 'md', variant = 'primary';
+  if (rest.length > 1 && lucideIcons[rest[rest.length - 1]]) icon = rest.pop();
+  if (rest.length > 1 && BTN_SIZES[rest[rest.length - 1]]) size = rest.pop();
+  if (rest.length > 1 && BTN_VARIANTS[rest[rest.length - 1]]) variant = rest.pop();
+  const text = rest.join(' ');
 
   const iconHtml = lucideIcons[icon] || '';
   const isExternal = url.startsWith('http://') || url.startsWith('https://');

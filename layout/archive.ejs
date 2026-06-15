@@ -36,7 +36,7 @@
               <div class="space-y-1 border-l-2 timeline-line pl-6 ml-2">
                 <% yearGroups[year].forEach(function(post) { %>
                 <div class="timeline-item relative group">
-                  <div class="timeline-dot absolute -left-[29px] top-2.5 w-3 h-3 rounded-full bg-muted-foreground ring-4 ring-card"></div>
+                  <div class="timeline-dot absolute -left-[31px] top-3 w-3 h-3 rounded-full bg-muted-foreground ring-4 ring-card"></div>
                   <a href="<%= url_for(post.path) %>" class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 rounded-lg px-3 py-2 -ml-3 transition-colors hover:bg-accent">
                     <time class="text-sm text-muted-foreground shrink-0 tabular-nums w-12" datetime="<%= date_xml(post.date) %>"><%= date(post.date, 'MM-DD') %></time>
                     <span class="font-medium group-hover:text-primary transition-colors"><%= post.title %></span>

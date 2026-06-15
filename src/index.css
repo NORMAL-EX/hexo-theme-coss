@@ -1466,11 +1466,13 @@ aside ::-webkit-scrollbar-thumb:hover,
 .code-copy-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.3rem;
+  min-width: 1.75rem;
   height: 1.75rem;
-  padding: 0 0.55rem;
+  padding: 0 0.4rem;
   border-radius: calc(var(--radius) - 4px);
-  background: color-mix(in srgb, var(--muted) 92%, transparent);
+  background: color-mix(in srgb, var(--muted) 90%, transparent);
   color: var(--muted-foreground);
   border: 1px solid var(--border);
   cursor: pointer;
@@ -1478,8 +1480,13 @@ aside ::-webkit-scrollbar-thumb:hover,
   font-weight: 600;
   line-height: 1;
   white-space: nowrap;
-  opacity: 0.9;
+  opacity: 0.85;
   transition: opacity 0.2s ease, color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.code-copy-btn svg {
+  width: 0.95rem;
+  height: 0.95rem;
 }
 
 .code-copy-btn:hover {
@@ -1617,17 +1624,31 @@ figure.highlight:hover .code-copy-btn {
 
 .prose .table-wrapper > table {
   margin: 0;
+  width: 100%;
   border-collapse: collapse;
+  font-size: 0.875em;
 }
 
 .prose .table-wrapper thead {
-  background: color-mix(in srgb, var(--muted) 60%, transparent);
+  background: color-mix(in srgb, var(--muted) 55%, transparent);
+  border-bottom: 1px solid var(--border);
 }
 
-.prose .table-wrapper :where(th, td):first-child {
-  padding-inline-start: 0.85em;
+.prose .table-wrapper :is(th, td) {
+  padding: 0.65em 0.9em;
+  text-align: start;
+  vertical-align: middle;
 }
 
-.prose .table-wrapper :where(th, td):last-child {
-  padding-inline-end: 0.85em;
+.prose .table-wrapper thead th {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.prose .table-wrapper tbody tr {
+  border-top: 1px solid var(--border);
+}
+
+.prose .table-wrapper tbody tr:first-child {
+  border-top: none;
 }
