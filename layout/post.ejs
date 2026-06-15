@@ -198,9 +198,9 @@
       <% if (hasSidebarContent || hasToc) { %>
       <div class="w-full lg:w-80 shrink-0">
         <div class="lg:sticky lg:top-20 space-y-6">
-          <%# TOC %>
+          <%# TOC - 仅电脑(lg+)显示，手机/平板隐藏以免堆在正文下方 %>
           <% if (hasToc) { %>
-          <div class="relative flex flex-col rounded-2xl border bg-card bg-clip-padding text-card-foreground shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)] p-4">
+          <div class="relative hidden lg:flex flex-col rounded-2xl border bg-card bg-clip-padding text-card-foreground shadow-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_--theme(--color-black/4%)] dark:bg-clip-border dark:before:shadow-[0_-1px_--theme(--color-white/8%)] p-4">
             <div class="flex items-center gap-2 mb-3 px-1">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground"><line x1="21" x2="3" y1="6" y2="6"></line><line x1="15" x2="3" y1="12" y2="12"></line><line x1="17" x2="3" y1="18" y2="18"></line></svg>
               <h4 class="font-semibold">目录</h4>
