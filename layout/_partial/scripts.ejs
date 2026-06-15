@@ -95,6 +95,7 @@ console.log(`╔═════════════════════�
   function openMenu() { if (popup) { popup.classList.remove('closed'); if (trigger) trigger.setAttribute('aria-expanded', 'true'); } }
   function closeMenu() { if (popup) { popup.classList.add('closed'); if (trigger) trigger.setAttribute('aria-expanded', 'false'); } }
 
+  applyTheme(getTheme());
   updateTrigger(getTheme());
   updateChecks(getTheme());
 
@@ -320,9 +321,8 @@ console.log(`╔═════════════════════�
         if (window.cossToast) window.cossToast('链接已复制', 'success');
       }).catch(function() {});
     });
-    heading.style.position = 'relative';
-    heading.classList.add('group', 'heading-with-anchor');
-    heading.insertBefore(anchor, heading.firstChild);
+    heading.classList.add('heading-with-anchor');
+    heading.appendChild(anchor);
   });
 
   // TOC smooth scroll
@@ -384,6 +384,9 @@ console.log(`╔═════════════════════�
   var copyIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>';
   var checkIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>';
 
+  var copyBtnDefault = copyIcon + '<span>复制</span>';
+  var copyBtnCopied = checkIcon + '<span>已复制</span>';
+
   function makeToolbar(lang) {
     var toolbar = document.createElement('div');
     toolbar.className = 'code-toolbar';
@@ -398,7 +401,7 @@ console.log(`╔═════════════════════�
     btn.className = 'code-copy-btn';
     btn.title = '复制代码';
     btn.setAttribute('aria-label', '复制代码');
-    btn.innerHTML = copyIcon;
+    btn.innerHTML = copyBtnDefault;
     toolbar.appendChild(btn);
     return { toolbar: toolbar, btn: btn };
   }
@@ -407,10 +410,9 @@ console.log(`╔═════════════════════�
     btn.addEventListener('click', function() {
       var text = getText();
       function done() {
-        btn.innerHTML = checkIcon;
+        btn.innerHTML = copyBtnCopied;
         btn.classList.add('copied');
-        if (window.cossToast) window.cossToast('代码已复制', 'success');
-        setTimeout(function() { btn.innerHTML = copyIcon; btn.classList.remove('copied'); }, 2000);
+        setTimeout(function() { btn.innerHTML = copyBtnDefault; btn.classList.remove('copied'); }, 2000);
       }
       if (navigator.clipboard) navigator.clipboard.writeText(text).then(done).catch(function() {});
       else {
@@ -489,20 +491,53 @@ console.log(`╔═════════════════════�
 })();
 </script>
 
+<%# Image Skeleton Loading %>
+<script>
+(function() {
+  function setup(img) {
+    var holder = img.parentElement;
+    if (!holder || holder.dataset.skeletonReady) return;
+    holder.dataset.skeletonReady = '1';
+    holder.classList.add('img-skeleton');
+    img.classList.add('img-fade');
+    function reveal() {
+      img.classList.add('loaded');
+      holder.classList.remove('img-skeleton');
+    }
+    if (img.complete && img.naturalWidth > 0) reveal();
+    else { img.addEventListener('load', reveal); img.addEventListener('error', reveal); }
+  }
+  document.querySelectorAll('.aspect-video img, [data-slot="avatar-image"]').forEach(setup);
+})();
+</script>
+
+<%# Wrap tables with rounded frame %>
+<script>
+(function() {
+  document.querySelectorAll('.prose table').forEach(function(table) {
+    var parent = table.parentNode;
+    if (parent && parent.classList && parent.classList.contains('table-wrapper')) return;
+    var wrapper = document.createElement('div');
+    wrapper.className = 'table-wrapper';
+    parent.insertBefore(wrapper, table);
+    wrapper.appendChild(table);
+  });
+})();
+</script>
+
 <style>
-/* 标题锚点链接样式 */
+/* 标题锚点链接样式（尾随、小号、悬停显示） */
 .heading-anchor {
-  font-weight: 700;
+  font-weight: 400;
   color: var(--muted-foreground);
   text-decoration: none;
   opacity: 0;
   transition: opacity 0.2s, color 0.2s;
-  margin-right: 0.4em;
+  margin-left: 0.4em;
+  font-size: 0.8em;
   cursor: pointer;
-  margin-left: -1em;
-  width: 1em;
-  display: inline-block;
+  user-select: none;
 }
-.heading-with-anchor:hover .heading-anchor { opacity: 0.5; }
+.heading-with-anchor:hover .heading-anchor { opacity: 0.6; }
 .heading-anchor:hover { color: var(--primary); opacity: 1 !important; }
 </style>

@@ -67,8 +67,8 @@ var _hmt = _hmt || [];
 <%# Theme initialization script %>
 <script>
 (function() {
-  var theme = localStorage.getItem('hexo-theme-mode');
-  if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+  var theme = localStorage.getItem('hexo-theme-mode') || 'system';
+  if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     document.documentElement.classList.add('dark');
   }
 })();

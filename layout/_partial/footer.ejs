@@ -1,16 +1,6 @@
 <footer class="border-t bg-card/40 mt-auto">
   <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
     <div class="flex flex-col items-center gap-5 text-center">
-      <%# Logo / 站点名 %>
-      <a href="<%= url_for('/') %>" class="inline-flex items-center gap-2.5">
-        <% if (theme.logo) { %>
-        <span class="inline-flex size-8 shrink-0 select-none items-center justify-center overflow-hidden rounded-full bg-background align-middle ring-1 ring-border" data-slot="avatar">
-          <img src="<%= url_for(theme.logo) %>" alt="<%= config.title %>" class="size-full object-cover" data-slot="avatar-image">
-        </span>
-        <% } %>
-        <span class="font-semibold tracking-tight"><%= config.title %></span>
-      </a>
-
       <%# 社交链接 %>
       <% if (theme.social && theme.social.length > 0) { %>
       <div class="flex items-center gap-1">

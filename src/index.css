@@ -280,13 +280,13 @@
   border-color: var(--border);
 }
 
-.prose a {
+.prose a:not([data-slot]) {
   color: var(--primary);
   text-decoration: none;
   font-weight: 500;
 }
 
-.prose a:hover {
+.prose a:not([data-slot]):hover {
   text-decoration: underline;
 }
 
@@ -1448,7 +1448,7 @@ aside ::-webkit-scrollbar-thumb:hover,
 .code-lang-label {
   display: inline-flex;
   align-items: center;
-  height: 1.5rem;
+  height: 1.75rem;
   padding: 0 0.5rem;
   border-radius: calc(var(--radius) - 4px);
   background: color-mix(in srgb, var(--muted) 60%, transparent);
@@ -1459,34 +1459,44 @@ aside ::-webkit-scrollbar-thumb:hover,
   letter-spacing: 0.04em;
   text-transform: uppercase;
   user-select: none;
-  opacity: 0;
+  opacity: 0.6;
   transition: opacity 0.2s ease;
 }
 
 .code-copy-btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 1.75rem;
+  gap: 0.3rem;
   height: 1.75rem;
+  padding: 0 0.55rem;
   border-radius: calc(var(--radius) - 4px);
-  background: color-mix(in srgb, var(--muted) 80%, transparent);
+  background: color-mix(in srgb, var(--muted) 92%, transparent);
   color: var(--muted-foreground);
   border: 1px solid var(--border);
   cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0.9;
+  transition: opacity 0.2s ease, color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .code-copy-btn:hover {
   color: var(--foreground);
   background: var(--accent);
+  opacity: 1;
 }
 
-.code-copy-btn.copied { color: var(--success); }
+.code-copy-btn.copied {
+  color: var(--success);
+  border-color: color-mix(in srgb, var(--success) 40%, transparent);
+}
 
 .code-block-wrapper:hover .code-lang-label,
-.code-block-wrapper:hover .code-copy-btn {
+.code-block-wrapper:hover .code-copy-btn,
+figure.highlight:hover .code-lang-label,
+figure.highlight:hover .code-copy-btn {
   opacity: 1;
 }
 
@@ -1578,4 +1588,46 @@ aside ::-webkit-scrollbar-thumb:hover,
 .theme-option {
   width: 100%;
   text-align: start;
+}
+
+/* ---------- 图片骨架屏加载 ---------- */
+.img-skeleton {
+  position: relative;
+  background: linear-gradient(90deg, var(--muted) 25%, color-mix(in srgb, var(--foreground) 8%, var(--muted)) 50%, var(--muted) 75%);
+  background-size: 200% 100%;
+  animation: skeleton 1.4s ease-in-out infinite;
+}
+
+.img-fade {
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.img-fade.loaded {
+  opacity: 1;
+}
+
+/* ---------- 表格圆角外框 ---------- */
+.table-wrapper {
+  margin: 1.6em 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+
+.prose .table-wrapper > table {
+  margin: 0;
+  border-collapse: collapse;
+}
+
+.prose .table-wrapper thead {
+  background: color-mix(in srgb, var(--muted) 60%, transparent);
+}
+
+.prose .table-wrapper :where(th, td):first-child {
+  padding-inline-start: 0.85em;
+}
+
+.prose .table-wrapper :where(th, td):last-child {
+  padding-inline-end: 0.85em;
 }
